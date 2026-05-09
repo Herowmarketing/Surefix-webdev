@@ -1,0 +1,36 @@
+window._adftrack = Array.isArray(window._adftrack) ? window._adftrack : (window._adftrack ? [window._adftrack] : []);
+window._adftrack.push({"HttpHost":"a2.adform.net","pm":3049963,"gdpr":0,"divider":"|","pagename":"The Damai - Homepage 127701"});
+(function () { var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = 'https://s2.adform.net/banners/scripts/st/trackpoint-async.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x); })();
+!function(){const e=["cm.g.doubleclick.net","eu-u.openx.net","simage2.pubmatic.com","eb2.3lift.com","x.bidswitch.net","dsum-sec.casalemedia.com","token.rubiconproject.com","uipglob.semasio.net","idsync.rlcdn.com","match.adsrvr.org","sync.teads.tv","rtb-csync.smartadserver.com","ad.yieldlab.net","pdw-adf.userreport.com","ih.adscale.de","ad.360yield.com","c1.adform.net","dpm.demdex.net","redirect.frontend.weborama.fr","pm.w55c.net","sync.crwdcntrl.net","bpi.rtactivate.com","user-sync.fwmrm.net","cookie-matching.mediarithmics.com"];var t;(t='iframe[src*="https://c1.adform.net/imatch/pixels?uid="]',new Promise(((e,s)=>{new MutationObserver(((s,a)=>{const c=document.querySelector(t);c&&(a.disconnect(),e(c))})).observe(document,{childList:!0,subtree:!0})}))).then((t=>{const s=JSON.parse(JSON.stringify(t.src));t.src="";const a=new XMLHttpRequest;a.open("GET",s),a.withCredentials=!0,a.onload=function(){!function(t,s){var a=t.responseText.replace(/\ssrc="/g,' data-src="').replace("</body>",'<script> var allowList = "'+e.join(";")+"\".split(';');var images = document.querySelectorAll('img');for(var i = 0, l = images.length; i < l; i++){if(allowList.indexOf(images[i].getAttribute('data-src').split('https://')[1].split('/')[0]) !== -1){images[i].src = images[i].getAttribute('data-src');}}<\/script></body>");s.src="data:text/html;charset=utf-8,"+encodeURIComponent(a)}(this,t)},a.send()}))}();
+!function (a,e,t) {a.gtag_enable_tcf_support=!0;function gtag(){dataLayer.push(arguments)}var r,d;(d=e.createElement(t)).src='//www.googletagmanager.com/gtag/js?id=AW-18006271991',d.async=1,d.onload=d.onreadystatechange=function(){var a=this.readyState;a&&'loaded'!==a&&'complete'!==a||(d.onload=d.onreadystatechange=null)},(r=e.getElementsByTagName(t)[0]).parentNode.insertBefore(d,r),a.dataLayer=a.dataLayer||[],gtag('js',new Date()),gtag('config','AW-18006271991',{'allow_enhanced_conversions': true}),gtag('event','conversion',{"send_to":"AW-18006271991/Uo-HCLrH_IUcEPfPh4pD"})}(window,document,'script');
+!function (w,d,t,r,u) {w.uetq=w.uetq||[],w.uetq.push('config','tcf',{enabled:!0});var f,n,i;w[u]=w[u]||[],f=function(){var o={ti:'343238459'};o.q=w[u],w[u]=new UET(o),w[u].push('pageLoad')},n=d.createElement(t),n.src=r,n.async=1,n.onload=n.onreadystatechange=function(){var s=this.readyState;s&&s!=='loaded'&&s!=='complete'||(f(),n.onload=n.onreadystatechange=null)},i=d.getElementsByTagName(t)[0],i.parentNode.insertBefore(n,i)}(window,document,'script','//bat.bing.com/bat.js','uet_sjrn_other');
+(function () {window.uet_sjrn_other=window.uet_sjrn_other||[],window.uet_sjrn_other.push({"ec":"HOME_PAGE","ea":"HOME_PAGE"})})();
+
+(function () {
+    var scr = document.createElement('script');
+    var snippet = "var i = document.createElement('img');\
+    i.setAttribute('alt', '');\
+    i.setAttribute('height', '1');\
+    i.setAttribute('width', '1');\
+    i.setAttribute('style', 'display: none;');\
+    i.setAttribute('src', 'https://ad.doubleclick.net/ddm/activity/src=8612052;type=homep0;cat=theda0;qty=1;cost=0;u1=;u16=;dc_lat=;dc_rdid=;tag_for_child_directed_treatment=;ord=UNKNOWN');\
+    document.body.appendChild(i);";
+
+    scr.type = 'text/javascript';
+    scr.async = true;
+    if (scr.textContent) {
+        scr.textContent = snippet;
+    } else {
+        scr.text = snippet;
+    }
+    document.getElementsByTagName('head')[0].appendChild(scr);
+})();
+(function () {
+!function (f,b,e,v,n,t,s) {if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.agent='trplsojern';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1163088355774843');
+fbq('trackSingle','1163088355774843','PageView');
+fbq('trackSingleCustom','1163088355774843','HomePage',{"content_type":"hotel"});
+})();
+(function () {var t=document.createElement("img");t.async=!0,t.width=1,t.height=1,t.style.display="none",t.src="https://insight.adsrvr.org/track/pxl/?adv=90o005b&ct=0%3Ahmv2mxu&fmt=3";document.body.appendChild(t)})();
+(function () {var t=document.createElement('img');t.async=!0,t.width=1,t.height=1,t.style.display='none',t.src='https://ib.adnxs.com/px?consent=1&id=1366986&t=1';document.body.appendChild(t)})();
+(function () {var t=document.createElement('img');t.async=!0,t.width=1,t.height=1,t.style.display='none',t.src='https://ib.adnxs.com/seg?add=23554430&consent=1&t=1';document.body.appendChild(t)})();

@@ -1,0 +1,309 @@
+/*
+ * SURE-FIX REMODELING — Design System
+ * Brand: Modern Futuristic + Brand Guide Compliant
+ * 
+ * Colours:
+ *   French Blue:   #394696  (primary — headlines, CTAs, buttons)
+ *   Brown Red:     #983631  (primary — accents, secondary CTAs)
+ *   Dusty Mauve:   #7d8559  (secondary — sparingly)
+ *   Alabaster Grey:#e9eae5  (secondary — section backgrounds)
+ *   Off-White:     #f8f8f6  (light backgrounds)
+ *   Deep Navy:     #0d1117  (hero/dark sections)
+ * 
+ * Typography:
+ *   Display/Headers: Figtree 700–900 (always larger)
+ *   Body:            Georgia serif (always smaller)
+ * 
+ * Design Movement: Modern Futuristic Craftsman
+ * UI/UX Pro Max: Video-First Hero, Glassmorphism cards, stagger animations
+ */
+
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* Sure-Fix Brand Colours */
+  --sf-blue: #394696;
+  --sf-blue-dark: #2a3578;
+  --sf-blue-light: #4a5ab0;
+  --sf-red: #983631;
+  --sf-red-dark: #7a2a26;
+  --sf-red-light: #b84540;
+  --sf-mauve: #7d8559;
+  --sf-alabaster: #e9eae5;
+  --sf-offwhite: #f8f8f6;
+  --sf-deep-navy: #0d1117;
+  --sf-navy: #111827;
+
+  /* Semantic tokens */
+  --background: oklch(0.98 0.003 90);
+  --foreground: oklch(0.15 0.02 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.02 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.02 250);
+  --primary: oklch(0.38 0.12 264);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.93 0.005 90);
+  --secondary-foreground: oklch(0.25 0.02 250);
+  --muted: oklch(0.95 0.003 90);
+  --muted-foreground: oklch(0.55 0.015 250);
+  --accent: oklch(0.93 0.005 90);
+  --accent-foreground: oklch(0.15 0.02 250);
+  --destructive: oklch(0.45 0.18 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.88 0.005 90);
+  --input: oklch(0.88 0.005 90);
+  --ring: oklch(0.38 0.12 264);
+}
+
+.dark {
+  --background: oklch(0.07 0.01 250);
+  --foreground: oklch(0.92 0.005 90);
+  --card: oklch(0.1 0.01 250);
+  --card-foreground: oklch(0.92 0.005 90);
+  --popover: oklch(0.1 0.01 250);
+  --popover-foreground: oklch(0.92 0.005 90);
+  --primary: oklch(0.45 0.14 264);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.15 0.01 250);
+  --secondary-foreground: oklch(0.75 0.01 90);
+  --muted: oklch(0.18 0.01 250);
+  --muted-foreground: oklch(0.6 0.01 250);
+  --accent: oklch(0.18 0.01 250);
+  --accent-foreground: oklch(0.92 0.005 90);
+  --destructive: oklch(0.45 0.18 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.45 0.14 264);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: Georgia, 'Times New Roman', serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Figtree', sans-serif;
+    font-weight: 800;
+  }
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href] {
+    @apply cursor-pointer;
+  }
+}
+
+/* ─── Sure-Fix Custom Utilities ─── */
+@layer components {
+  .container {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  @media (min-width: 640px) {
+    .container { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; }
+  }
+
+  .flex { min-height: 0; min-width: 0; }
+
+  /* Brand Buttons */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    background-color: var(--sf-blue);
+    color: white;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 0.375rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 2px solid var(--sf-blue);
+  }
+  .btn-primary:hover {
+    background-color: var(--sf-blue-dark);
+    border-color: var(--sf-blue-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(57, 70, 150, 0.35);
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    background-color: transparent;
+    color: white;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 0.375rem;
+    border: 2px solid rgba(255,255,255,0.6);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-secondary:hover {
+    background-color: rgba(255,255,255,0.12);
+    border-color: white;
+    transform: translateY(-2px);
+  }
+  .btn-red {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    background-color: var(--sf-red);
+    color: white;
+    font-family: 'Figtree', sans-serif;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border-radius: 0.375rem;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 2px solid var(--sf-red);
+  }
+  .btn-red:hover {
+    background-color: var(--sf-red-dark);
+    border-color: var(--sf-red-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(152, 54, 49, 0.35);
+  }
+
+  /* Glassmorphism Card */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 1rem;
+  }
+
+  /* Section Labels */
+  .section-label {
+    font-family: 'Figtree', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sf-red);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-label::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 2px;
+    background-color: var(--sf-red);
+    flex-shrink: 0;
+  }
+
+  /* Mascot Float */
+  @keyframes mascot-float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(0.5deg); }
+    66% { transform: translateY(-5px) rotate(-0.5deg); }
+  }
+  .mascot-float {
+    animation: mascot-float 4s ease-in-out infinite;
+  }
+
+  /* Shimmer effect */
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  .text-shimmer {
+    background: linear-gradient(90deg, #394696 0%, #7a8fd4 40%, #394696 60%, #394696 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 3s linear infinite;
+  }
+
+  /* Counter animation */
+  @keyframes count-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Video overlay gradient */
+  .video-overlay {
+    background: linear-gradient(
+      135deg,
+      rgba(13, 17, 23, 0.85) 0%,
+      rgba(13, 17, 23, 0.65) 50%,
+      rgba(57, 70, 150, 0.25) 100%
+    );
+  }
+
+  /* Diagonal section divider */
+  .section-diagonal {
+    clip-path: polygon(0 0, 100% 4%, 100% 100%, 0 100%);
+    margin-top: -3rem;
+    padding-top: 5rem;
+  }
+  .section-diagonal-reverse {
+    clip-path: polygon(0 4%, 100% 0, 100% 100%, 0 100%);
+    margin-top: -3rem;
+    padding-top: 5rem;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0d1117; }
+  ::-webkit-scrollbar-thumb { background: #394696; border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4a5ab0; }
+}
