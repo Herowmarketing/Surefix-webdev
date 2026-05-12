@@ -12,25 +12,21 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./components/Layout";
 
-// Pages
-import Home from "./pages/Home";
-import Services from "./pages/Services";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import Reviews from "./pages/Reviews";
-import NotFound from "./pages/NotFound";
-
-// Feature pages
-import Showroom from "./pages/Showroom";
-import InteriorDesign from "./pages/InteriorDesign";
-
-// Service pages
-import Kitchen from "./pages/services/Kitchen";
-import Bathroom from "./pages/services/Bathroom";
-import Basement from "./pages/services/Basement";
-import Exterior from "./pages/services/Exterior";
-import Flooring from "./pages/services/Flooring";
-import Additions from "./pages/services/Additions";
+// Pages (flat layout in this repo)
+import Home from "./Home";
+import Services from "./Services";
+import About from "./About";
+import Contact from "./Contact";
+import Reviews from "./Reviews";
+import NotFound from "./NotFound";
+import Showroom from "./Showroom";
+import InteriorDesign from "./InteriorDesign";
+import Kitchen from "./Kitchen";
+import Bathroom from "./Bathroom";
+import Basement from "./Basement";
+import Exterior from "./Exterior";
+import Flooring from "./Flooring";
+import Additions from "./Additions";
 
 // Scroll to top on route change
 function ScrollToTop() {

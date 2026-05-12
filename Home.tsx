@@ -1,15 +1,14 @@
 /*
  * HOME PAGE — Sure-Fix Remodeling
- * Design: High-converting, minimal scrolling, video hero, real business info
- * Sections: Hero (video) → Social Proof Bar → Services Grid → Why Us → Reviews → CTA Banner
+ * Design: High-converting, minimal scrolling, cinematic scroll-scrubbed hero, real business info
+ * Sections: CinematicHero → Social Proof Bar → Services Grid → Why Us → Reviews → CTA Banner
  */
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle, ChevronDown } from 'lucide-react';
-import { BUSINESS, SERVICES, REVIEWS, MASCOT_URL } from '@/lib/constants';
+import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle } from 'lucide-react';
+import { BUSINESS, SERVICES, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
-
-const VIDEO_URL = '/manus-storage/surefix-hero-kitchen2_004a6484.mp4';
+import CinematicHero from './CinematicHero';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -25,128 +24,8 @@ export default function Home() {
   const { openStepper } = useLeadStepper();
   return (
     <div className="bg-[#0d1117]">
-      {/* ─── HERO ─── */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Video background */}
-        <video
-          autoPlay muted loop playsInline
-          className="absolute inset-0 w-full h-full object-cover"
-          src={VIDEO_URL}
-        />
-        {/* Gradient overlay */}
-        <div className="absolute inset-0" style={{
-          background: 'linear-gradient(105deg, rgba(13,17,23,0.92) 0%, rgba(13,17,23,0.75) 50%, rgba(13,17,23,0.4) 100%)'
-        }} />
-        {/* Blue accent glow */}
-        <div className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none"
-          style={{ background: 'linear-gradient(to top, rgba(57,70,150,0.18), transparent)' }} />
-
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-5 lg:px-8 pt-32 pb-16 flex flex-col lg:flex-row items-center gap-8 lg:gap-0">
-          {/* Left: Copy */}
-          <motion.div className="flex-1 max-w-2xl" variants={stagger} initial="hidden" animate="visible">
-            {/* Badge */}
-            <motion.div variants={fadeUp} custom={0}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-[#394696]/40 mb-6"
-              style={{ background: 'rgba(57,70,150,0.12)' }}>
-              <span className="w-1.5 h-1.5 rounded-full bg-[#394696] animate-pulse" />
-              <span className="text-xs font-bold text-[#394696] uppercase tracking-widest" style={{ fontFamily: 'Figtree, sans-serif' }}>
-                Easton, PA · Lehigh Valley · Western NJ
-              </span>
-            </motion.div>
-
-            {/* Headline */}
-            <motion.h1 variants={fadeUp} custom={1}
-              className="text-5xl md:text-6xl xl:text-7xl font-black leading-[0.95] text-white mb-2"
-              style={{ fontFamily: 'Figtree, sans-serif' }}>
-              YOUR HOME,
-            </motion.h1>
-            <motion.h1 variants={fadeUp} custom={2}
-              className="text-5xl md:text-6xl xl:text-7xl font-black leading-[0.95] mb-6"
-              style={{ fontFamily: 'Figtree, sans-serif', color: '#394696' }}>
-              TRANSFORMED.
-            </motion.h1>
-
-            {/* Subheadline */}
-            <motion.p variants={fadeUp} custom={3}
-              className="text-lg text-white/70 mb-8 max-w-lg leading-relaxed"
-              style={{ fontFamily: 'Georgia, serif' }}>
-              Premium kitchen, bathroom, basement & exterior renovations. Family-run since 2008 — {BUSINESS.yearsExperience}+ years of craftsmanship you can trust.
-            </motion.p>
-
-            {/* Trust signals */}
-            <motion.div variants={fadeUp} custom={4} className="flex flex-wrap items-center gap-4 mb-8">
-              <div className="flex items-center gap-1.5">
-                {[...Array(5)].map((_, i) => <Star key={i} size={14} className="fill-yellow-400 text-yellow-400" />)}
-                <span className="text-sm text-white/60 ml-1" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>4.9 Angie's List (320)</span>
-              </div>
-              <span className="text-white/20">|</span>
-              <div className="flex items-center gap-1.5 text-sm text-white/60" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
-                <Shield size={14} className="text-[#394696]" /> Licensed & Insured
-              </div>
-              <span className="text-white/20">|</span>
-              <div className="flex items-center gap-1.5 text-sm text-white/60" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
-                <Award size={14} className="text-[#394696]" /> {BUSINESS.yearsExperience}+ Years
-              </div>
-            </motion.div>
-
-            {/* CTAs */}
-            <motion.div variants={fadeUp} custom={5} className="flex flex-wrap gap-3">
-              <motion.button
-                  type="button"
-                  onClick={() => openStepper()}
-                  whileHover={{ scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider shadow-lg"
-                  style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', boxShadow: '0 8px 32px rgba(152,54,49,0.4)', border: 'none' }}
-                >
-                  Get Free Estimate <ArrowRight size={16} />
-                </motion.button>
-              <a href={BUSINESS.phoneHref}>
-                <motion.span
-                  whileHover={{ scale: 1.04, y: -2 }}
-                  whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider border border-white/20"
-                  style={{ background: 'rgba(255,255,255,0.05)', fontFamily: 'Figtree, sans-serif', backdropFilter: 'blur(8px)' }}
-                >
-                  <Phone size={15} /> {BUSINESS.phone}
-                </motion.span>
-              </a>
-            </motion.div>
-          </motion.div>
-
-          {/* Right: Mascot */}
-          <motion.div
-            className="flex-shrink-0 w-72 lg:w-96 relative"
-            initial={{ opacity: 0, x: 60, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' as const }}
-          >
-            {/* Speech bubble */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ delay: 1.1, duration: 0.5, ease: 'easeOut' as const }}
-              className="absolute -top-4 right-4 bg-white text-[#0d1117] px-4 py-2.5 rounded-2xl rounded-br-sm shadow-xl text-sm font-bold max-w-[180px] text-center z-10"
-              style={{ fontFamily: 'Figtree, sans-serif' }}
-            >
-              "Ready to transform your home?"
-              <div className="absolute bottom-0 right-6 translate-y-full w-0 h-0"
-                style={{ borderLeft: '8px solid transparent', borderRight: '8px solid transparent', borderTop: '8px solid white' }} />
-            </motion.div>
-            <img src={MASCOT_URL} alt="Sure-Fix Mascot" className="w-full h-auto drop-shadow-2xl" />
-          </motion.div>
-        </div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-white/30"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-        >
-          <span className="text-xs uppercase tracking-widest" style={{ fontFamily: 'Figtree, sans-serif' }}>Scroll</span>
-          <ChevronDown size={16} />
-        </motion.div>
-      </section>
+      {/* ─── HERO: Cinematic scroll-scrubbed video ─── */}
+      <CinematicHero />
 
       {/* ─── SOCIAL PROOF BAR ─── */}
       <section className="py-6 border-y border-white/8" style={{ background: 'rgba(57,70,150,0.08)' }}>
