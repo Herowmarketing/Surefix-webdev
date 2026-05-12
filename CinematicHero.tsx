@@ -57,9 +57,8 @@ import { motion } from 'framer-motion';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 
 // ── Config ────────────────────────────────────────────────────────────
-const VIDEO_SRC = '/manus-storage/surefix-hero-kitchen2_004a6484.mp4';
-// Replace with a high-res poster (JPEG, ~200–400KB):
-const POSTER_SRC = '';
+const VIDEO_SRC  = '/manus-storage/sf-hero-main.mp4';
+const POSTER_SRC = '/manus-storage/sf-hero-main-poster.jpg';
 // How many viewport-heights the section occupies (scroll travel distance):
 const SCROLL_MULTIPLIER = 4;
 // Lerp factor per RAF frame — controls smoothing of video.currentTime:
