@@ -18,10 +18,9 @@ const FLOORING_STILL = `${M}surefix-flooring_ffbe994e.jpg`;
 
 /** Home page “In-House Showroom” promo block — poster while video loads */
 export const SHOWROOM_HOME_IMAGE = `${M}sf-showroom-in-house-section.png`;
-/** Home showroom video — 1080p H.264 for tablet/desktop (~15MB) */
-export const SHOWROOM_HOME_VIDEO_WEB = `${M}sf-showroom-hero-web.mp4`;
-/** Home showroom video — 720p H.264 for phones (~5MB) */
-export const SHOWROOM_HOME_VIDEO_MOBILE = `${M}sf-showroom-hero-mobile.mp4`;
+/** In-House Showroom loop — `public/Sure Fix Hero Video/Hero Video Upscaled.mp4` (URL-encoded) */
+export const SHOWROOM_HOME_VIDEO_SRC =
+  '/Sure%20Fix%20Hero%20Video/Hero%20Video%20Upscaled.mp4';
 
 /** Service / marketing cards (home, services page, gallery thumbnails) */
 export const SITE_IMAGES = {
