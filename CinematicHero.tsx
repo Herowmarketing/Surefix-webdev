@@ -53,7 +53,7 @@
  * ──────────────────────────────────────────────────────────────────────
  */
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { HERO_STILLS } from '@/lib/site-images';
@@ -79,8 +79,16 @@ export default function CinematicHero() {
   const pendingSeekRef  = useRef(false);
   const targetTimeRef   = useRef(0);
   const lastProgressRef = useRef(-1);
+  /** Coalesce window scroll → one layout read + scrub per animation frame */
+  const scrollRafRef = useRef<number | null>(null);
 
   const [reducedMotion, setReducedMotion] = useState(false);
+  /** Pick ONE mp4 URL — `<source media>` is unreliable for `<video>` in Safari/Chrome. */
+  const [heroVideoSrc, setHeroVideoSrc] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(VIDEO_MOBILE_MEDIA).matches
+      ? VIDEO_SRC_MOBILE
+      : VIDEO_SRC
+  );
 
   const { openStepper } = useLeadStepper();
 
@@ -93,66 +101,104 @@ export default function CinematicHero() {
     return () => mq.removeEventListener('change', onChange);
   }, []);
 
+  // ── Hero tier: mobile vs desktop (single `src`, no `<source media>`) ─
+  useEffect(() => {
+    const mq = window.matchMedia(VIDEO_MOBILE_MEDIA);
+    const pick = () => setHeroVideoSrc(mq.matches ? VIDEO_SRC_MOBILE : VIDEO_SRC);
+    pick();
+    mq.addEventListener('change', pick);
+    return () => mq.removeEventListener('change', pick);
+  }, []);
+
   // ── Scroll handler ───────────────────────────────────────────────────
   //    One seek per scroll event via a dirty-flag + single RAF.
   //    fastSeek() is used where available — it hits the nearest keyframe
   //    immediately without waiting for an exact frame decode, eliminating
   //    the stutter that comes from seeking on every animation frame.
-  useEffect(() => {
+  const applySeek = useCallback(() => {
+    const video = videoRef.current;
+    if (video && Number.isFinite(video.duration) && video.duration > 0) {
+      const t = Math.max(0, Math.min(video.duration, targetTimeRef.current));
+      if (typeof (video as HTMLVideoElement & { fastSeek?: (t: number) => void }).fastSeek === 'function') {
+        (video as HTMLVideoElement & { fastSeek: (t: number) => void }).fastSeek(t);
+      } else {
+        video.currentTime = t;
+      }
+    }
+    pendingSeekRef.current = false;
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    const section = sectionRef.current;
+    const video = videoRef.current;
+    if (!section || !video) return;
+
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    const sectionTop = section.getBoundingClientRect().top + scrollY;
+    const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+    const progress = Math.max(0, Math.min(1, (scrollY - sectionTop) / scrollable));
+
+    if (progressBarRef.current) {
+      progressBarRef.current.style.transform = `scaleX(${progress})`;
+    }
+    if (overlayTextRef.current) {
+      overlayTextRef.current.style.opacity = String(Math.max(0, 1 - progress / 0.28));
+      overlayTextRef.current.style.transform = `translateY(${progress * -28}px)`;
+    }
+
+    if (!Number.isFinite(video.duration) || video.duration <= 0) {
+      return;
+    }
+
+    if (Math.abs(progress - lastProgressRef.current) < 0.0003) return;
+    lastProgressRef.current = progress;
+
+    targetTimeRef.current = progress * video.duration;
+
+    if (!pendingSeekRef.current) {
+      pendingSeekRef.current = true;
+      requestAnimationFrame(applySeek);
+    }
+  }, [applySeek]);
+
+  useLayoutEffect(() => {
     if (reducedMotion) return;
 
-    const applySeek = () => {
-      const video = videoRef.current;
-      if (video && video.duration) {
-        const t = Math.max(0, Math.min(video.duration, targetTimeRef.current));
-        // fastSeek is available in Firefox/Safari and snaps to nearest keyframe
-        // instantly. currentTime is the fallback for Chrome.
-        if (typeof (video as HTMLVideoElement & { fastSeek?: (t: number) => void }).fastSeek === 'function') {
-          (video as HTMLVideoElement & { fastSeek: (t: number) => void }).fastSeek(t);
-        } else {
-          video.currentTime = t;
-        }
-      }
+    const onMeta = () => {
+      lastProgressRef.current = -1;
+      handleScroll();
+    };
+
+    const onScroll = () => {
+      if (scrollRafRef.current != null) return;
+      scrollRafRef.current = requestAnimationFrame(() => {
+        scrollRafRef.current = null;
+        handleScroll();
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+    const v = videoRef.current;
+    v?.addEventListener('loadedmetadata', onMeta);
+    v?.addEventListener('loadeddata', onMeta);
+    v?.addEventListener('durationchange', onMeta);
+
+    onScroll();
+
+    return () => {
       pendingSeekRef.current = false;
+      if (scrollRafRef.current != null) {
+        cancelAnimationFrame(scrollRafRef.current);
+        scrollRafRef.current = null;
+      }
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      v?.removeEventListener('loadedmetadata', onMeta);
+      v?.removeEventListener('loadeddata', onMeta);
+      v?.removeEventListener('durationchange', onMeta);
     };
-
-    const handleScroll = () => {
-      const section = sectionRef.current;
-      const video   = videoRef.current;
-      if (!section || !video || !video.duration) return;
-
-      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
-      const scrollable = section.offsetHeight - window.innerHeight;
-      const progress   = Math.max(0, Math.min(1, (window.scrollY - sectionTop) / scrollable));
-
-      // Skip if progress hasn't changed meaningfully
-      if (Math.abs(progress - lastProgressRef.current) < 0.0003) return;
-      lastProgressRef.current = progress;
-
-      targetTimeRef.current = progress * video.duration;
-
-      // DOM overlays — cheap CSS-only updates, no layout
-      if (progressBarRef.current) {
-        progressBarRef.current.style.transform = `scaleX(${progress})`;
-      }
-      if (overlayTextRef.current) {
-        overlayTextRef.current.style.opacity   = String(Math.max(0, 1 - progress / 0.28));
-        overlayTextRef.current.style.transform = `translateY(${progress * -28}px)`;
-      }
-
-      // Schedule exactly one seek per scroll event.
-      // If one is already pending from the previous event, skip — the
-      // RAF will pick up the latest targetTimeRef automatically.
-      if (!pendingSeekRef.current) {
-        pendingSeekRef.current = true;
-        requestAnimationFrame(applySeek);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [reducedMotion]);
+  }, [reducedMotion, handleScroll, heroVideoSrc]);
 
   // ── Entrance animation variants ──────────────────────────────────────
   const fadeUp = (delay: number) => ({
@@ -173,21 +219,15 @@ export default function CinematicHero() {
         {/* ── Video ───────────────────────────────────────────────────────── */}
         {!reducedMotion ? (
           <video
+            key={heroVideoSrc}
             ref={videoRef}
+            src={heroVideoSrc}
             muted
             playsInline
             preload="auto"
             poster={POSTER_SRC || undefined}
             className="absolute inset-0 w-full h-full object-cover"
-            style={{ willChange: 'contents' }}
-          >
-            <source src={VIDEO_SRC_MOBILE} type="video/mp4" media={VIDEO_MOBILE_MEDIA} />
-            <source src={VIDEO_SRC} type="video/mp4" />
-            {/*
-              Add a WebM source here for Firefox/Chromium parity:
-              <source src="/path/to/hero-walkthrough.webm" type="video/webm" />
-            */}
-          </video>
+          />
         ) : (
           /* Reduced-motion: static image stand-in */
           <div
