@@ -16,8 +16,12 @@ export const HERO_STILLS = {
 
 const FLOORING_STILL = `${M}surefix-flooring_ffbe994e.jpg`;
 
-/** Home page “In-House Showroom” promo block (dedicated showroom interior still) */
+/** Home page “In-House Showroom” promo block — poster while video loads */
 export const SHOWROOM_HOME_IMAGE = `${M}sf-showroom-in-house-section.png`;
+/** Home showroom video — 1080p H.264 for tablet/desktop (~15MB) */
+export const SHOWROOM_HOME_VIDEO_WEB = `${M}sf-showroom-hero-web.mp4`;
+/** Home showroom video — 720p H.264 for phones (~5MB) */
+export const SHOWROOM_HOME_VIDEO_MOBILE = `${M}sf-showroom-hero-mobile.mp4`;
 
 /** Service / marketing cards (home, services page, gallery thumbnails) */
 export const SITE_IMAGES = {

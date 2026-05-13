@@ -8,7 +8,8 @@ import { Link } from 'wouter';
 import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle } from 'lucide-react';
 import { BUSINESS, SERVICES, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
-import { SHOWROOM_HOME_IMAGE, SITE_IMAGES } from '@/lib/site-images';
+import { SITE_IMAGES } from '@/lib/site-images';
+import ShowroomHomeVideo from '@/components/ShowroomHomeVideo';
 import CinematicHero from './CinematicHero';
 
 const fadeUp = {
@@ -182,13 +183,9 @@ export default function Home() {
       <section className="py-20 px-5 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-white/8">
-            {/* Image side */}
-            <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden">
-              <img
-                src={SHOWROOM_HOME_IMAGE}
-                alt="Sure-Fix in-house material showroom with countertop, flooring, and tile displays"
-                className="w-full h-full object-cover"
-              />
+            {/* Video side — In-House Showroom */}
+            <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden bg-[#0d1117]">
+              <ShowroomHomeVideo />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(13,17,23,0.2), rgba(13,17,23,0.6))' }} />
               <div className="absolute top-5 left-5">
                 <span className="px-3 py-1.5 text-xs font-black tracking-wider text-white rounded-full uppercase" style={{ background: '#394696', fontFamily: 'Figtree, sans-serif' }}>In-House Showroom</span>
