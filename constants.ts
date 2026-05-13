@@ -2,6 +2,7 @@
  * SURE-FIX REMODELING — Site Constants
  * Real business info from Google Business Profile
  */
+import { SITE_IMAGES } from './lib/site-images';
 
 export const BUSINESS = {
   name: 'Sure-Fix Remodeling',
@@ -37,8 +38,9 @@ export const BUSINESS = {
 export const LOGO_URL = '/manus-storage/SureFixLogoFullColor_3a5202af.svg';
 export const LOGO_HORIZONTAL_URL = '/manus-storage/SureFixLogoFullColor_e8812903.svg';
 export const MASCOT_URL = '/manus-storage/sticker_v5_final_7556bcfe.webp';
-export const BLUE_ICON_URL = '/manus-storage/BlueIcon_e8812903.svg';
-export const RED_ICON_URL = '/manus-storage/RedIcon_e8812903.svg';
+/** Fallback brand marks (no separate icon assets in repo) */
+export const BLUE_ICON_URL = LOGO_URL;
+export const RED_ICON_URL = LOGO_HORIZONTAL_URL;
 
 export const COLORS = {
   blue: '#394696',
@@ -55,7 +57,7 @@ export const SERVICES = [
     icon: '🍳',
     tagline: 'Transform your kitchen into the heart of your home.',
     description: 'Custom cabinetry, countertops, islands, and full kitchen transformations designed around how you live.',
-    image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/kitchen-hero-ewZoeNJWW3jvQdSAq9E48V.webp',
+    image: SITE_IMAGES.kitchen,
     features: ['Custom Cabinetry', 'Countertop Installation', 'Kitchen Islands', 'Backsplash Tile', 'Appliance Integration', 'Lighting Design'],
   },
   {
@@ -65,7 +67,7 @@ export const SERVICES = [
     icon: '🚿',
     tagline: 'Spa-quality bathrooms crafted for everyday luxury.',
     description: 'Walk-in showers, soaking tubs, custom vanities, and tile work that elevates your daily routine.',
-    image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=800&q=80',
+    image: SITE_IMAGES.bathroom,
     features: ['Walk-In Showers', 'Soaking Tubs', 'Custom Vanities', 'Tile & Flooring', 'Plumbing Fixtures', 'Heated Floors'],
   },
   {
@@ -75,7 +77,7 @@ export const SERVICES = [
     icon: '🏠',
     tagline: 'Unlock the full potential of your home.',
     description: 'Turn your unfinished basement into a living room, home theater, gym, or in-law suite.',
-    image: 'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?w=800&q=80',
+    image: SITE_IMAGES.basement,
     features: ['Full Finishing', 'Home Theater', 'Home Gym', 'In-Law Suite', 'Wet Bar', 'Egress Windows'],
   },
   {
@@ -85,7 +87,7 @@ export const SERVICES = [
     icon: '🏡',
     tagline: 'Stunning curb appeal, built to last.',
     description: 'Roofing, siding, windows, doors, decks, gazebos, and hardscaping — complete exterior transformations.',
-    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=800&q=80',
+    image: SITE_IMAGES.exterior,
     features: ['Roofing', 'Siding', 'Windows & Doors', 'Decks & Patios', 'Gazebos & Pavilions', 'Hardscaping'],
   },
   {
@@ -95,7 +97,7 @@ export const SERVICES = [
     icon: '🪵',
     tagline: 'The foundation of every beautiful room.',
     description: 'Hardwood, luxury vinyl plank, tile, and carpet installation throughout your entire home.',
-    image: '/manus-storage/surefix-flooring_ffbe994e.jpg',
+    image: SITE_IMAGES.flooring,
     features: ['Hardwood', 'Luxury Vinyl Plank', 'Ceramic & Porcelain Tile', 'Carpet', 'Laminate', 'Subfloor Repair'],
   },
   {
@@ -105,7 +107,7 @@ export const SERVICES = [
     icon: '🏗️',
     tagline: 'More space. More life. More home.',
     description: 'Room additions, sunrooms, and structural expansions that seamlessly integrate with your existing home.',
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80',
+    image: SITE_IMAGES.additions,
     features: ['Room Additions', 'Sunrooms', 'Garage Conversions', 'Second Story Additions', 'Mudrooms', 'Laundry Rooms'],
   },
 ];

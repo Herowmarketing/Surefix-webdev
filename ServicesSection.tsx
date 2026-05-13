@@ -7,11 +7,12 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ChefHat, Bath, Layers, Home, Plus, Grid3X3, ArrowRight } from 'lucide-react';
+import { SITE_IMAGES } from '@/lib/site-images';
 
-const KITCHEN_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-kitchen-4TuR3Gtbkt7nNou7D4ko2f.webp';
-const BATHROOM_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-bathroom-AvWrM5S4Es5Q5KaVGZA77r.webp';
-const EXTERIOR_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-exterior-FzNPNjKcmCYYWuWeTDxk9o.webp';
-const BASEMENT_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-basement-ZxCZPt477MLogdT8LoXXkq.webp';
+const KITCHEN_IMG = SITE_IMAGES.kitchen;
+const BATHROOM_IMG = SITE_IMAGES.bathroom;
+const EXTERIOR_IMG = SITE_IMAGES.exterior;
+const BASEMENT_IMG = SITE_IMAGES.basement;
 
 const services = [
   {
@@ -50,7 +51,7 @@ const services = [
     icon: Plus,
     title: 'Home Additions',
     description: 'Seamless additions that match your home\'s architecture and expand your living space.',
-    image: null,
+    image: SITE_IMAGES.additions,
     color: '#394696',
     large: false,
   },
@@ -58,7 +59,7 @@ const services = [
     icon: Grid3X3,
     title: 'Flooring & Tile',
     description: 'Hardwood, luxury vinyl, tile, and more — expert installation for every room.',
-    image: null,
+    image: SITE_IMAGES.flooring,
     color: '#983631',
     large: false,
   },

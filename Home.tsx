@@ -8,7 +8,7 @@ import { Link } from 'wouter';
 import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle } from 'lucide-react';
 import { BUSINESS, SERVICES, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
-import { SHOWROOM_MATERIAL_IMAGES, SITE_IMAGES } from '@/lib/site-images';
+import { SHOWROOM_HOME_IMAGE, SITE_IMAGES } from '@/lib/site-images';
 import CinematicHero from './CinematicHero';
 
 const fadeUp = {
@@ -185,8 +185,8 @@ export default function Home() {
             {/* Image side */}
             <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden">
               <img
-                src={SHOWROOM_MATERIAL_IMAGES.countertop}
-                alt="Sure-Fix Showroom"
+                src={SHOWROOM_HOME_IMAGE}
+                alt="Sure-Fix in-house material showroom with countertop, flooring, and tile displays"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(13,17,23,0.2), rgba(13,17,23,0.6))' }} />

@@ -6,12 +6,13 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { ZoomIn } from 'lucide-react';
+import { SITE_IMAGES } from '@/lib/site-images';
 
-const KITCHEN_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-kitchen-4TuR3Gtbkt7nNou7D4ko2f.webp';
-const BATHROOM_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-bathroom-AvWrM5S4Es5Q5KaVGZA77r.webp';
-const EXTERIOR_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-exterior-FzNPNjKcmCYYWuWeTDxk9o.webp';
-const BASEMENT_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-basement-ZxCZPt477MLogdT8LoXXkq.webp';
-const HERO_IMG = 'https://d2xsxph8kpxj0f.cloudfront.net/310519663124064998/oX6AzgUJ6qB7NevriQFeP6/surefix-hero-bg-8M7ZxNFXgipbxYEdXkENzU.webp';
+const KITCHEN_IMG = SITE_IMAGES.kitchen;
+const BATHROOM_IMG = SITE_IMAGES.bathroom;
+const EXTERIOR_IMG = SITE_IMAGES.exterior;
+const BASEMENT_IMG = SITE_IMAGES.basement;
+const HERO_IMG = SITE_IMAGES.galleryHero;
 
 const categories = ['All', 'Kitchen', 'Bathroom', 'Basement', 'Exterior'];
 

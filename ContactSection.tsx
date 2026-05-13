@@ -6,8 +6,7 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
-
-const MASCOT = '/manus-storage/sticker_v5_final_7f0c0762.webp';
+import { MASCOT_URL } from '@/lib/constants';
 
 const services = [
   'Kitchen Remodeling',
@@ -166,7 +165,7 @@ export default function ContactSection() {
             {/* Mascot */}
             <div className="flex justify-center mb-2">
               <div className="mascot-float">
-                <img src={MASCOT} alt="Sure-Fix mascot" className="w-44 object-contain select-none" draggable={false} />
+                <img src={MASCOT_URL} alt="Sure-Fix mascot" className="w-44 object-contain select-none" draggable={false} />
               </div>
             </div>
 

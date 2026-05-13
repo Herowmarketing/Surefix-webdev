@@ -1,7 +1,6 @@
 import { Home, ArrowLeft } from "lucide-react";
 import { useLocation } from "wouter";
-
-const LOGO_URL = '/manus-storage/SureFixLogoFullColor2_e8812903.svg';
+import { LOGO_URL } from '@/lib/constants';
 
 export default function NotFound() {
   const [, setLocation] = useLocation();

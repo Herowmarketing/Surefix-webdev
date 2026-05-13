@@ -7,8 +7,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { CheckCircle2, MapPin } from 'lucide-react';
-
-const MASCOT = '/manus-storage/sticker_v5_final_7f0c0762.webp';
+import { MASCOT_URL } from '@/lib/constants';
 
 const highlights = [
   'Licensed & fully insured in PA, NJ & NY',
@@ -90,7 +89,7 @@ export default function AboutSection() {
             {/* Mascot */}
             <div className="mascot-float relative z-10">
               <img
-                src={MASCOT}
+                src={MASCOT_URL}
                 alt="Sure-Fix Remodeling owner"
                 className="w-64 xl:w-72 object-contain drop-shadow-2xl select-none"
                 draggable={false}

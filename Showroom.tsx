@@ -10,6 +10,7 @@ import { useRef } from 'react'
 import { ArrowRight, CheckCircle, Star, Layers, Wrench, Home } from 'lucide-react'
 import { Interactive3DMaterial, Interactive3DMaterialFeatured } from '@/components/Interactive3DMaterial'
 import { BUSINESS } from '@/lib/constants'
+import { SHOWROOM_MATERIAL_IMAGES } from '@/lib/site-images'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
 
 const FEATURED_MATERIALS = [
@@ -20,7 +21,7 @@ const FEATURED_MATERIALS = [
     description: 'From dramatic Calacatta marble to engineered quartz and butcher block, our showroom carries the full spectrum of countertop surfaces. Touch and compare slabs in person before you commit.',
     features: ['Quartz', 'Marble', 'Granite', 'Quartzite', 'Butcher Block'],
     brands: ['Cambria', 'Silestone', 'MSI', 'Caesarstone'],
-    imageUrl: '/manus-storage/material-countertop_90a2fefe.jpg',
+    imageUrl: SHOWROOM_MATERIAL_IMAGES.countertop,
     accentColor: '#394696',
     flipped: false,
   },
@@ -31,7 +32,7 @@ const FEATURED_MATERIALS = [
     description: "Hardwood, luxury vinyl plank, porcelain tile, and carpet — all under one roof. We carry Woodura's industry-leading sustainable hardwood collection alongside premium LVP lines that stand up to real family life.",
     features: ['Hardwood', 'LVP', 'Porcelain', 'Carpet', 'Cork'],
     brands: ['Woodura', 'Shaw', 'Mohawk', 'Adura'],
-    imageUrl: '/manus-storage/material-flooring_26579164.jpg',
+    imageUrl: SHOWROOM_MATERIAL_IMAGES.flooring,
     accentColor: '#983631',
     flipped: true,
   },
@@ -42,7 +43,7 @@ const FEATURED_MATERIALS = [
     description: 'Large-format porcelain, handmade ceramic, natural stone mosaics, and glass subway tile. Our tile wall spans hundreds of options — from minimalist matte to dramatic veined slabs.',
     features: ['Porcelain', 'Ceramic', 'Natural Stone', 'Glass', 'Mosaic'],
     brands: ['Daltile', 'MSI', 'Florida Tile', 'Emser'],
-    imageUrl: '/manus-storage/material-tile_5dffffa8.jpg',
+    imageUrl: SHOWROOM_MATERIAL_IMAGES.tile,
     accentColor: '#394696',
     flipped: false,
   },
@@ -53,7 +54,7 @@ const FEATURED_MATERIALS = [
     description: 'Kohler, Moen, Delta, and Hansgrohe — all on display and ready to touch. Compare finishes from brushed nickel to matte black. Our team helps you pair fixtures to your tile and countertop selections.',
     features: ['Kitchen Faucets', 'Bath Faucets', 'Shower Systems', 'Tubs', 'Toilets'],
     brands: ['Kohler', 'Moen', 'Delta', 'Hansgrohe'],
-    imageUrl: '/manus-storage/material-faucet_ff601050.jpg',
+    imageUrl: SHOWROOM_MATERIAL_IMAGES.faucet,
     accentColor: '#983631',
     flipped: true,
   },
@@ -64,7 +65,7 @@ const FEATURED_MATERIALS = [
     description: 'Frameless glass, semi-frameless, and full shower systems — including steam units and walk-in wet rooms. Complete shower packages from pan to ceiling so your bathroom renovation stays on schedule.',
     features: ['Frameless Glass', 'Steam Units', 'Walk-In', 'Wet Rooms', 'Custom Sizes'],
     brands: ['Kohler', 'DreamLine', 'MAAX', 'Basco'],
-    imageUrl: '/manus-storage/material-shower_b2b35598.jpg',
+    imageUrl: SHOWROOM_MATERIAL_IMAGES.shower,
     accentColor: '#394696',
     flipped: false,
   },
@@ -75,16 +76,16 @@ const FEATURED_MATERIALS = [
     description: "James Hardie fiber cement, vinyl siding, and cedar shake — plus GAF and CertainTeed roofing systems. Sourced from the most trusted manufacturers and backed by full warranties.",
     features: ['Fiber Cement', 'Vinyl Siding', 'Cedar Shake', 'GAF Roofing', 'CertainTeed'],
     brands: ['James Hardie', 'GAF', 'CertainTeed', 'LP SmartSide'],
-    imageUrl: '/manus-storage/material-siding_04e1adba.jpg',
+    imageUrl: SHOWROOM_MATERIAL_IMAGES.siding,
     accentColor: '#983631',
     flipped: true,
   },
 ]
 
 const GRID_MATERIALS = [
-  { title: 'Roofing Shingles', badge: 'Exterior', imageUrl: '/manus-storage/material-roofing_afcdda27.jpg', accentColor: '#394696' },
-  { title: 'Luxury Vinyl Plank', badge: 'Flooring', imageUrl: '/manus-storage/material-lvp_c2141207.jpg', accentColor: '#983631' },
-  { title: 'Shower Systems', badge: 'Bathroom', imageUrl: '/manus-storage/material-shower_b2b35598.jpg', accentColor: '#394696' },
+  { title: 'Roofing Shingles', badge: 'Exterior', imageUrl: SHOWROOM_MATERIAL_IMAGES.roofing, accentColor: '#394696' },
+  { title: 'Luxury Vinyl Plank', badge: 'Flooring', imageUrl: SHOWROOM_MATERIAL_IMAGES.lvp, accentColor: '#983631' },
+  { title: 'Shower Systems', badge: 'Bathroom', imageUrl: SHOWROOM_MATERIAL_IMAGES.shower, accentColor: '#394696' },
 ]
 
 const PARTNER_BRANDS = [
@@ -139,9 +140,9 @@ export default function Showroom() {
         {/* Floating background orbs */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[
-            { src: '/manus-storage/material-countertop_90a2fefe.jpg', x: '72%', y: '15%', size: 200, delay: 0 },
-            { src: '/manus-storage/material-tile_5dffffa8.jpg', x: '82%', y: '62%', size: 140, delay: 0.3 },
-            { src: '/manus-storage/material-siding_04e1adba.jpg', x: '4%', y: '68%', size: 120, delay: 0.6 },
+            { src: SHOWROOM_MATERIAL_IMAGES.countertop, x: '72%', y: '15%', size: 200, delay: 0 },
+            { src: SHOWROOM_MATERIAL_IMAGES.tile, x: '82%', y: '62%', size: 140, delay: 0.3 },
+            { src: SHOWROOM_MATERIAL_IMAGES.siding, x: '4%', y: '68%', size: 120, delay: 0.6 },
           ].map((orb, i) => (
             <motion.div key={i} className="absolute rounded-2xl overflow-hidden border border-white/10"
               style={{ left: orb.x, top: orb.y, width: orb.size, height: orb.size, opacity: 0.22, filter: 'blur(1px)' }}
