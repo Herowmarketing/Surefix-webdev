@@ -16,22 +16,30 @@
  *   browser scrolls 300vh of "hidden" space behind it.
  *   Scroll progress (0→1) maps linearly to video.currentTime (0→duration).
  *
- * Smoothing: requestAnimationFrame loop with lerp so the video catches
- * up gracefully rather than jumping on every scroll tick.
+ * Smooth scrubbing: one seek per scroll tick (RAF-coalesced), plus
+ * `fastSeek()` where supported. The hero MP4 is encoded with a keyframe
+ * every 3 frames (g=3) so seeks snap quickly without decode backlog.
  *
  * ── HOW TO CUSTOMISE ──────────────────────────────────────────────────
  *
  * VIDEO:
- *   Replace VIDEO_SRC with your shotgun-house walkthrough MP4.
- *   Encode settings for smooth scrubbing:
- *     • Codec:      H.264 (broadest support) or H.265 (smaller file)
- *     • Keyframes:  Every 1 second (crucial — browsers can only seek to keyframes)
- *     • Bitrate:    ~6–10 Mbps for 1080p, ~3–5 Mbps for 720p
- *     • Duration:   8–20 seconds works best (too short = jerky, too long = slow)
- *     • ffmpeg example:
- *         ffmpeg -i input.mp4 -vcodec libx264 -g 30 -keyint_min 30
- *                -b:v 8M -movflags +faststart output.mp4
- *   Add a WebM source (<source type="video/webm">) for Firefox performance.
+ *   Replace VIDEO_SRC / VIDEO_SRC_MOBILE with your walkthrough MP4s (or one tier).
+ *   Encode for scroll scrubbing (smooth + crisp). Two tiers:
+ *     • 4K (default hero on tablet/desktop): Lanczos upscale + CRF ~26
+ *     • 1080p (narrow viewports only): lighter file for phones, CRF ~22
+ *     • Keyframes:  Every 3 frames: -g 3 -keyint_min 3 -sc_threshold 0
+ *     • Mux:        -movflags +faststart   (progressive download)
+ *     • Strip:      -an -sn (no audio/subtitles for hero)
+ *     • ffmpeg 1080:
+ *         ffmpeg -i input.mp4 -c:v libx264 -pix_fmt yuv420p -crf 22 \\
+ *                -g 3 -keyint_min 3 -sc_threshold 0 -preset medium \\
+ *                -movflags +faststart -an -sn sf-hero-scrub.mp4
+ *     • ffmpeg 4K (upscale from 1080 source):
+ *         ffmpeg -i input.mp4 -vf "scale=3840:2160:flags=lanczos+accurate_rnd" \\
+ *                -c:v libx264 -pix_fmt yuv420p -crf 26 -g 3 -keyint_min 3 \\
+ *                -sc_threshold 0 -preset medium -movflags +faststart -an -sn \\
+ *                sf-hero-scrub-4k.mp4
+ *   Add a WebM source (<source type="video/webm">) if you need smaller files.
  *
  * POSTER:
  *   Replace POSTER_SRC with a JPEG of the front exterior.
@@ -42,27 +50,23 @@
  *   ↑ higher  = user scrolls more to progress through the same video
  *   ↓ lower   = faster / shorter scroll session (minimum: 2)
  *
- * LERP SPEED:
- *   Change SCRUB_LERP (0–1) to adjust interpolation smoothness.
- *   0.10 = very silky but lags behind scroll
- *   0.22 = balanced — recommended
- *   0.50 = snappy / nearly instant
- *   1.00 = no smoothing (direct seek on every scroll event)
- *
  * ──────────────────────────────────────────────────────────────────────
  */
 
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { HERO_STILLS } from '@/lib/site-images';
 
 // ── Config ────────────────────────────────────────────────────────────
-const VIDEO_SRC  = '/manus-storage/sf-hero-main.mp4';
-const POSTER_SRC = '/manus-storage/sf-hero-main-poster.jpg';
-// How many viewport-heights the section occupies (scroll travel distance):
+// H.264, keyframe every 3 frames (g=3) — sharp + scrub-safe. 4K is the
+// default hero; 1080p loads only under VIDEO_MOBILE_MEDIA to save bandwidth.
+const VIDEO_SRC        = '/manus-storage/sf-hero-scrub-4k.mp4';
+const VIDEO_SRC_MOBILE = '/manus-storage/sf-hero-scrub.mp4';
+const VIDEO_MOBILE_MEDIA = '(max-width: 1023px)';
+const POSTER_SRC = HERO_STILLS.main;
+// Section height: 400vh total, 300vh of scroll travel while pinned.
 const SCROLL_MULTIPLIER = 4;
-// Lerp factor per RAF frame — controls smoothing of video.currentTime:
-const SCRUB_LERP = 0.22;
 // ─────────────────────────────────────────────────────────────────────
 
 export default function CinematicHero() {
@@ -71,13 +75,11 @@ export default function CinematicHero() {
   const progressBarRef = useRef<HTMLDivElement>(null);
   const overlayTextRef = useRef<HTMLDivElement>(null);
 
-  // Mutable refs used inside RAF loop — no state updates needed
-  const targetTimeRef  = useRef(0);
-  const lerpedTimeRef  = useRef(0);
+  // Track whether a seek RAF is already queued to avoid stacking seeks.
+  const pendingSeekRef  = useRef(false);
+  const targetTimeRef   = useRef(0);
   const lastProgressRef = useRef(-1);
-  const rafRef         = useRef<number>(0);
 
-  const [videoReady, setVideoReady]   = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   const { openStepper } = useLeadStepper();
@@ -91,74 +93,66 @@ export default function CinematicHero() {
     return () => mq.removeEventListener('change', onChange);
   }, []);
 
-  // ── RAF tick: smooth-lerp video.currentTime toward scroll target ─────
-  //    Runs continuously but only mutates the DOM; no React re-renders.
-  const tick = useCallback(() => {
-    const video = videoRef.current;
-    if (video && video.duration && videoReady) {
-      const diff = targetTimeRef.current - lerpedTimeRef.current;
-      // Only seek when the delta is meaningful (avoids redundant seeks)
-      if (Math.abs(diff) > 0.004) {
-        lerpedTimeRef.current += diff * SCRUB_LERP;
-        video.currentTime = Math.max(0, Math.min(video.duration, lerpedTimeRef.current));
-      }
-    }
-    rafRef.current = requestAnimationFrame(tick);
-  }, [videoReady]);
-
-  useEffect(() => {
-    if (reducedMotion) return;
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [tick, reducedMotion]);
-
   // ── Scroll handler ───────────────────────────────────────────────────
-  //    Runs on every scroll event. Computes 0–1 progress through the
-  //    pinned section and maps it to video.currentTime + DOM effects.
+  //    One seek per scroll event via a dirty-flag + single RAF.
+  //    fastSeek() is used where available — it hits the nearest keyframe
+  //    immediately without waiting for an exact frame decode, eliminating
+  //    the stutter that comes from seeking on every animation frame.
   useEffect(() => {
     if (reducedMotion) return;
+
+    const applySeek = () => {
+      const video = videoRef.current;
+      if (video && video.duration) {
+        const t = Math.max(0, Math.min(video.duration, targetTimeRef.current));
+        // fastSeek is available in Firefox/Safari and snaps to nearest keyframe
+        // instantly. currentTime is the fallback for Chrome.
+        if (typeof (video as HTMLVideoElement & { fastSeek?: (t: number) => void }).fastSeek === 'function') {
+          (video as HTMLVideoElement & { fastSeek: (t: number) => void }).fastSeek(t);
+        } else {
+          video.currentTime = t;
+        }
+      }
+      pendingSeekRef.current = false;
+    };
 
     const handleScroll = () => {
       const section = sectionRef.current;
       const video   = videoRef.current;
       if (!section || !video || !video.duration) return;
 
-      // ── Progress calculation ──────────────────────────────────────
-      // sectionTop: distance from page top to start of this section
-      const sectionTop  = section.getBoundingClientRect().top + window.scrollY;
-      // scrollable: how many px the user can scroll while section is pinned
-      const scrollable  = section.offsetHeight - window.innerHeight;
-      // raw: signed progress (negative before section, >1 after section)
-      const raw         = (window.scrollY - sectionTop) / scrollable;
-      const progress    = Math.max(0, Math.min(1, raw));
+      const sectionTop = section.getBoundingClientRect().top + window.scrollY;
+      const scrollable = section.offsetHeight - window.innerHeight;
+      const progress   = Math.max(0, Math.min(1, (window.scrollY - sectionTop) / scrollable));
 
-      if (Math.abs(progress - lastProgressRef.current) < 0.0005) return;
+      // Skip if progress hasn't changed meaningfully
+      if (Math.abs(progress - lastProgressRef.current) < 0.0003) return;
       lastProgressRef.current = progress;
 
-      // ── Drive video time ──────────────────────────────────────────
       targetTimeRef.current = progress * video.duration;
 
-      // ── Progress bar (direct DOM, 0 re-renders) ───────────────────
+      // DOM overlays — cheap CSS-only updates, no layout
       if (progressBarRef.current) {
         progressBarRef.current.style.transform = `scaleX(${progress})`;
       }
-
-      // ── Overlay text fade + subtle upward drift ───────────────────
-      // Text is fully visible at 0% scroll and invisible by ~28%,
-      // giving the feeling of being pulled into the house.
       if (overlayTextRef.current) {
-        const opacity  = Math.max(0, 1 - progress / 0.28);
-        const translateY = progress * -28;
-        overlayTextRef.current.style.opacity   = String(opacity);
-        overlayTextRef.current.style.transform = `translateY(${translateY}px)`;
+        overlayTextRef.current.style.opacity   = String(Math.max(0, 1 - progress / 0.28));
+        overlayTextRef.current.style.transform = `translateY(${progress * -28}px)`;
+      }
+
+      // Schedule exactly one seek per scroll event.
+      // If one is already pending from the previous event, skip — the
+      // RAF will pick up the latest targetTimeRef automatically.
+      if (!pendingSeekRef.current) {
+        pendingSeekRef.current = true;
+        requestAnimationFrame(applySeek);
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    // Sync on mount in case page loaded mid-scroll
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [reducedMotion, videoReady]);
+  }, [reducedMotion]);
 
   // ── Entrance animation variants ──────────────────────────────────────
   const fadeUp = (delay: number) => ({
@@ -184,11 +178,10 @@ export default function CinematicHero() {
             playsInline
             preload="auto"
             poster={POSTER_SRC || undefined}
-            onLoadedMetadata={() => setVideoReady(true)}
             className="absolute inset-0 w-full h-full object-cover"
-            // willChange hints the browser to keep this layer on the GPU
             style={{ willChange: 'contents' }}
           >
+            <source src={VIDEO_SRC_MOBILE} type="video/mp4" media={VIDEO_MOBILE_MEDIA} />
             <source src={VIDEO_SRC} type="video/mp4" />
             {/*
               Add a WebM source here for Firefox/Chromium parity:

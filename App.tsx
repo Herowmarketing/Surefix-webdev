@@ -4,13 +4,13 @@
  */
 import { Toaster } from "@/components/ui/sonner";
 import { LeadStepperProvider } from './contexts/LeadStepperContext';
-import LeadStepper from './components/LeadStepper';
+import LeadStepper from './LeadStepper';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch, useLocation } from "wouter";
 import { useEffect } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Layout from "./components/Layout";
+import Layout from "./Layout";
 
 // Pages (flat layout in this repo)
 import Home from "./Home";
@@ -32,7 +32,8 @@ import Additions from "./Additions";
 function ScrollToTop() {
   const [location] = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    // Two-arg form avoids non-standard ScrollBehavior values that can throw in some browsers.
+    window.scrollTo(0, 0);
   }, [location]);
   return null;
 }
