@@ -8,6 +8,7 @@ import { Link } from 'wouter';
 import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle } from 'lucide-react';
 import { BUSINESS, SERVICES, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { SHOWROOM_MATERIAL_IMAGES, SITE_IMAGES } from '@/lib/site-images';
 import CinematicHero from './CinematicHero';
 
 const fadeUp = {
@@ -184,7 +185,7 @@ export default function Home() {
             {/* Image side */}
             <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden">
               <img
-                src="/manus-storage/material-countertop_90a2fefe.jpg"
+                src={SHOWROOM_MATERIAL_IMAGES.countertop}
                 alt="Sure-Fix Showroom"
                 className="w-full h-full object-cover"
               />
@@ -244,7 +245,7 @@ export default function Home() {
             {/* Image side */}
             <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden order-1 lg:order-2">
               <img
-                src="https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80"
+                src={SITE_IMAGES.galleryHero}
                 alt="Interior Design by Audra Frank Associates"
                 className="w-full h-full object-cover"
               />
