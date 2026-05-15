@@ -178,8 +178,14 @@ export default function CinematicHero() {
             playsInline
             preload="auto"
             poster={POSTER_SRC || undefined}
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ willChange: 'contents' }}
+            className="absolute inset-0"
+            style={{
+              width: '100vw',
+              height: '100vh',
+              objectFit: 'cover',
+              objectPosition: 'center',
+              willChange: 'contents',
+            }}
           >
             <source src={VIDEO_SRC_MOBILE} type="video/mp4" media={VIDEO_MOBILE_MEDIA} />
             <source src={VIDEO_SRC} type="video/mp4" />

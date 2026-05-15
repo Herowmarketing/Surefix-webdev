@@ -55,7 +55,13 @@ export default function HeroSection() {
           loop
           playsInline
           onCanPlay={() => setVideoLoaded(true)}
-          className={`w-full h-full object-cover transition-opacity duration-1200 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          className={`transition-opacity duration-[1200ms] ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
+          style={{
+            width: '100vw',
+            height: '100vh',
+            objectFit: 'cover',
+            objectPosition: 'center',
+          }}
         >
           <source src={VIDEO_URL} type="video/mp4" />
         </video>
