@@ -62,8 +62,8 @@ import { HERO_STILLS } from '@/lib/site-images';
 // GOP=1 (every frame is a keyframe) — guaranteed instant seek at any
 // scroll position. Encoded via scripts/encode-scroll-video.mjs using
 // ffmpeg-static: 1920×1080, H.264 CRF 22, yuv420p, +faststart, no audio.
-const VIDEO_SRC        = '/Sure%20Fix%20Hero%20Video/Hero_Scroll_Perfect.mp4';
-const VIDEO_SRC_MOBILE = '/Sure%20Fix%20Hero%20Video/Hero_Scroll_Perfect.mp4';
+const VIDEO_SRC        = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
+const VIDEO_SRC_MOBILE = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
 const VIDEO_MOBILE_MEDIA = '(max-width: 1023px)';
 const POSTER_SRC = HERO_STILLS.main;
 // Section height: 400vh total, 300vh of scroll travel while pinned.
