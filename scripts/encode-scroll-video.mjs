@@ -21,7 +21,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 // Source lives in the repo root (untracked, not under public/)
-const INPUT  = path.join(ROOT, 'Sure Fix Hero Video', 'Untitled video.mp4');
+const INPUT  = path.join(ROOT, 'FINAL SURE FIX HERO VIDEO.mp4');
 // Output goes into public/ so Vite serves it as a static asset
 const OUTPUT = path.join(ROOT, 'public', 'Sure Fix Hero Video', 'Hero_Scroll_Perfect.mp4');
 
