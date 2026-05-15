@@ -14,7 +14,7 @@ export default function ShowroomHomeVideo() {
   return (
     <video
       ref={videoRef}
-      className="absolute inset-0 w-full h-full object-cover"
+      className="absolute inset-0"
       autoPlay
       muted
       loop
@@ -22,6 +22,12 @@ export default function ShowroomHomeVideo() {
       poster={SHOWROOM_HOME_IMAGE}
       preload="metadata"
       aria-label="Sure-Fix in-house material showroom video"
+      style={{
+        width: '100vw',
+        height: '100vh',
+        objectFit: 'cover',
+        objectPosition: 'center',
+      }}
     >
       <source src={SHOWROOM_HOME_VIDEO_SRC} type="video/mp4" />
     </video>

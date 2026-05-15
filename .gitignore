@@ -8,4 +8,16 @@ build/
 *.log
 __pycache__/
 *.py[cod]
-.vercel
+
+# Cursor / Vercel local config — not for version control
+.cursor/
+.vercel/
+
+# Raw source video files in repo root — only encoded assets in public/ belong in git
+/*.mp4
+/*.MP4
+/*.mov
+/*.MOV
+/Sure Fix Hero Video/
+/Hero video Upscaled.mp4
+blender_mcp_addon.py
