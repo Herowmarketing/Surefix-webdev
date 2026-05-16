@@ -21,7 +21,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
 const CANDIDATE_INPUTS = [
-  path.join(ROOT, 'FINAL SURE FIX HERO VIDEO.mp4'),
   path.join(ROOT, 'Sure Fix Hero Video Final.mp4'),
   path.join(ROOT, 'Sure Fix Hero Video', 'Untitled video.mp4'),
 ];

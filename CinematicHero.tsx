@@ -89,6 +89,8 @@ export default function CinematicHero() {
     typeof window !== 'undefined' && window.matchMedia(VIDEO_MOBILE_MEDIA).matches
       ? VIDEO_SRC_MOBILE : VIDEO_SRC
   );
+  /** Keeps the video invisible until the first scroll-seek has landed, preventing a flash of frame 0 on navigation */
+  const videoReadyRef = useRef(false);
 
   const { openStepper } = useLeadStepper();
 
@@ -183,11 +185,22 @@ export default function CinematicHero() {
     else showFinale(false);
 
     scrubVideoToProgress(video, progress);
-  }, [showFinale]);
+
+    // Reveal the video element only after the first seek has been applied,
+    // so the browser's pre-loaded frame 0 never flashes on navigation.
+    if (!videoReadyRef.current) {
+      videoReadyRef.current = true;
+      if (videoRef.current) videoRef.current.style.opacity = '1';
+    }
+  }, [showFinale, videoReadyRef]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
     showFinale(false);
+
+    // Reset visibility guard each time the video src changes (e.g. resize crossing mobile breakpoint)
+    videoReadyRef.current = false;
+    if (videoRef.current) videoRef.current.style.opacity = '0';
 
     const onMeta = () => {
       refreshSectionMetrics();
@@ -281,7 +294,7 @@ export default function CinematicHero() {
             preload="auto"
             poster={POSTER_SRC || undefined}
             className="absolute inset-0"
-            style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center' }}
+            style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center', opacity: 0, transition: 'opacity 0.4s ease' }}
           />
         ) : (
           <div
