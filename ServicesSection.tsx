@@ -6,15 +6,24 @@
  */
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { ChefHat, Bath, Layers, Home, Plus, Grid3X3, ArrowRight } from 'lucide-react';
+import { ChefHat, Bath, Layers, Home, Plus, Grid3X3, ArrowRight, type LucideIcon } from 'lucide-react';
 import { SITE_IMAGES } from '@/lib/site-images';
+
+type ServiceItem = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  image?: string;
+  color: string;
+  large?: boolean;
+};
 
 const KITCHEN_IMG = SITE_IMAGES.kitchen;
 const BATHROOM_IMG = SITE_IMAGES.bathroom;
 const EXTERIOR_IMG = SITE_IMAGES.exterior;
 const BASEMENT_IMG = SITE_IMAGES.basement;
 
-const services = [
+const services: ServiceItem[] = [
   {
     icon: ChefHat,
     title: 'Kitchen Remodeling',
@@ -65,7 +74,7 @@ const services = [
   },
 ];
 
-function ServiceCard({ service, index }: { service: typeof services[0]; index: number }) {
+function ServiceCard({ service, index }: { service: ServiceItem; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-50px' });
 

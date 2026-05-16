@@ -1,108 +1,105 @@
 /*
  * CINEMATIC HERO — Sure-Fix Remodeling
  *
- * Experience: One continuous scroll-scrubbed video that pulls the viewer
- * straight through a remodeled home — front walkway → foyer → hallway →
- * kitchen → living area → back doors → backyard reveal.
+ * Editorial scroll-scrubbed walkthrough. One sticky viewport,
+ * 400vh of scroll travel, four editorial beats driven from a
+ * single scroll handler. ALL overlay opacity/transform writes
+ * happen through direct DOM refs + CSS variables; React state
+ * is never touched in the scroll hot path, so the RAF seek
+ * loop is never interrupted by a re-render.
  *
- * Architecture:
- *   ┌─ <section> ──────────────────────────── height: 400vh ─┐
- *   │  ┌─ <div> sticky top-0 ───────── height: 100vh ───┐   │
- *   │  │  <video>   scroll drives video.currentTime     │   │
- *   │  │  overlays  fade as user moves inward           │   │
- *   │  └────────────────────────────────────────────────┘   │
- *   └────────────────────────────────────────────────────────┘
- *   The sticky container stays locked to the viewport while the
- *   browser scrolls 300vh of "hidden" space behind it.
- *   Scroll progress (0→1) maps linearly to video.currentTime (0→duration).
- *
- * Smooth scrubbing: one seek per scroll tick (RAF-coalesced), plus
- * `fastSeek()` where supported. The hero MP4 is encoded with a keyframe
- * every 3 frames (g=3) so seeks snap quickly without decode backlog.
- *
- * ── HOW TO CUSTOMISE ──────────────────────────────────────────────────
- *
- * VIDEO:
- *   Replace VIDEO_SRC / VIDEO_SRC_MOBILE with your walkthrough MP4s (or one tier).
- *   Encode for scroll scrubbing (smooth + crisp). Two tiers:
- *     • 4K (default hero on tablet/desktop): Lanczos upscale + CRF ~26
- *     • 1080p (narrow viewports only): lighter file for phones, CRF ~22
- *     • Keyframes:  Every 3 frames: -g 3 -keyint_min 3 -sc_threshold 0
- *     • Mux:        -movflags +faststart   (progressive download)
- *     • Strip:      -an -sn (no audio/subtitles for hero)
- *     • ffmpeg 1080:
- *         ffmpeg -i input.mp4 -c:v libx264 -pix_fmt yuv420p -crf 22 \\
- *                -g 3 -keyint_min 3 -sc_threshold 0 -preset medium \\
- *                -movflags +faststart -an -sn sf-hero-scrub.mp4
- *     • ffmpeg 4K (upscale from 1080 source):
- *         ffmpeg -i input.mp4 -vf "scale=3840:2160:flags=lanczos+accurate_rnd" \\
- *                -c:v libx264 -pix_fmt yuv420p -crf 26 -g 3 -keyint_min 3 \\
- *                -sc_threshold 0 -preset medium -movflags +faststart -an -sn \\
- *                sf-hero-scrub-4k.mp4
- *   Add a WebM source (<source type="video/webm">) if you need smaller files.
- *
- * POSTER:
- *   Replace POSTER_SRC with a JPEG of the front exterior.
- *   Used while video loads and for the reduced-motion fallback.
- *
- * SCROLL DISTANCE:
- *   Change SCROLL_MULTIPLIER (default: 4) to control scrub speed.
- *   ↑ higher  = user scrolls more to progress through the same video
- *   ↓ lower   = faster / shorter scroll session (minimum: 2)
- *
- * ──────────────────────────────────────────────────────────────────────
+ * Beat ranges (progress 0→1):
+ *   I    0.00 – 0.28   centre   "Step inside."        (hold from first frame)
+ *   II   0.34 – 0.54   right    "Designed. Built. Finished."
+ *   III  0.54 – 0.71   left     materials showroom beat
+ *   IV   ≥ threshold          centre finale + CTAs; hidden as soon as progress
+ *        falls back below the same threshold (no sticky overlap with prior beats)
  */
 
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { ArrowRight, Phone } from 'lucide-react';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { HERO_STILLS } from '@/lib/site-images';
+import { BUSINESS } from '@/lib/constants';
 
-// ── Config ────────────────────────────────────────────────────────────
-// GOP=1 (every frame is a keyframe) — guaranteed instant seek at any
-// scroll position. Encoded via scripts/encode-scroll-video.mjs using
-// ffmpeg-static: 1920×1080, H.264 CRF 22, yuv420p, +faststart, no audio.
-const VIDEO_SRC        = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
-const VIDEO_SRC_MOBILE = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
+// ── Config ─────────────────────────────────────────────────────────
+const VIDEO_SRC          = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
+const VIDEO_SRC_MOBILE   = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
 const VIDEO_MOBILE_MEDIA = '(max-width: 1023px)';
-const POSTER_SRC = HERO_STILLS.main;
-// Section height: 400vh total, 300vh of scroll travel while pinned.
+const POSTER_SRC         = HERO_STILLS.main;
 const SCROLL_MULTIPLIER = 4;
-// ─────────────────────────────────────────────────────────────────────
+/** Finale on when progress ≥ this; dips below → hide immediately (no wide hysteresis vs prior beats) */
+const FINALE_PROGRESS = 0.72;
+/** Encoded hero scrub MP4 is 24fps (see scripts/encode-scroll-video.mjs) — snap seeks to frame boundaries */
+const HERO_VIDEO_FPS = 24;
+/** Ignore seeks smaller than half a frame — avoids decoder thrash from micro-updates */
+const SEEK_MIN_DELTA_SEC = 1 / (HERO_VIDEO_FPS * 2);
+// Typography — restrained, editorial
+const SERIF = '"Cormorant Garamond", Georgia, serif';
+const SANS = '"Figtree", system-ui, sans-serif';
+
+/** Brand accent for primary CTAs (matches site navy in progress bar) */
+const CTA_BLUE = '#394696';
+// ───────────────────────────────────────────────────────────────────
+
+/** Hermite smoothstep for silky band edges */
+function ss(e0: number, e1: number, x: number): number {
+  const t = Math.max(0, Math.min(1, (x - e0) / Math.max(1e-9, e1 - e0)));
+  return t * t * (3 - 2 * t);
+}
+
+/** Trapezoid band: rise r0→r1, hold, fall f0→f1 */
+function band(p: number, r0: number, r1: number, f0: number, f1: number): number {
+  if (p < r0 || p > f1) return 0;
+  if (p < r1) return ss(r0, r1, p);
+  if (p <= f0) return 1;
+  return 1 - ss(f0, f1, p);
+}
+
+/** Map scroll progress → quantized video time; skip assign if change is sub-threshold */
+function scrubVideoToProgress(video: HTMLVideoElement, progress: number) {
+  const dur = video.duration;
+  if (!Number.isFinite(dur) || dur <= 0) return;
+  const raw = progress * dur;
+  const snapped = Math.min(dur, Math.max(0, Math.round(raw * HERO_VIDEO_FPS) / HERO_VIDEO_FPS));
+  if (Math.abs(video.currentTime - snapped) < SEEK_MIN_DELTA_SEC) return;
+  video.currentTime = snapped;
+}
 
 export default function CinematicHero() {
   const sectionRef     = useRef<HTMLElement>(null);
   const videoRef       = useRef<HTMLVideoElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
-  const overlayTextRef = useRef<HTMLDivElement>(null);
 
-  // Track whether a seek RAF is already queued to avoid stacking seeks.
-  const pendingSeekRef  = useRef(false);
-  const targetTimeRef   = useRef(0);
-  const lastProgressRef = useRef(-1);
-  /** Coalesce window scroll → one layout read + scrub per animation frame */
+  // Overlay refs — we write `style.opacity`, `--p` CSS var, and transform directly
+  const introRef   = useRef<HTMLDivElement>(null);
+  const rightRef   = useRef<HTMLDivElement>(null);
+  const leftRef    = useRef<HTMLDivElement>(null);
+  const finaleRef  = useRef<HTMLDivElement>(null);
+
+  /** Cached geometry — avoids getBoundingClientRect() on every scroll tick */
+  const sectionMetricsRef = useRef({ top: 0, scrollable: 1 });
+
   const scrollRafRef = useRef<number | null>(null);
+  const finaleOnRef = useRef(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
-  /** Pick ONE mp4 URL — `<source media>` is unreliable for `<video>` in Safari/Chrome. */
   const [heroVideoSrc, setHeroVideoSrc] = useState(() =>
     typeof window !== 'undefined' && window.matchMedia(VIDEO_MOBILE_MEDIA).matches
-      ? VIDEO_SRC_MOBILE
-      : VIDEO_SRC
+      ? VIDEO_SRC_MOBILE : VIDEO_SRC
   );
 
   const { openStepper } = useLeadStepper();
 
-  // ── Detect prefers-reduced-motion ───────────────────────────────────
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
+    const cb = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener('change', cb);
+    return () => mq.removeEventListener('change', cb);
   }, []);
 
-  // ── Hero tier: mobile vs desktop (single `src`, no `<source media>`) ─
   useEffect(() => {
     const mq = window.matchMedia(VIDEO_MOBILE_MEDIA);
     const pick = () => setHeroVideoSrc(mq.matches ? VIDEO_SRC_MOBILE : VIDEO_SRC);
@@ -111,65 +108,91 @@ export default function CinematicHero() {
     return () => mq.removeEventListener('change', pick);
   }, []);
 
-  // ── Scroll handler ───────────────────────────────────────────────────
-  //    One seek per scroll event via a dirty-flag + single RAF.
-  //    fastSeek() is used where available — it hits the nearest keyframe
-  //    immediately without waiting for an exact frame decode, eliminating
-  //    the stutter that comes from seeking on every animation frame.
-  const applySeek = useCallback(() => {
-    const video = videoRef.current;
-    if (video && Number.isFinite(video.duration) && video.duration > 0) {
-      const t = Math.max(0, Math.min(video.duration, targetTimeRef.current));
-      if (typeof (video as HTMLVideoElement & { fastSeek?: (t: number) => void }).fastSeek === 'function') {
-        (video as HTMLVideoElement & { fastSeek: (t: number) => void }).fastSeek(t);
-      } else {
-        video.currentTime = t;
-      }
+  // ── Finale show/hide via DOM only (no setState) ─────────────────
+  /** Slower ease-in when reaching the finale / fast ease-out when scrubbing back so prior beats regain focus */
+  const showFinale = useCallback((on: boolean) => {
+    const el = finaleRef.current;
+    if (!el || finaleOnRef.current === on) return;
+    finaleOnRef.current = on;
+    if (on) {
+      el.style.transition =
+        'opacity 1.35s cubic-bezier(0.22, 0.94, 0.36, 1), transform 1.35s cubic-bezier(0.22, 0.94, 0.36, 1)';
+    } else {
+      el.style.transition =
+        'opacity 0.3s cubic-bezier(0.4, 0, 0.9, 0.65), transform 0.32s cubic-bezier(0.4, 0, 0.9, 0.65)';
     }
-    pendingSeekRef.current = false;
+    el.style.opacity        = on ? '1' : '0';
+    el.style.transform      = on ? 'translateY(0)' : 'translateY(14px)';
+    el.style.pointerEvents  = on ? 'auto' : 'none';
   }, []);
 
-  const handleScroll = useCallback(() => {
+  const refreshSectionMetrics = useCallback(() => {
     const section = sectionRef.current;
+    if (!section) return;
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    sectionMetricsRef.current = {
+      top: section.getBoundingClientRect().top + scrollY,
+      scrollable: Math.max(1, section.offsetHeight - window.innerHeight),
+    };
+  }, []);
+
+  // ── Scroll handler — direct DOM only, no setState ────────────────
+  const handleScroll = useCallback(() => {
     const video = videoRef.current;
-    if (!section || !video) return;
+    if (!video) return;
 
     const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-    const sectionTop = section.getBoundingClientRect().top + scrollY;
-    const scrollable = Math.max(1, section.offsetHeight - window.innerHeight);
+    const { top: sectionTop, scrollable } = sectionMetricsRef.current;
     const progress = Math.max(0, Math.min(1, (scrollY - sectionTop) / scrollable));
 
     if (progressBarRef.current) {
       progressBarRef.current.style.transform = `scaleX(${progress})`;
     }
-    if (overlayTextRef.current) {
-      overlayTextRef.current.style.opacity = String(Math.max(0, 1 - progress / 0.28));
-      overlayTextRef.current.style.transform = `translateY(${progress * -28}px)`;
+
+    // Beat I — opening
+    const intro = introRef.current;
+    if (intro) {
+      const o = Math.max(0, 1 - progress / 0.28);
+      intro.style.opacity   = String(o);
+      intro.style.transform = `translateY(${progress * -24}px)`;
+      intro.style.setProperty('--p', String(o));
     }
 
-    if (!Number.isFinite(video.duration) || video.duration <= 0) {
-      return;
+    // Beat II — right rail
+    const right = rightRef.current;
+    if (right) {
+      const o = band(progress, 0.34, 0.42, 0.48, 0.55);
+      right.style.opacity = String(o);
+      right.style.setProperty('--p', String(o));
+      const x = (1 - o) * 32;
+      right.style.transform = `translateX(${x}px)`;
     }
 
-    if (Math.abs(progress - lastProgressRef.current) < 0.0003) return;
-    lastProgressRef.current = progress;
-
-    targetTimeRef.current = progress * video.duration;
-
-    if (!pendingSeekRef.current) {
-      pendingSeekRef.current = true;
-      requestAnimationFrame(applySeek);
+    // Beat III — left rail (ends before finale zone)
+    const left = leftRef.current;
+    if (left) {
+      const o = band(progress, 0.54, 0.61, 0.65, 0.71);
+      left.style.opacity = String(o);
+      left.style.setProperty('--p', String(o));
+      const x = (1 - o) * -28;
+      left.style.transform = `translateX(${x}px)`;
     }
-  }, [applySeek]);
+
+    // Beat IV — finale: strictly tied to FINALE_PROGRESS (no wide hysteresis)
+    if (progress >= FINALE_PROGRESS) showFinale(true);
+    else showFinale(false);
+
+    scrubVideoToProgress(video, progress);
+  }, [showFinale]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
+    showFinale(false);
 
     const onMeta = () => {
-      lastProgressRef.current = -1;
+      refreshSectionMetrics();
       handleScroll();
     };
-
     const onScroll = () => {
       if (scrollRafRef.current != null) return;
       scrollRafRef.current = requestAnimationFrame(() => {
@@ -177,35 +200,51 @@ export default function CinematicHero() {
         handleScroll();
       });
     };
+    const onResize = () => {
+      refreshSectionMetrics();
+      onScroll();
+    };
+
+    refreshSectionMetrics();
+
+    const section = sectionRef.current;
+    const ro =
+      section && typeof ResizeObserver !== 'undefined'
+        ? new ResizeObserver(() => {
+            refreshSectionMetrics();
+            onScroll();
+          })
+        : null;
+    ro?.observe(section as HTMLElement);
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
+    // Trackpad momentum + touch: `scroll` alone can be sparse while delta is still changing
+    window.addEventListener('wheel', onScroll, { passive: true });
+    window.addEventListener('touchmove', onScroll, { passive: true });
+    window.addEventListener('resize', onResize, { passive: true });
     const v = videoRef.current;
     v?.addEventListener('loadedmetadata', onMeta);
     v?.addEventListener('loadeddata', onMeta);
     v?.addEventListener('durationchange', onMeta);
-
     onScroll();
 
     return () => {
-      pendingSeekRef.current = false;
-      if (scrollRafRef.current != null) {
-        cancelAnimationFrame(scrollRafRef.current);
-        scrollRafRef.current = null;
-      }
+      ro?.disconnect();
+      if (scrollRafRef.current != null) { cancelAnimationFrame(scrollRafRef.current); scrollRafRef.current = null; }
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
+      window.removeEventListener('wheel', onScroll);
+      window.removeEventListener('touchmove', onScroll);
+      window.removeEventListener('resize', onResize);
       v?.removeEventListener('loadedmetadata', onMeta);
       v?.removeEventListener('loadeddata', onMeta);
       v?.removeEventListener('durationchange', onMeta);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, showFinale, refreshSectionMetrics]);
 
-  // ── Entrance animation variants ──────────────────────────────────────
   const fadeUp = (delay: number) => ({
-    initial: { opacity: 0, y: 32 },
+    initial: { opacity: 0, y: 16 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.95, delay, ease: 'easeOut' as const },
+    transition: { duration: 0.85, delay, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] },
   });
 
   return (
@@ -214,10 +253,24 @@ export default function CinematicHero() {
       style={{ height: `${SCROLL_MULTIPLIER * 100}vh` }}
       aria-label="Sure Fix Remodeling — scroll-driven cinematic home walkthrough"
     >
-      {/* ── Sticky viewport: locked to top while user scrolls through section ── */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0d1117]">
+      {/* Scroll-linked masks/rules: NO transitions — transitions fight RAF updates and read choppy */}
+      <style>{`
+        /* Room for descenders (g, j, y) — tight line-height + overflow:hidden was clipping */
+        .sf-mask {
+          display: block;
+          overflow: hidden;
+          line-height: 1.35;
+          padding-bottom: 0.18em;
+        }
+        .sf-mask > span {
+          display: block;
+          transform: translateY(calc((1 - var(--p, 0)) * 110%));
+        }
+      `}</style>
 
-        {/* ── Video ───────────────────────────────────────────────────────── */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#0d1117] isolate">
+
+        {/* ── Video ────────────────────────────────────────────────── */}
         {!reducedMotion ? (
           <video
             key={heroVideoSrc}
@@ -228,185 +281,229 @@ export default function CinematicHero() {
             preload="auto"
             poster={POSTER_SRC || undefined}
             className="absolute inset-0"
-            style={{
-              width: '100vw',
-              height: '100vh',
-              objectFit: 'cover',
-              objectPosition: 'center',
-              willChange: 'contents',
-            }}
+            style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center' }}
           />
         ) : (
-          /* Reduced-motion: static image stand-in */
           <div
             className="absolute inset-0 bg-cover bg-center"
             role="img"
             aria-label="Beautifully remodeled home interior"
-            style={{
-              backgroundImage: POSTER_SRC ? `url(${POSTER_SRC})` : 'none',
-              backgroundColor: '#0d1117',
-            }}
+            style={{ backgroundImage: POSTER_SRC ? `url(${POSTER_SRC})` : 'none', backgroundColor: '#0d1117' }}
           />
         )}
 
-        {/* ── Cinematic overlay stack ─────────────────────────────────────── */}
+        {/* Light veils — minimal, don’t fight the picture */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'linear-gradient(to bottom, rgba(13,17,23,0.35) 0%, transparent 28%, transparent 62%, rgba(13,17,23,0.45) 100%)',
+        }} />
+        <div className="absolute inset-0 pointer-events-none" style={{
+          background: 'radial-gradient(ellipse 72% 96% at 50% 48%, transparent 62%, rgba(0,0,0,0.28) 100%)',
+        }} />
 
-        {/* Layer 1 — bottom + top dual fade for editorial framing */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(to bottom, rgba(13,17,23,0.45) 0%, transparent 16%, transparent 60%, rgba(13,17,23,0.78) 100%)',
-          }}
-        />
+        {/* ── Story overlays ─────────────────────────────────────────── */}
+        <div className="absolute inset-0 z-10 pointer-events-none">
 
-        {/* Layer 2 — tunnel vignette: lightly darkens periphery, focus on centre axis */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(ellipse 65% 90% at 50% 52%, transparent 55%, rgba(0,0,0,0.42) 100%)',
-          }}
-        />
-
-        {/* ── Editorial overlay — minimal, artsy, single line ──────────────── */}
-        <div
-          ref={overlayTextRef}
-          className="absolute inset-0 z-10 pointer-events-none"
-          style={{ willChange: 'opacity, transform' }}
-        >
-          {/* Top-left corner mark — like a film title card */}
-          <motion.div
-            {...fadeUp(0.4)}
-            className="absolute top-24 left-6 sm:left-10 md:left-14 flex items-center gap-3"
+          {/* ═══ BEAT I — Step inside ════════════════════════════════ */}
+          <div
+            ref={introRef}
+            className="absolute inset-0"
+            style={{ willChange: 'opacity, transform', ['--p' as string]: '1' }}
           >
-            <div className="h-px w-6" style={{ background: 'rgba(255,255,255,0.35)' }} />
-            <span
-              className="text-[10px] uppercase tracking-[0.42em] text-white/55"
-              style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500 }}
+            <motion.p
+              {...fadeUp(0.3)}
+              className="absolute top-28 left-8 sm:left-14 text-white/38"
+              style={{ fontFamily: SANS, fontSize: 11, letterSpacing: '0.12em', fontWeight: 400 }}
             >
-              Sure Fix &nbsp;·&nbsp; Vol. 01
-            </span>
-          </motion.div>
+              Sure Fix
+            </motion.p>
 
-          {/* Top-right scroll cue — single thin line, no chevron noise */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4, duration: 1.2 }}
-            className="absolute top-24 right-6 sm:right-10 md:right-14 flex items-center gap-3"
-          >
-            <span
-              className="text-[10px] uppercase tracking-[0.42em] text-white/40"
-              style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500 }}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.1, duration: 0.7 }}
+              className="absolute top-28 right-8 sm:right-14 flex items-center gap-2 text-white/28"
+              style={{ fontFamily: SANS, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 400 }}
             >
               Scroll
-            </span>
-            <motion.div
-              className="h-6 w-px"
-              style={{ background: 'rgba(255,255,255,0.45)', transformOrigin: 'top' }}
-              animate={{ scaleY: [0.3, 1, 0.3] }}
-              transition={{ repeat: Infinity, duration: 2.6, ease: 'easeInOut' }}
-            />
-          </motion.div>
-
-          {/* Centre headline — serif, minimal, two words on each line */}
-          <div className="absolute inset-x-0 bottom-[18%] flex justify-center px-6">
-            <motion.h1
-              {...fadeUp(0.7)}
-              className="text-center text-white"
-              style={{
-                fontFamily: 'Georgia, "Cormorant Garamond", serif',
-                fontWeight: 300,
-                fontSize: 'clamp(2.4rem, 6.2vw, 5.2rem)',
-                lineHeight: 1.02,
-                letterSpacing: '-0.015em',
-              }}
-            >
-              <span className="block italic" style={{ fontWeight: 300 }}>
-                Step
-              </span>
-              <span className="block" style={{ fontWeight: 400 }}>
-                inside.
-              </span>
-            </motion.h1>
-          </div>
-
-          {/* Bottom-centre CTA hairline — one button, breathing room */}
-          <motion.div
-            {...fadeUp(1.05)}
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 pointer-events-auto"
-          >
-            <button
-              type="button"
-              onClick={() => openStepper()}
-              className="group inline-flex items-center gap-4 px-1 py-3 text-xs uppercase tracking-[0.32em] text-white/85 hover:text-white transition-colors duration-300"
-              style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500, background: 'transparent', border: 'none' }}
-            >
-              <span
-                className="h-px w-6 transition-all duration-500 group-hover:w-12"
-                style={{ background: 'currentColor' }}
+              <motion.span
+                className="inline-block w-px h-5 bg-white/28"
+                style={{ transformOrigin: 'top' }}
+                animate={{ scaleY: [0.35, 1, 0.35] }}
+                transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
               />
-              Begin Your Remodel
-              <span
-                className="h-px w-6 transition-all duration-500 group-hover:w-12"
-                style={{ background: 'currentColor' }}
-              />
-            </button>
-          </motion.div>
-        </div>
+            </motion.div>
 
-        {/* ── Reduced motion: centred static layout (mirrors editorial look) ── */}
-        {reducedMotion && (
-          <div className="absolute inset-0 z-20 flex items-center justify-center px-8">
-            <div className="text-center max-w-2xl">
-              <h1
-                className="text-white mb-10"
+            <div className="absolute inset-x-0 bottom-[13%] sm:bottom-[15%] flex flex-col items-center px-8">
+              <motion.h1
+                {...fadeUp(0.5)}
+                className="text-center text-white tracking-tight"
                 style={{
-                  fontFamily: 'Georgia, serif',
+                  fontFamily: SERIF,
                   fontWeight: 300,
-                  fontSize: 'clamp(2.4rem, 6vw, 4.8rem)',
-                  lineHeight: 1.02,
-                  letterSpacing: '-0.015em',
+                  fontSize: 'clamp(1.65rem, 4.2vw, 2.85rem)',
+                  lineHeight: 1.06,
+                  letterSpacing: '-0.02em',
                 }}
               >
-                <span className="block italic">Step</span>
-                <span className="block">inside.</span>
-              </h1>
+                <span className="block font-light not-italic">Step</span>
+                <span className="block font-normal mt-1.5 italic">inside.</span>
+              </motion.h1>
+              <motion.p
+                {...fadeUp(0.72)}
+                className="mt-6 text-center max-w-[20rem] text-white/38 leading-relaxed font-light"
+                style={{ fontFamily: SANS, fontSize: 'clamp(0.78rem, 1vw, 0.8125rem)', letterSpacing: '0.06em', lineHeight: 1.65 }}
+              >
+                The life you imagine isn&apos;t hypothetical—it&apos;s one step away.
+              </motion.p>
+            </div>
+
+            <motion.div {...fadeUp(0.95)} className="absolute bottom-14 left-1/2 -translate-x-1/2 pointer-events-auto">
               <button
                 type="button"
                 onClick={() => openStepper()}
-                className="inline-flex items-center gap-4 px-1 py-3 text-xs uppercase tracking-[0.32em] text-white/85"
-                style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500, background: 'transparent', border: 'none' }}
+                className="rounded-full px-9 py-3.5 text-white text-[11px] font-medium tracking-[0.18em] uppercase shadow-lg shadow-black/25 hover:brightness-[1.06] transition-[filter] duration-300"
+                style={{ fontFamily: SANS, background: CTA_BLUE, border: 'none' }}
               >
-                <span className="h-px w-6" style={{ background: 'currentColor' }} />
-                Begin Your Remodel
-                <span className="h-px w-6" style={{ background: 'currentColor' }} />
+                Begin your remodel
               </button>
+            </motion.div>
+          </div>
+
+          {/* ═══ BEAT II ═════════════════════════════════════════════ */}
+          <div
+            ref={rightRef}
+            className="absolute inset-y-0 right-0 flex items-center px-8 sm:px-14 md:pr-20 lg:pr-28"
+            style={{ opacity: 0, willChange: 'opacity, transform', ['--p' as string]: '0' }}
+          >
+            <div className="max-w-[min(280px,38vw)] text-right">
+              <div className="text-white/92" style={{ fontFamily: SERIF, fontWeight: 300, fontSize: 'clamp(1.45rem, 3vw, 2.35rem)', letterSpacing: '-0.03em', lineHeight: 1.08 }}>
+                <span className="sf-mask"><span className="italic">Designed.</span></span>
+                <span className="sf-mask" style={{ marginTop: 4 }}><span className="italic">Built.</span></span>
+                <span className="sf-mask" style={{ marginTop: 4 }}><span className="font-light">Finished.</span></span>
+              </div>
+              <p className="mt-8 text-white/36 text-right leading-relaxed" style={{ fontFamily: SANS, fontSize: 12, fontWeight: 400, letterSpacing: '0.04em', lineHeight: 1.6 }}>
+                One team. One timeline.
+              </p>
+            </div>
+          </div>
+
+          {/* ═══ BEAT III ═══════════════════════════════════════════ */}
+          <div
+            ref={leftRef}
+            className="absolute inset-y-0 left-0 flex items-center px-8 sm:px-14 md:pl-20 lg:pl-28"
+            style={{ opacity: 0, willChange: 'opacity, transform', ['--p' as string]: '0' }}
+          >
+            <div className="max-w-[min(300px,40vw)]">
+              <div className="text-white/90" style={{ fontFamily: SERIF, fontWeight: 300, fontSize: 'clamp(1.5rem, 3.1vw, 2.5rem)', letterSpacing: '-0.028em', lineHeight: 1.1 }}>
+                <span className="sf-mask"><span className="font-light">Materials</span></span>
+                <span className="sf-mask" style={{ marginTop: 6 }}><span className="italic">Chosen—not guessed.</span></span>
+              </div>
+              <p className="mt-8 text-white/36 leading-relaxed" style={{ fontFamily: SANS, fontSize: 12, fontWeight: 400, letterSpacing: '0.04em', lineHeight: 1.6 }}>
+                Easton showroom
+              </p>
+            </div>
+          </div>
+
+          {/* ═══ Finale — visible only while progress ≥ threshold; drops off as soon as you scrub back ═══ */}
+          <div
+            ref={finaleRef}
+            className="absolute inset-0 z-[11] flex flex-col items-center justify-center px-8"
+            style={{
+              opacity: 0,
+              transform: 'translateY(14px)',
+              pointerEvents: 'none',
+              transition: 'opacity 1.35s cubic-bezier(0.22, 0.94, 0.36, 1), transform 1.35s cubic-bezier(0.22, 0.94, 0.36, 1)',
+              willChange: 'opacity, transform',
+            }}
+          >
+            <div
+              className="pointer-events-none absolute inset-0"
+              style={{ background: 'linear-gradient(to top, rgba(13,17,23,0.55) 0%, rgba(13,17,23,0.14) 40%, transparent 72%)' }}
+            />
+            <div className="relative z-[1] flex flex-col items-center text-center max-w-md pt-[min(18vh,8rem)] px-6">
+              <h2 className="text-white font-light mb-5" style={{ fontFamily: SERIF, fontSize: 'clamp(1.65rem, 3.8vw, 2.35rem)', letterSpacing: '-0.035em', lineHeight: 1.15 }}>
+                <span className="italic opacity-95">One team</span>
+                {' '}
+                <span className="font-normal opacity-90 text-white/90">— end to end.</span>
+              </h2>
+              <p className="text-white/35 mb-9 text-[11px]" style={{ fontFamily: SANS, fontWeight: 400, letterSpacing: '0.22em', lineHeight: 1.5, textTransform: 'uppercase' as const }}>
+                Estimate · showroom · build
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-6 pointer-events-auto">
+                <button
+                  type="button"
+                  onClick={() => openStepper()}
+                  className="rounded-full px-10 py-3.5 text-white text-[11px] font-medium tracking-[0.2em] uppercase shadow-lg shadow-black/25 hover:brightness-[1.06] transition-[filter] duration-300"
+                  style={{ fontFamily: SANS, background: CTA_BLUE, border: 'none' }}
+                >
+                  Free estimate
+                </button>
+                <a
+                  href={BUSINESS.phoneHref}
+                  className="text-white/38 hover:text-white/55 transition-colors text-[11px] tracking-[0.14em] uppercase"
+                  style={{ fontFamily: SANS, fontWeight: 500 }}
+                >
+                  <span className="inline-flex items-center gap-2">
+                    <Phone size={13} strokeWidth={1.5} />
+                    {BUSINESS.phone}
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Reduced-motion static fallback ────────────────────────── */}
+        {reducedMotion && (
+          <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-[16%] sm:pb-[18%] px-8 pointer-events-auto">
+            <div className="text-center max-w-2xl mb-8">
+              <h1
+                className="text-white mb-5"
+                style={{
+                  fontFamily: SERIF, fontWeight: 300,
+                  fontSize: 'clamp(1.65rem, 4.2vw, 2.85rem)', lineHeight: 1.06, letterSpacing: '-0.02em',
+                }}
+              >
+                <span className="block not-italic">Step</span>
+                <span className="block italic">inside.</span>
+              </h1>
+              <p className="text-white/60 text-base" style={{ fontFamily: SERIF, fontStyle: 'italic' }}>
+                Designed, built, and finished under one roof — with an in-house materials showroom in Easton.
+              </p>
+            </div>
+            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-sm justify-center">
+              <button
+                type="button"
+                onClick={() => openStepper()}
+                className="inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-sm font-semibold uppercase tracking-wider text-white"
+                style={{ fontFamily: SANS, background: CTA_BLUE, border: 'none' }}
+              >
+                Free estimate <ArrowRight size={16} />
+              </button>
+              <a
+                href={BUSINESS.phoneHref}
+                className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-sm font-black uppercase tracking-wider text-white border border-white/22"
+                style={{ fontFamily: SANS }}
+              >
+                <Phone size={16} /> {BUSINESS.phone}
+              </a>
             </div>
           </div>
         )}
 
-        {/* ── Scroll progress hairline (bottom edge) ──────────────────────── */}
-        {/* Driven by direct DOM manipulation in the scroll handler above.    */}
-        {/* Uses CSS transform: scaleX() — GPU-composited, no layout cost.   */}
-        <div
-          className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none"
-          style={{ height: '2px', background: 'rgba(255,255,255,0.07)' }}
-        >
+        {/* ── Scroll progress hairline ─────────────────────────────── */}
+        <div className="absolute bottom-0 left-0 right-0 z-20 pointer-events-none" style={{ height: '2px', background: 'rgba(255,255,255,0.07)' }}>
           <div
             ref={progressBarRef}
             className="h-full origin-left"
             style={{
               background: 'linear-gradient(90deg, #394696 0%, #983631 60%, #983631 100%)',
               transform: 'scaleX(0)',
-              // No CSS transition — updated by RAF loop directly
             }}
           />
         </div>
 
       </div>
-      {/* End sticky viewport */}
     </section>
   );
 }

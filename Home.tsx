@@ -8,7 +8,7 @@ import { Link } from 'wouter';
 import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle } from 'lucide-react';
 import { BUSINESS, SERVICES, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
-import { SITE_IMAGES } from '@/lib/site-images';
+import { INTERIOR_DESIGN_HOME_IMAGE } from '@/lib/site-images';
 import ShowroomHomeVideo from '@/components/ShowroomHomeVideo';
 import CinematicHero from './CinematicHero';
 
@@ -242,8 +242,8 @@ export default function Home() {
             {/* Image side */}
             <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden order-1 lg:order-2">
               <img
-                src={SITE_IMAGES.galleryHero}
-                alt="Interior Design by Audra Frank Associates"
+                src={INTERIOR_DESIGN_HOME_IMAGE}
+                alt="Luxury open-plan interior design layout"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to left, rgba(13,17,23,0.2), rgba(13,17,23,0.5))' }} />
