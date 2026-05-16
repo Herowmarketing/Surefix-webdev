@@ -7,7 +7,7 @@ import { LeadStepperProvider } from './contexts/LeadStepperContext';
 import LeadStepper from './LeadStepper';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Route, Switch, useLocation } from "wouter";
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./Layout";
@@ -28,10 +28,11 @@ import Exterior from "./Exterior";
 import Flooring from "./Flooring";
 import Additions from "./Additions";
 
-// Scroll to top on route change
+// Scroll to top on route change — layout effect runs before paint so the hero scrubber
+// never reads a stale scroll position from the previous page on client-side navigations.
 function ScrollToTop() {
   const [location] = useLocation();
-  useEffect(() => {
+  useLayoutEffect(() => {
     // Two-arg form avoids non-standard ScrollBehavior values that can throw in some browsers.
     window.scrollTo(0, 0);
   }, [location]);

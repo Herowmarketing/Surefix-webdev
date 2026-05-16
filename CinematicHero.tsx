@@ -20,21 +20,22 @@ import { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react
 import { motion } from 'framer-motion';
 import { ArrowRight, Phone } from 'lucide-react';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
-import { HERO_STILLS } from '@/lib/site-images';
 import { BUSINESS } from '@/lib/constants';
 
 // ── Config ─────────────────────────────────────────────────────────
 const VIDEO_SRC          = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
 const VIDEO_SRC_MOBILE   = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
 const VIDEO_MOBILE_MEDIA = '(max-width: 1023px)';
-const POSTER_SRC         = HERO_STILLS.main;
 const SCROLL_MULTIPLIER = 4;
-/** Finale on when progress ≥ this; dips below → hide immediately (no wide hysteresis vs prior beats) */
+/** Finale on when progress ≥ this; dips below → hide immediately (no sticky overlap with prior beats) */
 const FINALE_PROGRESS = 0.72;
 /** Encoded hero scrub MP4 is 24fps (see scripts/encode-scroll-video.mjs) — snap seeks to frame boundaries */
 const HERO_VIDEO_FPS = 24;
 /** Ignore seeks smaller than half a frame — avoids decoder thrash from micro-updates */
 const SEEK_MIN_DELTA_SEC = 1 / (HERO_VIDEO_FPS * 2);
+/** Eases video time toward scroll target between wheel events so scrubbing does not step/chatter */
+const SCRUB_EASE = 0.22;
+const SCRUB_PROGRESS_EPS = 0.0008;
 // Typography — restrained, editorial
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS = '"Figtree", system-ui, sans-serif';
@@ -58,13 +59,14 @@ function band(p: number, r0: number, r1: number, f0: number, f1: number): number
 }
 
 /** Map scroll progress → quantized video time; skip assign if change is sub-threshold */
-function scrubVideoToProgress(video: HTMLVideoElement, progress: number) {
+function scrubVideoToProgress(video: HTMLVideoElement, progress: number): boolean {
   const dur = video.duration;
-  if (!Number.isFinite(dur) || dur <= 0) return;
+  if (!Number.isFinite(dur) || dur <= 0) return false;
   const raw = progress * dur;
   const snapped = Math.min(dur, Math.max(0, Math.round(raw * HERO_VIDEO_FPS) / HERO_VIDEO_FPS));
-  if (Math.abs(video.currentTime - snapped) < SEEK_MIN_DELTA_SEC) return;
+  if (Math.abs(video.currentTime - snapped) < SEEK_MIN_DELTA_SEC) return true;
   video.currentTime = snapped;
+  return true;
 }
 
 export default function CinematicHero() {
@@ -82,6 +84,9 @@ export default function CinematicHero() {
   const sectionMetricsRef = useRef({ top: 0, scrollable: 1 });
 
   const scrollRafRef = useRef<number | null>(null);
+  const scrubRafRef = useRef<number | null>(null);
+  const targetProgressRef = useRef(0);
+  const renderedProgressRef = useRef(0);
   const finaleOnRef = useRef(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -110,8 +115,17 @@ export default function CinematicHero() {
     return () => mq.removeEventListener('change', pick);
   }, []);
 
+  const refreshSectionMetrics = useCallback(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    sectionMetricsRef.current = {
+      top: section.getBoundingClientRect().top + scrollY,
+      scrollable: Math.max(1, section.offsetHeight - window.innerHeight),
+    };
+  }, []);
+
   // ── Finale show/hide via DOM only (no setState) ─────────────────
-  /** Slower ease-in when reaching the finale / fast ease-out when scrubbing back so prior beats regain focus */
   const showFinale = useCallback((on: boolean) => {
     const el = finaleRef.current;
     if (!el || finaleOnRef.current === on) return;
@@ -128,15 +142,39 @@ export default function CinematicHero() {
     el.style.pointerEvents  = on ? 'auto' : 'none';
   }, []);
 
-  const refreshSectionMetrics = useCallback(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-    sectionMetricsRef.current = {
-      top: section.getBoundingClientRect().top + scrollY,
-      scrollable: Math.max(1, section.offsetHeight - window.innerHeight),
-    };
+  const revealVideoIfReady = useCallback((didScrub: boolean) => {
+    if (!didScrub || videoReadyRef.current) return;
+    videoReadyRef.current = true;
+    if (videoRef.current) videoRef.current.style.opacity = '1';
   }, []);
+
+  const startSmoothScrub = useCallback(() => {
+    if (scrubRafRef.current != null) return;
+
+    const tick = () => {
+      scrubRafRef.current = null;
+
+      const video = videoRef.current;
+      if (!video) return;
+
+      const target = targetProgressRef.current;
+      const current = renderedProgressRef.current;
+      const delta = target - current;
+      const next =
+        Math.abs(delta) < SCRUB_PROGRESS_EPS
+          ? target
+          : current + delta * SCRUB_EASE;
+
+      renderedProgressRef.current = next;
+      revealVideoIfReady(scrubVideoToProgress(video, next));
+
+      if (Math.abs(target - next) >= SCRUB_PROGRESS_EPS) {
+        scrubRafRef.current = requestAnimationFrame(tick);
+      }
+    };
+
+    scrubRafRef.current = requestAnimationFrame(tick);
+  }, [revealVideoIfReady]);
 
   // ── Scroll handler — direct DOM only, no setState ────────────────
   const handleScroll = useCallback(() => {
@@ -184,22 +222,27 @@ export default function CinematicHero() {
     if (progress >= FINALE_PROGRESS) showFinale(true);
     else showFinale(false);
 
-    scrubVideoToProgress(video, progress);
-
-    // Reveal the video element only after the first seek has been applied,
-    // so the browser's pre-loaded frame 0 never flashes on navigation.
-    if (!videoReadyRef.current) {
-      videoReadyRef.current = true;
-      if (videoRef.current) videoRef.current.style.opacity = '1';
-    }
-  }, [showFinale, videoReadyRef]);
+    targetProgressRef.current = progress;
+    startSmoothScrub();
+  }, [showFinale, startSmoothScrub]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
-    showFinale(false);
+    // Hard-reset finale: clear any in-flight transition then snap to hidden
+    // (finaleOnRef must be false BEFORE calling showFinale so the guard doesn't short-circuit)
+    finaleOnRef.current = false;
+    const fin = finaleRef.current;
+    if (fin) {
+      fin.style.transition = 'none';
+      fin.style.opacity = '0';
+      fin.style.transform = 'translateY(14px)';
+      fin.style.pointerEvents = 'none';
+    }
 
     // Reset visibility guard each time the video src changes (e.g. resize crossing mobile breakpoint)
     videoReadyRef.current = false;
+    targetProgressRef.current = 0;
+    renderedProgressRef.current = 0;
     if (videoRef.current) videoRef.current.style.opacity = '0';
 
     const onMeta = () => {
@@ -244,6 +287,7 @@ export default function CinematicHero() {
     return () => {
       ro?.disconnect();
       if (scrollRafRef.current != null) { cancelAnimationFrame(scrollRafRef.current); scrollRafRef.current = null; }
+      if (scrubRafRef.current != null) { cancelAnimationFrame(scrubRafRef.current); scrubRafRef.current = null; }
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('wheel', onScroll);
       window.removeEventListener('touchmove', onScroll);
@@ -252,7 +296,7 @@ export default function CinematicHero() {
       v?.removeEventListener('loadeddata', onMeta);
       v?.removeEventListener('durationchange', onMeta);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, showFinale, refreshSectionMetrics]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -292,16 +336,14 @@ export default function CinematicHero() {
             muted
             playsInline
             preload="auto"
-            poster={POSTER_SRC || undefined}
             className="absolute inset-0"
             style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center', opacity: 0, transition: 'opacity 0.4s ease' }}
           />
         ) : (
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-[#0d1117]"
             role="img"
-            aria-label="Beautifully remodeled home interior"
-            style={{ backgroundImage: POSTER_SRC ? `url(${POSTER_SRC})` : 'none', backgroundColor: '#0d1117' }}
+            aria-label="Hero background"
           />
         )}
 
@@ -353,7 +395,7 @@ export default function CinematicHero() {
                 style={{
                   fontFamily: SERIF,
                   fontWeight: 300,
-                  fontSize: 'clamp(1.65rem, 4.2vw, 2.85rem)',
+                  fontSize: 'clamp(1.85rem, 4.9vw, 3.25rem)',
                   lineHeight: 1.06,
                   letterSpacing: '-0.02em',
                 }}
@@ -474,7 +516,7 @@ export default function CinematicHero() {
                 className="text-white mb-5"
                 style={{
                   fontFamily: SERIF, fontWeight: 300,
-                  fontSize: 'clamp(1.65rem, 4.2vw, 2.85rem)', lineHeight: 1.06, letterSpacing: '-0.02em',
+                  fontSize: 'clamp(1.85rem, 4.9vw, 3.25rem)', lineHeight: 1.06, letterSpacing: '-0.02em',
                 }}
               >
                 <span className="block not-italic">Step</span>
