@@ -12,24 +12,22 @@
  *   I    0.00 – 0.28   centre   "Step inside."        (hold from first frame)
  *   II   0.34 – 0.54   right    "Designed. Built. Finished."
  *   III  0.54 – 0.71   left     materials showroom beat
- *   IV   ≥ threshold          centre finale + CTAs; hidden as soon as progress
- *        falls back below the same threshold (no sticky overlap with prior beats)
+ *   IV   ≥ FINALE_PROGRESS   centre finale + CTAs — threshold + symmetric CSS fades
+ *        (smooth opacity/transform; same easing duration on scroll up vs down)
  */
 
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Phone } from 'lucide-react';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
-import { HERO_STILLS } from '@/lib/site-images';
 import { BUSINESS } from '@/lib/constants';
 
 // ── Config ─────────────────────────────────────────────────────────
 const VIDEO_SRC          = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
 const VIDEO_SRC_MOBILE   = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
 const VIDEO_MOBILE_MEDIA = '(max-width: 1023px)';
-const POSTER_SRC         = HERO_STILLS.main;
 const SCROLL_MULTIPLIER = 4;
-/** Finale on when progress ≥ this; dips below → hide immediately (no wide hysteresis vs prior beats) */
+/** Finale on when progress ≥ this; dips below → hide immediately (no sticky overlap with prior beats) */
 const FINALE_PROGRESS = 0.72;
 /** Encoded hero scrub MP4 is 24fps (see scripts/encode-scroll-video.mjs) — snap seeks to frame boundaries */
 const HERO_VIDEO_FPS = 24;
@@ -110,8 +108,17 @@ export default function CinematicHero() {
     return () => mq.removeEventListener('change', pick);
   }, []);
 
+  const refreshSectionMetrics = useCallback(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+    sectionMetricsRef.current = {
+      top: section.getBoundingClientRect().top + scrollY,
+      scrollable: Math.max(1, section.offsetHeight - window.innerHeight),
+    };
+  }, []);
+
   // ── Finale show/hide via DOM only (no setState) ─────────────────
-  /** Slower ease-in when reaching the finale / fast ease-out when scrubbing back so prior beats regain focus */
   const showFinale = useCallback((on: boolean) => {
     const el = finaleRef.current;
     if (!el || finaleOnRef.current === on) return;
@@ -126,16 +133,6 @@ export default function CinematicHero() {
     el.style.opacity        = on ? '1' : '0';
     el.style.transform      = on ? 'translateY(0)' : 'translateY(14px)';
     el.style.pointerEvents  = on ? 'auto' : 'none';
-  }, []);
-
-  const refreshSectionMetrics = useCallback(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
-    sectionMetricsRef.current = {
-      top: section.getBoundingClientRect().top + scrollY,
-      scrollable: Math.max(1, section.offsetHeight - window.innerHeight),
-    };
   }, []);
 
   // ── Scroll handler — direct DOM only, no setState ────────────────
@@ -180,7 +177,7 @@ export default function CinematicHero() {
       left.style.transform = `translateX(${x}px)`;
     }
 
-    // Beat IV — finale: strictly tied to FINALE_PROGRESS (no wide hysteresis)
+    // Beat IV — finale (threshold + CSS transitions — stays smooth while scrolling)
     if (progress >= FINALE_PROGRESS) showFinale(true);
     else showFinale(false);
 
@@ -192,11 +189,20 @@ export default function CinematicHero() {
       videoReadyRef.current = true;
       if (videoRef.current) videoRef.current.style.opacity = '1';
     }
-  }, [showFinale, videoReadyRef]);
+  }, [showFinale]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
-    showFinale(false);
+    // Hard-reset finale: clear any in-flight transition then snap to hidden
+    // (finaleOnRef must be false BEFORE calling showFinale so the guard doesn't short-circuit)
+    finaleOnRef.current = false;
+    const fin = finaleRef.current;
+    if (fin) {
+      fin.style.transition = 'none';
+      fin.style.opacity = '0';
+      fin.style.transform = 'translateY(14px)';
+      fin.style.pointerEvents = 'none';
+    }
 
     // Reset visibility guard each time the video src changes (e.g. resize crossing mobile breakpoint)
     videoReadyRef.current = false;
@@ -252,7 +258,7 @@ export default function CinematicHero() {
       v?.removeEventListener('loadeddata', onMeta);
       v?.removeEventListener('durationchange', onMeta);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, showFinale, refreshSectionMetrics]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -292,16 +298,14 @@ export default function CinematicHero() {
             muted
             playsInline
             preload="auto"
-            poster={POSTER_SRC || undefined}
             className="absolute inset-0"
             style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center', opacity: 0, transition: 'opacity 0.4s ease' }}
           />
         ) : (
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-[#0d1117]"
             role="img"
-            aria-label="Beautifully remodeled home interior"
-            style={{ backgroundImage: POSTER_SRC ? `url(${POSTER_SRC})` : 'none', backgroundColor: '#0d1117' }}
+            aria-label="Hero background"
           />
         )}
 
@@ -353,7 +357,7 @@ export default function CinematicHero() {
                 style={{
                   fontFamily: SERIF,
                   fontWeight: 300,
-                  fontSize: 'clamp(1.65rem, 4.2vw, 2.85rem)',
+                  fontSize: 'clamp(1.85rem, 4.9vw, 3.25rem)',
                   lineHeight: 1.06,
                   letterSpacing: '-0.02em',
                 }}
@@ -417,7 +421,7 @@ export default function CinematicHero() {
             </div>
           </div>
 
-          {/* ═══ Finale — visible only while progress ≥ threshold; drops off as soon as you scrub back ═══ */}
+          {/* ═══ Finale — threshold-driven + symmetric fades (handled in showFinale) ═══ */}
           <div
             ref={finaleRef}
             className="absolute inset-0 z-[11] flex flex-col items-center justify-center px-8"
@@ -474,7 +478,7 @@ export default function CinematicHero() {
                 className="text-white mb-5"
                 style={{
                   fontFamily: SERIF, fontWeight: 300,
-                  fontSize: 'clamp(1.65rem, 4.2vw, 2.85rem)', lineHeight: 1.06, letterSpacing: '-0.02em',
+                  fontSize: 'clamp(1.85rem, 4.9vw, 3.25rem)', lineHeight: 1.06, letterSpacing: '-0.02em',
                 }}
               >
                 <span className="block not-italic">Step</span>
