@@ -33,9 +33,27 @@ const FINALE_PROGRESS = 0.72;
 const HERO_VIDEO_FPS = 24;
 /** Ignore seeks smaller than half a frame — avoids decoder thrash from micro-updates */
 const SEEK_MIN_DELTA_SEC = 1 / (HERO_VIDEO_FPS * 2);
-/** Eases video time toward scroll target between wheel events so scrubbing does not step/chatter */
-const SCRUB_EASE = 0.22;
-const SCRUB_PROGRESS_EPS = 0.0008;
+
+type VideoWithFastSeek = HTMLVideoElement & { fastSeek?: (time: number) => void };
+
+function seekSnappedTime(video: HTMLVideoElement, snappedSec: number, lastSeekSecRef: { current: number }): boolean {
+  const dur = video.duration;
+  if (!Number.isFinite(dur) || dur <= 0) return false;
+  const t = Math.min(dur, Math.max(0, snappedSec));
+  if (Math.abs(t - lastSeekSecRef.current) < SEEK_MIN_DELTA_SEC) return true;
+  lastSeekSecRef.current = t;
+  const v = video as VideoWithFastSeek;
+  if (typeof v.fastSeek === 'function') {
+    try {
+      v.fastSeek(t);
+      return true;
+    } catch {
+      /* fall through */
+    }
+  }
+  video.currentTime = t;
+  return true;
+}
 // Typography — restrained, editorial
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS = '"Figtree", system-ui, sans-serif';
@@ -58,17 +76,6 @@ function band(p: number, r0: number, r1: number, f0: number, f1: number): number
   return 1 - ss(f0, f1, p);
 }
 
-/** Map scroll progress → quantized video time; skip assign if change is sub-threshold */
-function scrubVideoToProgress(video: HTMLVideoElement, progress: number): boolean {
-  const dur = video.duration;
-  if (!Number.isFinite(dur) || dur <= 0) return false;
-  const raw = progress * dur;
-  const snapped = Math.min(dur, Math.max(0, Math.round(raw * HERO_VIDEO_FPS) / HERO_VIDEO_FPS));
-  if (Math.abs(video.currentTime - snapped) < SEEK_MIN_DELTA_SEC) return true;
-  video.currentTime = snapped;
-  return true;
-}
-
 export default function CinematicHero() {
   const sectionRef     = useRef<HTMLElement>(null);
   const videoRef       = useRef<HTMLVideoElement>(null);
@@ -84,9 +91,8 @@ export default function CinematicHero() {
   const sectionMetricsRef = useRef({ top: 0, scrollable: 1 });
 
   const scrollRafRef = useRef<number | null>(null);
-  const scrubRafRef = useRef<number | null>(null);
-  const targetProgressRef = useRef(0);
-  const renderedProgressRef = useRef(0);
+  /** Last *requested* scrub time — avoids repeat seeks before currentTime catches up */
+  const lastSeekSecRef = useRef<number>(NaN);
   const finaleOnRef = useRef(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
@@ -142,40 +148,6 @@ export default function CinematicHero() {
     el.style.pointerEvents  = on ? 'auto' : 'none';
   }, []);
 
-  const revealVideoIfReady = useCallback((didScrub: boolean) => {
-    if (!didScrub || videoReadyRef.current) return;
-    videoReadyRef.current = true;
-    if (videoRef.current) videoRef.current.style.opacity = '1';
-  }, []);
-
-  const startSmoothScrub = useCallback(() => {
-    if (scrubRafRef.current != null) return;
-
-    const tick = () => {
-      scrubRafRef.current = null;
-
-      const video = videoRef.current;
-      if (!video) return;
-
-      const target = targetProgressRef.current;
-      const current = renderedProgressRef.current;
-      const delta = target - current;
-      const next =
-        Math.abs(delta) < SCRUB_PROGRESS_EPS
-          ? target
-          : current + delta * SCRUB_EASE;
-
-      renderedProgressRef.current = next;
-      revealVideoIfReady(scrubVideoToProgress(video, next));
-
-      if (Math.abs(target - next) >= SCRUB_PROGRESS_EPS) {
-        scrubRafRef.current = requestAnimationFrame(tick);
-      }
-    };
-
-    scrubRafRef.current = requestAnimationFrame(tick);
-  }, [revealVideoIfReady]);
-
   // ── Scroll handler — direct DOM only, no setState ────────────────
   const handleScroll = useCallback(() => {
     const video = videoRef.current;
@@ -222,9 +194,18 @@ export default function CinematicHero() {
     if (progress >= FINALE_PROGRESS) showFinale(true);
     else showFinale(false);
 
-    targetProgressRef.current = progress;
-    startSmoothScrub();
-  }, [showFinale, startSmoothScrub]);
+    const dur = video.duration;
+    let didSeek = false;
+    if (Number.isFinite(dur) && dur > 0) {
+      const snapped = Math.min(dur, Math.max(0, Math.round(progress * dur * HERO_VIDEO_FPS) / HERO_VIDEO_FPS));
+      didSeek = seekSnappedTime(video, snapped, lastSeekSecRef);
+    }
+
+    if (didSeek && !videoReadyRef.current) {
+      videoReadyRef.current = true;
+      if (videoRef.current) videoRef.current.style.opacity = '1';
+    }
+  }, [showFinale]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
@@ -241,8 +222,7 @@ export default function CinematicHero() {
 
     // Reset visibility guard each time the video src changes (e.g. resize crossing mobile breakpoint)
     videoReadyRef.current = false;
-    targetProgressRef.current = 0;
-    renderedProgressRef.current = 0;
+    lastSeekSecRef.current = NaN;
     if (videoRef.current) videoRef.current.style.opacity = '0';
 
     const onMeta = () => {
@@ -274,8 +254,8 @@ export default function CinematicHero() {
     ro?.observe(section as HTMLElement);
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    // Trackpad momentum + touch: `scroll` alone can be sparse while delta is still changing
-    window.addEventListener('wheel', onScroll, { passive: true });
+    // Note: Avoid `wheel` here — it often fires before scrollY updates for that delta, which makes
+    // video scrubbing fight the browser and feel choppy. `scroll` + ResizeObserver covers normal input.
     window.addEventListener('touchmove', onScroll, { passive: true });
     window.addEventListener('resize', onResize, { passive: true });
     const v = videoRef.current;
@@ -287,9 +267,7 @@ export default function CinematicHero() {
     return () => {
       ro?.disconnect();
       if (scrollRafRef.current != null) { cancelAnimationFrame(scrollRafRef.current); scrollRafRef.current = null; }
-      if (scrubRafRef.current != null) { cancelAnimationFrame(scrubRafRef.current); scrubRafRef.current = null; }
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('wheel', onScroll);
       window.removeEventListener('touchmove', onScroll);
       window.removeEventListener('resize', onResize);
       v?.removeEventListener('loadedmetadata', onMeta);

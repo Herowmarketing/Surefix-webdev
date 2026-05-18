@@ -42,6 +42,17 @@ export default function Footer() {
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: 'Georgia, serif' }}>
               Premium home renovation services in Easton, PA and the Greater Lehigh Valley. Family-run and trusted since 2008.
             </p>
+            <div className="mb-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              <Link href="/publications" className="text-[#394696] transition-colors hover:text-white">
+                Publications &amp; blog
+              </Link>
+              <Link href="/about" className="text-white/50 transition-colors hover:text-white">
+                About
+              </Link>
+              <Link href="/reviews" className="text-white/50 transition-colors hover:text-white">
+                Reviews
+              </Link>
+            </div>
             <div className="flex gap-3">
               {[
                 { icon: Facebook, href: BUSINESS.social.facebook, label: 'Facebook' },

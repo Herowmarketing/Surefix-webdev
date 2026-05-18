@@ -54,6 +54,7 @@ export function buildPrimaryNav(services: ServiceNavSlice): PrimaryNavEntry[] {
     },
     { id: 'showroom', label: 'Showroom', href: '/showroom' },
     { id: 'design', label: 'Design', href: '/interior-design' },
+    { id: 'publications', label: 'Publications', href: '/publications' },
     { id: 'about', label: 'About', href: '/about' },
     { id: 'contact', label: 'Contact', href: '/contact' },
   ];
