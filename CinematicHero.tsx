@@ -36,6 +36,14 @@ const SEEK_MIN_DELTA_SEC = 1 / (HERO_VIDEO_FPS * 2);
 
 type VideoWithFastSeek = HTMLVideoElement & { fastSeek?: (time: number) => void };
 
+/** iOS Safari often fails to paint scrubbed frames via fastSeek until the decoder is primed */
+function isTouchSafariLike(): boolean {
+  if (typeof navigator === 'undefined') return false;
+  const ua = navigator.userAgent;
+  const ios = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  return ios || (navigator.maxTouchPoints > 0 && /Safari/.test(ua) && !/Chrome|CriOS|FxiOS/.test(ua));
+}
+
 function seekSnappedTime(video: HTMLVideoElement, snappedSec: number, lastSeekSecRef: { current: number }): boolean {
   const dur = video.duration;
   if (!Number.isFinite(dur) || dur <= 0) return false;
@@ -43,7 +51,8 @@ function seekSnappedTime(video: HTMLVideoElement, snappedSec: number, lastSeekSe
   if (Math.abs(t - lastSeekSecRef.current) < SEEK_MIN_DELTA_SEC) return true;
   lastSeekSecRef.current = t;
   const v = video as VideoWithFastSeek;
-  if (typeof v.fastSeek === 'function') {
+  // fastSeek is unreliable on iOS for scroll-scrubbed MP4 — use currentTime there
+  if (!isTouchSafariLike() && typeof v.fastSeek === 'function') {
     try {
       v.fastSeek(t);
       return true;
@@ -53,6 +62,17 @@ function seekSnappedTime(video: HTMLVideoElement, snappedSec: number, lastSeekSe
   }
   video.currentTime = t;
   return true;
+}
+
+/** iOS requires a brief play/pause cycle before currentTime seeks produce visible frames */
+async function primeVideoDecoder(video: HTMLVideoElement): Promise<void> {
+  try {
+    video.muted = true;
+    await video.play();
+    video.pause();
+  } catch {
+    /* autoplay policies — seek may still work after loadeddata */
+  }
 }
 // Typography — restrained, editorial
 const SERIF = '"Cormorant Garamond", Georgia, serif';
@@ -102,6 +122,14 @@ export default function CinematicHero() {
   );
   /** Keeps the video invisible until the first scroll-seek has landed, preventing a flash of frame 0 on navigation */
   const videoReadyRef = useRef(false);
+  /** React state (not ref) so opacity survives re-renders from matchMedia / context on mobile */
+  const [videoRevealed, setVideoRevealed] = useState(false);
+
+  const revealVideo = useCallback(() => {
+    if (videoReadyRef.current) return;
+    videoReadyRef.current = true;
+    setVideoRevealed(true);
+  }, []);
 
   const { openStepper } = useLeadStepper();
 
@@ -201,11 +229,8 @@ export default function CinematicHero() {
       didSeek = seekSnappedTime(video, snapped, lastSeekSecRef);
     }
 
-    if (didSeek && !videoReadyRef.current) {
-      videoReadyRef.current = true;
-      if (videoRef.current) videoRef.current.style.opacity = '1';
-    }
-  }, [showFinale]);
+    if (didSeek) revealVideo();
+  }, [showFinale, revealVideo]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
@@ -222,12 +247,23 @@ export default function CinematicHero() {
 
     // Reset visibility guard each time the video src changes (e.g. resize crossing mobile breakpoint)
     videoReadyRef.current = false;
+    setVideoRevealed(false);
     lastSeekSecRef.current = NaN;
-    if (videoRef.current) videoRef.current.style.opacity = '0';
 
-    const onMeta = () => {
+    let primed = false;
+    const onMeta = async () => {
       refreshSectionMetrics();
+      const video = videoRef.current;
+      if (video && !primed && isTouchSafariLike()) {
+        primed = true;
+        await primeVideoDecoder(video);
+      }
       handleScroll();
+    };
+    const onSeeked = () => {
+      if (Number.isFinite(videoRef.current?.duration) && (videoRef.current?.duration ?? 0) > 0) {
+        revealVideo();
+      }
     };
     const onScroll = () => {
       if (scrollRafRef.current != null) return;
@@ -262,6 +298,7 @@ export default function CinematicHero() {
     v?.addEventListener('loadedmetadata', onMeta);
     v?.addEventListener('loadeddata', onMeta);
     v?.addEventListener('durationchange', onMeta);
+    v?.addEventListener('seeked', onSeeked);
     onScroll();
 
     return () => {
@@ -273,8 +310,9 @@ export default function CinematicHero() {
       v?.removeEventListener('loadedmetadata', onMeta);
       v?.removeEventListener('loadeddata', onMeta);
       v?.removeEventListener('durationchange', onMeta);
+      v?.removeEventListener('seeked', onSeeked);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -314,8 +352,13 @@ export default function CinematicHero() {
             muted
             playsInline
             preload="auto"
-            className="absolute inset-0"
-            style={{ width: '100vw', height: '100vh', objectFit: 'cover', objectPosition: 'center', opacity: 0, transition: 'opacity 0.4s ease' }}
+            className="absolute inset-0 h-full w-full object-cover object-center"
+            style={{
+              opacity: videoRevealed ? 1 : 0,
+              transition: videoRevealed ? 'opacity 0.4s ease' : 'none',
+              WebkitTransform: 'translateZ(0)',
+              transform: 'translateZ(0)',
+            }}
           />
         ) : (
           <div
