@@ -9,9 +9,9 @@ import { ReactNode } from 'react';
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0d1117]">
+    <div className="flex min-h-screen min-w-0 flex-col overflow-x-hidden bg-[#0d1117]">
       <Navbar />
-      <main className="flex-1">{children}</main>
+      <main className="min-w-0 flex-1">{children}</main>
       <Footer />
     </div>
   );

@@ -46,7 +46,7 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
       animate="visible"
       variants={fadeUp}
       custom={index}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-5 shadow-lg shadow-black/20"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-4 shadow-lg shadow-black/20 sm:p-5"
       style={{ fontFamily: 'Figtree, sans-serif' }}
     >
       <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -82,15 +82,15 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
         {canLink ? (
           isInternal ? (
             <Link href={href}>
-              <span className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-white/[0.08] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35">
-                Read post <ChevronRight size={14} />
+              <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-white/[0.08] px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
+                Read post <ChevronRight size={14} aria-hidden />
               </span>
             </Link>
           ) : (
             <a
               href={href}
               {...(isMailto ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-              className="inline-flex items-center gap-2 rounded-lg bg-white/[0.08] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-white/[0.08] px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
             >
               {isPrint ? (
                 <>
@@ -129,7 +129,7 @@ export default function Publications() {
 
   return (
     <div className="min-h-screen bg-[#0d1117]">
-      <section className="mx-auto max-w-7xl px-5 pb-16 pt-36 lg:px-8">
+      <section className="mx-auto max-w-7xl px-4 pb-16 pt-[max(9rem,calc(8rem+env(safe-area-inset-top,0px)))] sm:px-5 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -143,24 +143,24 @@ export default function Publications() {
             Resources
           </p>
           <h1
-            className="mb-5 text-4xl font-black text-white md:text-5xl"
+            className="mb-4 text-[1.65rem] font-black leading-[1.12] text-white sm:mb-5 sm:text-4xl md:text-5xl"
             style={{ fontFamily: 'Figtree, sans-serif' }}
           >
             Publications &amp; Blog
           </h1>
-          <p className="text-lg leading-relaxed text-white/60" style={{ fontFamily: 'Georgia, serif' }}>
+          <p className="mx-auto max-w-xl text-base leading-relaxed text-white/60 min-[400px]:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
             Browse Sure-Fix print pieces we distribute at home shows and in the community, plus articles from our
             online blog—remodeling tips, project stories, and homeowner guides.
           </p>
         </motion.div>
 
-        <div className="mx-auto mb-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+        <div className="mx-auto mb-8 flex w-full max-w-full justify-center sm:mb-10">
           <div
-            className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] p-1"
+            className="inline-flex max-w-full snap-x snap-mandatory items-center gap-1 overflow-x-auto rounded-full border border-white/[0.1] bg-white/[0.04] p-1 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             role="tablist"
             aria-label="Filter publications"
           >
-            <Filter size={14} className="ml-2 text-white/35 sm:ml-3" aria-hidden />
+            <Filter size={14} className="mx-1 shrink-0 text-white/35 sm:mx-2" aria-hidden />
             {FILTERS.map(({ id, label }) => (
               <button
                 key={id}
@@ -168,7 +168,7 @@ export default function Publications() {
                 role="tab"
                 aria-selected={filter === id}
                 onClick={() => setFilter(id)}
-                className={`rounded-full px-4 py-2 text-xs font-black uppercase tracking-wider transition-colors ${
+                className={`min-h-[44px] shrink-0 snap-start rounded-full px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-colors ${
                   filter === id
                     ? 'bg-[#394696] text-white'
                     : 'text-white/55 hover:text-white'
@@ -208,7 +208,7 @@ export default function Publications() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="mx-auto mt-16 max-w-2xl rounded-2xl border border-[#983631]/25 bg-[#983631]/10 p-8 text-center"
+          className="mx-auto mt-12 max-w-2xl rounded-2xl border border-[#983631]/25 bg-[#983631]/10 px-5 py-7 text-center min-[400px]:p-8 sm:mt-16"
         >
           <h3 className="mb-2 text-xl font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Need a custom packet for your project?
@@ -221,13 +221,13 @@ export default function Publications() {
             <button
               type="button"
               onClick={() => openStepper()}
-              className="rounded-xl px-6 py-3 text-xs font-black uppercase tracking-wider text-white"
+              className="min-h-[48px] w-full rounded-xl px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white min-[480px]:w-auto [-webkit-tap-highlight-color:transparent]"
               style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', border: 'none' }}
             >
               Start a conversation
             </button>
             <Link href="/contact">
-              <span className="inline-flex cursor-pointer items-center rounded-xl border border-white/15 px-6 py-3 text-xs font-black uppercase tracking-wider text-white/85 transition-colors hover:bg-white/[0.06]">
+              <span className="inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center rounded-xl border border-white/15 px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white/85 transition-colors hover:bg-white/[0.06] active:bg-white/[0.1] min-[480px]:w-auto">
                 Contact
               </span>
             </Link>

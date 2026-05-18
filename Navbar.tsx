@@ -88,7 +88,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed left-0 right-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed left-0 right-0 top-0 z-50 pt-[env(safe-area-inset-top,0px)] transition-all duration-300 ${
         solid
           ? 'border-b border-white/5 bg-[#0d1117]/98 shadow-lg shadow-black/30 backdrop-blur-md'
           : 'bg-transparent'
@@ -120,12 +120,12 @@ export default function Navbar() {
       </div>
 
       <LayoutGroup>
-        <nav className="relative flex h-16 items-center justify-between gap-2 px-5 lg:gap-3 lg:px-8">
-          <Link href="/" className="shrink-0">
+        <nav className="relative flex h-16 items-center justify-between gap-1.5 px-3 min-[400px]:gap-2 min-[400px]:px-5 lg:gap-3 lg:px-8">
+          <Link href="/" className="-m-1 shrink-0 p-1 min-[400px]:m-0 min-[400px]:p-0">
             <img
               src={LOGO_URL}
               alt="Sure-Fix Remodeling"
-              className="h-12 w-auto cursor-pointer object-contain"
+              className="h-10 w-auto cursor-pointer object-contain min-[400px]:h-12"
             />
           </Link>
 
@@ -246,7 +246,7 @@ export default function Navbar() {
                 initial={false}
                 className={`overflow-hidden ${mobileOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
                 animate={{
-                  maxWidth: mobileOpen ? (prefersReducedMotion ? 400 : 340) : 0,
+                  maxWidth: mobileOpen ? (prefersReducedMotion ? 420 : 420) : 0,
                   opacity: mobileOpen ? 1 : 0,
                 }}
                 transition={
@@ -256,7 +256,7 @@ export default function Navbar() {
                 }
               >
                 <motion.div
-                  className="flex max-w-[340px] flex-nowrap items-center justify-end gap-1 overflow-x-auto pr-1 [scrollbar-width:none] sm:max-w-[380px] [&::-webkit-scrollbar]:hidden"
+                  className="flex max-w-[min(calc(100vw-9.25rem),21rem)] flex-nowrap items-center justify-end gap-0.5 overflow-x-auto pr-1 [scrollbar-width:none] min-[400px]:max-w-[min(calc(100vw-11rem),24rem)] min-[400px]:gap-1 [&::-webkit-scrollbar]:hidden touch-pan-x"
                   style={{
                     WebkitMaskImage: mobileOpen
                       ? 'linear-gradient(90deg, transparent 0%, black 8%, black 100%)'
@@ -286,7 +286,7 @@ export default function Navbar() {
                           onClick={() =>
                             setMobileServicesOpen((s) => (entry.id === 'services' ? !s : false))
                           }
-                          className={`inline-flex items-center gap-0.5 whitespace-nowrap rounded-md px-2 py-1.5 text-[10px] font-bold uppercase tracking-[0.18em] ${
+                          className={`inline-flex min-h-[44px] items-center gap-0.5 whitespace-nowrap rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-[0.18em] min-[400px]:px-2.5 min-[400px]:text-[11px] ${
                             mobileServicesOpen
                               ? 'text-white'
                               : 'text-white/75 hover:text-white'
@@ -312,7 +312,7 @@ export default function Navbar() {
                             damping: 32,
                           }}
                           onClick={() => setMobileOpen(false)}
-                          className={`inline-block cursor-pointer whitespace-nowrap rounded-md px-2 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] ${
+                          className={`inline-flex min-h-[44px] cursor-pointer items-center whitespace-nowrap rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-[0.2em] min-[400px]:px-2.5 min-[400px]:text-[11px] ${
                             location === (entry as LeafNavEntry).href
                               ? 'text-white'
                               : 'text-white/75 hover:text-white'
@@ -333,7 +333,7 @@ export default function Navbar() {
                 type="button"
                 onClick={() => openStepper()}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex shrink-0 items-center gap-1.5 rounded-lg px-2.5 py-2 text-[9px] font-bold uppercase tracking-wider text-white sm:px-3 sm:text-[10px]"
+                className="inline-flex min-h-[44px] shrink-0 items-center gap-1.5 rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white min-[400px]:px-3.5"
                 style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', border: 'none' }}
               >
                 <span className="hidden min-[400px]:inline">Free Estimate</span>
@@ -347,7 +347,7 @@ export default function Navbar() {
                   setMobileOpen((o) => !o);
                   setMobileServicesOpen(false);
                 }}
-                className="relative z-10 shrink-0 rounded-full py-2 pl-3 pr-1 text-white/90 transition-colors hover:text-white"
+                className="relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:text-white [-webkit-tap-highlight-color:transparent] min-[400px]:size-[2.875rem]"
                 aria-expanded={mobileOpen}
                 aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
               >
@@ -365,7 +365,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -4, scale: 0.99 }}
                   transition={{ duration: 0.22, ease: springEase }}
-                  className="absolute top-full right-0 z-[60] mt-1 max-h-[min(52vh,320px)] w-[min(18rem,calc(100vw-2.5rem))] overflow-y-auto rounded-xl border border-white/[0.1] py-2 shadow-2xl"
+                  className="absolute left-2 right-2 top-full z-[60] mx-auto mt-1 max-h-[min(62dvh,380px)] w-auto max-w-lg overflow-y-auto rounded-xl border border-white/[0.1] py-2 shadow-2xl min-[480px]:left-auto min-[480px]:right-0 min-[480px]:mx-0 min-[480px]:w-[min(18rem,calc(100vw-2.5rem))]"
                   style={{
                     background: 'linear-gradient(165deg,rgba(20,26,38,0.98),rgba(8,11,17,0.99))',
                     backdropFilter: 'blur(18px)',
@@ -378,7 +378,7 @@ export default function Navbar() {
                           setMobileOpen(false);
                           setMobileServicesOpen(false);
                         }}
-                        className="flex cursor-pointer items-center gap-2 px-3 py-2.5 text-xs font-semibold text-white/85 transition-colors hover:bg-white/[0.06] hover:text-white"
+                        className="flex min-h-[48px] cursor-pointer items-center gap-3 px-4 py-3 text-sm font-semibold text-white/85 transition-colors active:bg-white/[0.08] hover:bg-white/[0.06] hover:text-white"
                         style={{ fontFamily: 'Figtree, sans-serif' }}
                         role="menuitem"
                       >

@@ -30,17 +30,17 @@ export default function Home() {
       <CinematicHero />
 
       {/* ─── SOCIAL PROOF BAR ─── */}
-      <section className="py-6 border-y border-white/8" style={{ background: 'rgba(57,70,150,0.08)' }}>
-        <div className="max-w-7xl mx-auto px-5 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+      <section className="border-y border-white/8 py-5 min-[400px]:py-6" style={{ background: 'rgba(57,70,150,0.08)' }}>
+        <div className="mx-auto max-w-7xl px-4 min-[400px]:px-5 lg:px-8">
+          <div className="grid grid-cols-2 gap-4 text-center md:grid-cols-4 md:gap-6">
             {[
               { label: 'Google Reviews', value: '4.5★', sub: '91 reviews' },
               { label: "Angie's List", value: '4.9★', sub: '320 reviews' },
               { label: 'Houzz', value: '4.6★', sub: '23 reviews' },
               { label: 'Facebook', value: '4.8★', sub: '21 votes' },
             ].map((item) => (
-              <div key={item.label} className="flex flex-col items-center gap-0.5">
-                <span className="text-xl font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.value}</span>
+              <div key={item.label} className="flex min-w-0 flex-col items-center gap-0.5 px-1">
+                <span className="text-lg font-black tabular-nums text-white min-[400px]:text-xl" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.value}</span>
                 <span className="text-xs font-bold text-white/40 uppercase tracking-wider" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.label}</span>
                 <span className="text-xs text-white/30" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.sub}</span>
               </div>
@@ -50,7 +50,7 @@ export default function Home() {
       </section>
 
       {/* ─── SERVICES GRID ─── */}
-      <section className="py-20 px-5 lg:px-8 max-w-7xl mx-auto">
+      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8 max-w-7xl mx-auto">
         <motion.div
           initial="hidden" whileInView="visible" viewport={{ once: true, margin: '-80px' }}
           variants={stagger}
@@ -108,7 +108,7 @@ export default function Home() {
       </section>
 
       {/* ─── WHY CHOOSE US ─── */}
-      <section className="py-20 px-5 lg:px-8" style={{ background: 'rgba(57,70,150,0.06)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8" style={{ background: 'rgba(57,70,150,0.06)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
         <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
             <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
@@ -141,7 +141,7 @@ export default function Home() {
       </section>
 
       {/* ─── REVIEWS STRIP ─── */}
-      <section className="py-20 px-5 lg:px-8 max-w-7xl mx-auto">
+      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8 max-w-7xl mx-auto">
         <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
           <motion.div variants={fadeUp} custom={0} className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
             <div>
@@ -180,7 +180,7 @@ export default function Home() {
       </section>
 
       {/* ─── SHOWROOM BLURB ─── */}
-      <section className="py-20 px-5 lg:px-8 relative overflow-hidden">
+      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-white/8">
             {/* Video side — In-House Showroom */}
@@ -218,7 +218,7 @@ export default function Home() {
       </section>
 
       {/* ─── INTERIOR DESIGN BLURB ─── */}
-      <section className="py-20 px-5 lg:px-8 relative overflow-hidden">
+      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-white/8">
             {/* Content side */}
@@ -256,7 +256,7 @@ export default function Home() {
       </section>
 
       {/* ─── CTA BANNER ─── */}
-      <section className="py-20 px-5 lg:px-8 relative overflow-hidden" style={{ background: '#394696' }}>
+      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8 relative overflow-hidden" style={{ background: '#394696' }}>
         <div className="absolute inset-0 opacity-10"
           style={{ backgroundImage: 'radial-gradient(circle at 70% 50%, #983631 0%, transparent 60%)' }} />
         <div className="max-w-4xl mx-auto text-center relative z-10">
