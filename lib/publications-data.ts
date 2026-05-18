@@ -1,6 +1,8 @@
 /**
- * Publications & blog listings — swap placeholders for real assets / URLs as you publish.
+ * Publications & blog listings — blog slugs match lib/blog-content.ts
  */
+
+import { BUSINESS } from '@/lib/constants';
 
 export type PublicationKind = 'print' | 'blog';
 
@@ -8,19 +10,20 @@ export type PublicationItem = {
   readonly id: string;
   readonly title: string;
   readonly kind: PublicationKind;
-  /** Short description for cards */
   readonly excerpt: string;
-  /** Display date */
   readonly dateLabel: string;
-  /** Optional link — PDF, Issuu, article URL, etc. */
+  /** mailto:, http(s), or internal path /publications/blog/:slug */
   readonly href?: string;
-  /** e.g. "Direct mail", "Magazine", "How-to" */
   readonly formatLabel: string;
   /** If false, card shows “coming soon” instead of CTA */
   readonly published?: boolean;
 };
 
-/** Print: mailers, show guides, local ads, inserts — link to PDF or reader when ready */
+function printRequestSubject(title: string): string {
+  return `Request print materials: ${title}`;
+}
+
+/** Print: request-by-email until PDFs are hosted — each card is actionable */
 export const PRINT_PUBLICATIONS: readonly PublicationItem[] = [
   {
     id: 'print-1',
@@ -30,7 +33,8 @@ export const PRINT_PUBLICATIONS: readonly PublicationItem[] = [
       'Room-by-room planning checklist, financing overview, and what to ask before you sign—built for homeowners comparing remodelers.',
     dateLabel: '2026',
     formatLabel: 'Print brochure',
-    published: false,
+    href: `mailto:${BUSINESS.email}?subject=${encodeURIComponent(printRequestSubject('Lehigh Valley Home Remodeling Guide'))}`,
+    published: true,
   },
   {
     id: 'print-2',
@@ -40,7 +44,8 @@ export const PRINT_PUBLICATIONS: readonly PublicationItem[] = [
       'Material pairings, cabinet styles, and before/after highlights from recent Sure-Fix projects across the Valley.',
     dateLabel: '2026',
     formatLabel: 'Lookbook',
-    published: false,
+    href: `mailto:${BUSINESS.email}?subject=${encodeURIComponent(printRequestSubject('Kitchen & Bath Idea Book'))}`,
+    published: true,
   },
   {
     id: 'print-3',
@@ -50,11 +55,12 @@ export const PRINT_PUBLICATIONS: readonly PublicationItem[] = [
       'One-page reference we hand out at regional home shows: timelines, warranty highlights, and how to reach our team.',
     dateLabel: 'Seasonal',
     formatLabel: 'Event handout',
-    published: false,
+    href: `mailto:${BUSINESS.email}?subject=${encodeURIComponent(printRequestSubject('Home Show Quick Sheet'))}`,
+    published: true,
   },
 ];
 
-/** Online blog posts — point href at CMS, Substack, Medium, or your own /blog/slug later */
+/** Online blog — full articles on-site */
 export const BLOG_POSTS: readonly PublicationItem[] = [
   {
     id: 'blog-1',
@@ -62,9 +68,10 @@ export const BLOG_POSTS: readonly PublicationItem[] = [
     kind: 'blog',
     excerpt:
       'Structural surprises, code updates, and how we scope changes without blowing the timeline.',
-    dateLabel: 'Coming soon',
+    dateLabel: 'May 2026',
     formatLabel: 'Article',
-    published: false,
+    href: '/publications/blog/when-repair-turns-remodel',
+    published: true,
   },
   {
     id: 'blog-2',
@@ -72,9 +79,10 @@ export const BLOG_POSTS: readonly PublicationItem[] = [
     kind: 'blog',
     excerpt:
       'A practical breakdown for busy homeowners—where money goes and what lasts longest in real kitchens.',
-    dateLabel: 'Coming soon',
+    dateLabel: 'May 2026',
     formatLabel: 'Guide',
-    published: false,
+    href: '/publications/blog/choosing-cabinets-stock-semi-custom-custom',
+    published: true,
   },
   {
     id: 'blog-3',
@@ -82,9 +90,10 @@ export const BLOG_POSTS: readonly PublicationItem[] = [
     kind: 'blog',
     excerpt:
       'Why we inspect drainage and framing before drywall—and how it protects your investment.',
-    dateLabel: 'Coming soon',
+    dateLabel: 'May 2026',
     formatLabel: 'How-to',
-    published: false,
+    href: '/publications/blog/basement-moisture-finishing-first-steps',
+    published: true,
   },
 ];
 

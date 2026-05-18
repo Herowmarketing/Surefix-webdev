@@ -7,8 +7,9 @@ import {
   BookOpen,
   Newspaper,
   ExternalLink,
-  FileText,
   Filter,
+  Mail,
+  ChevronRight,
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { ALL_PUBLICATIONS, type PublicationItem, type PublicationKind } from '@/lib/publications-data';
@@ -34,6 +35,9 @@ const FILTERS: { id: FilterKey; label: string }[] = [
 function PublicationCard({ item, index }: { item: PublicationItem; index: number }) {
   const isPrint = item.kind === 'print';
   const canLink = Boolean(item.href && item.published !== false);
+  const href = item.href ?? '';
+  const isInternal = href.startsWith('/');
+  const isMailto = href.startsWith('mailto:');
 
   return (
     <motion.article
@@ -76,22 +80,29 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
 
       <div className="mt-auto flex items-center gap-2">
         {canLink ? (
-          <a
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg bg-white/[0.08] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35"
-          >
-            {isPrint ? (
-              <>
-                <FileText size={14} /> View
-              </>
-            ) : (
-              <>
-                Read post <ExternalLink size={13} />
-              </>
-            )}
-          </a>
+          isInternal ? (
+            <Link href={href}>
+              <span className="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-white/[0.08] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35">
+                Read post <ChevronRight size={14} />
+              </span>
+            </Link>
+          ) : (
+            <a
+              href={href}
+              {...(isMailto ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
+              className="inline-flex items-center gap-2 rounded-lg bg-white/[0.08] px-3 py-2 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35"
+            >
+              {isPrint ? (
+                <>
+                  <Mail size={14} /> Request copy
+                </>
+              ) : (
+                <>
+                  Read post <ExternalLink size={13} />
+                </>
+              )}
+            </a>
+          )
         ) : (
           <span className="inline-flex items-center gap-2 rounded-lg border border-dashed border-white/15 px-3 py-2 text-xs font-semibold text-white/40">
             Coming soon

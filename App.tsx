@@ -28,6 +28,7 @@ import Exterior from "./Exterior";
 import Flooring from "./Flooring";
 import Additions from "./Additions";
 import Publications from "./Publications";
+import PublicationArticle from "./PublicationArticle";
 
 // Scroll to top on route change — layout effect runs before paint so the hero scrubber
 // never reads a stale scroll position from the previous page on client-side navigations.
@@ -59,6 +60,7 @@ function Router() {
           <Route path="/reviews" component={Reviews} />
           <Route path="/showroom" component={Showroom} />
           <Route path="/interior-design" component={InteriorDesign} />
+          <Route path="/publications/blog/:slug" component={PublicationArticle} />
           <Route path="/publications" component={Publications} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />
