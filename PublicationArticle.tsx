@@ -15,10 +15,10 @@ export default function PublicationArticle({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-[#0d1117]">
-      <article className="mx-auto max-w-3xl px-5 pb-20 pt-32 lg:px-8">
+      <article className="mx-auto max-w-3xl px-4 pb-[max(5rem,env(safe-area-inset-bottom,0px)+3rem)] pt-[max(8rem,calc(7rem+env(safe-area-inset-top,0px)))] sm:px-6 lg:px-8">
         <Link href="/publications">
-          <span className="mb-8 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#394696] transition-colors hover:text-white">
-            <ArrowLeft size={16} /> Back to publications
+          <span className="mb-6 inline-flex min-h-[44px] cursor-pointer items-center gap-2 py-2 text-sm font-semibold text-[#394696] transition-colors hover:text-white sm:mb-8">
+            <ArrowLeft size={18} aria-hidden /> Back to publications
           </span>
         </Link>
 
@@ -35,14 +35,17 @@ export default function PublicationArticle({ params }: Props) {
             <span className="text-white/35">· {post.dateLabel}</span>
           </p>
           <h1
-            className="mb-8 text-3xl font-black leading-tight text-white md:text-4xl"
+            className="mb-6 text-[1.5rem] font-black leading-snug text-white sm:mb-8 sm:text-3xl md:text-4xl"
             style={{ fontFamily: 'Figtree, sans-serif' }}
           >
             {post.title}
           </h1>
         </motion.header>
 
-        <div className="space-y-5 text-base leading-relaxed text-white/70" style={{ fontFamily: 'Georgia, serif' }}>
+        <div
+          className="space-y-5 text-[1.0625rem] leading-[1.65] text-white/70 sm:text-lg sm:leading-relaxed"
+          style={{ fontFamily: 'Georgia, serif' }}
+        >
           {post.paragraphs.map((p, i) => (
             <motion.p
               key={i}

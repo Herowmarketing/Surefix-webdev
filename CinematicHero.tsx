@@ -344,8 +344,13 @@ export default function CinematicHero() {
           >
             <motion.p
               {...fadeUp(0.3)}
-              className="absolute top-28 left-8 sm:left-14 text-white/38"
-              style={{ fontFamily: SANS, fontSize: 11, letterSpacing: '0.12em', fontWeight: 400 }}
+              className="absolute left-4 text-[11px] leading-normal text-white/38 min-[400px]:left-8 min-[400px]:text-[12px] sm:left-14"
+              style={{
+                fontFamily: SANS,
+                letterSpacing: '0.12em',
+                fontWeight: 400,
+                top: 'max(5.25rem, calc(3.25rem + env(safe-area-inset-top, 0px)))',
+              }}
             >
               Sure Fix
             </motion.p>
@@ -354,8 +359,14 @@ export default function CinematicHero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1, duration: 0.7 }}
-              className="absolute top-28 right-8 sm:right-14 flex items-center gap-2 text-white/28"
-              style={{ fontFamily: SANS, fontSize: 10, letterSpacing: '0.18em', textTransform: 'uppercase', fontWeight: 400 }}
+              className="absolute right-4 flex items-center gap-2 text-[10px] uppercase leading-normal tracking-[0.18em] text-white/28 min-[400px]:right-8 min-[400px]:text-[11px] sm:right-14"
+              style={{
+                fontFamily: SANS,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                fontWeight: 400,
+                top: 'max(5.25rem, calc(3.25rem + env(safe-area-inset-top, 0px)))',
+              }}
             >
               Scroll
               <motion.span
@@ -366,7 +377,7 @@ export default function CinematicHero() {
               />
             </motion.div>
 
-            <div className="absolute inset-x-0 bottom-[13%] sm:bottom-[15%] flex flex-col items-center px-8">
+            <div className="absolute inset-x-0 bottom-[max(13%,env(safe-area-inset-bottom,0px))] flex flex-col items-center px-4 min-[400px]:bottom-[15%] min-[400px]:px-8 sm:bottom-[15%]">
               <motion.h1
                 {...fadeUp(0.5)}
                 className="text-center text-white tracking-tight"
@@ -390,11 +401,11 @@ export default function CinematicHero() {
               </motion.p>
             </div>
 
-            <motion.div {...fadeUp(0.95)} className="absolute bottom-14 left-1/2 -translate-x-1/2 pointer-events-auto">
+            <motion.div {...fadeUp(0.95)} className="absolute bottom-[max(3.25rem,env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 pointer-events-auto min-[400px]:bottom-14">
               <button
                 type="button"
                 onClick={() => openStepper()}
-                className="rounded-full px-9 py-3.5 text-white text-[11px] font-medium tracking-[0.18em] uppercase shadow-lg shadow-black/25 hover:brightness-[1.06] transition-[filter] duration-300"
+                className="min-h-[48px] rounded-full px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-lg shadow-black/25 transition-[filter] duration-300 hover:brightness-[1.06] min-[400px]:px-9 [-webkit-tap-highlight-color:transparent]"
                 style={{ fontFamily: SANS, background: CTA_BLUE, border: 'none' }}
               >
                 Begin your remodel
@@ -405,10 +416,10 @@ export default function CinematicHero() {
           {/* ═══ BEAT II ═════════════════════════════════════════════ */}
           <div
             ref={rightRef}
-            className="absolute inset-y-0 right-0 flex items-center px-8 sm:px-14 md:pr-20 lg:pr-28"
+            className="absolute inset-y-0 right-0 flex items-center px-5 min-[400px]:px-8 sm:px-14 md:pr-20 lg:pr-28"
             style={{ opacity: 0, willChange: 'opacity, transform', ['--p' as string]: '0' }}
           >
-            <div className="max-w-[min(280px,38vw)] text-right">
+            <div className="max-w-[min(22rem,calc(100vw-2.5rem))] text-right sm:max-w-[min(280px,38vw)]">
               <div className="text-white/92" style={{ fontFamily: SERIF, fontWeight: 300, fontSize: 'clamp(1.45rem, 3vw, 2.35rem)', letterSpacing: '-0.03em', lineHeight: 1.08 }}>
                 <span className="sf-mask"><span className="italic">Designed.</span></span>
                 <span className="sf-mask" style={{ marginTop: 4 }}><span className="italic">Built.</span></span>
@@ -423,10 +434,10 @@ export default function CinematicHero() {
           {/* ═══ BEAT III ═══════════════════════════════════════════ */}
           <div
             ref={leftRef}
-            className="absolute inset-y-0 left-0 flex items-center px-8 sm:px-14 md:pl-20 lg:pl-28"
+            className="absolute inset-y-0 left-0 flex items-center px-5 min-[400px]:px-8 sm:px-14 md:pl-20 lg:pl-28"
             style={{ opacity: 0, willChange: 'opacity, transform', ['--p' as string]: '0' }}
           >
-            <div className="max-w-[min(300px,40vw)]">
+            <div className="max-w-[min(22rem,calc(100vw-2.5rem))] sm:max-w-[min(300px,40vw)]">
               <div className="text-white/90" style={{ fontFamily: SERIF, fontWeight: 300, fontSize: 'clamp(1.5rem, 3.1vw, 2.5rem)', letterSpacing: '-0.028em', lineHeight: 1.1 }}>
                 <span className="sf-mask"><span className="font-light">Materials</span></span>
                 <span className="sf-mask" style={{ marginTop: 6 }}><span className="italic">Chosen—not guessed.</span></span>
@@ -440,7 +451,7 @@ export default function CinematicHero() {
           {/* ═══ Finale — visible only while progress ≥ threshold; drops off as soon as you scrub back ═══ */}
           <div
             ref={finaleRef}
-            className="absolute inset-0 z-[11] flex flex-col items-center justify-center px-8"
+            className="absolute inset-0 z-[11] flex flex-col items-center justify-center px-5 min-[400px]:px-8"
             style={{
               opacity: 0,
               transform: 'translateY(14px)',
@@ -453,7 +464,7 @@ export default function CinematicHero() {
               className="pointer-events-none absolute inset-0"
               style={{ background: 'linear-gradient(to top, rgba(13,17,23,0.55) 0%, rgba(13,17,23,0.14) 40%, transparent 72%)' }}
             />
-            <div className="relative z-[1] flex flex-col items-center text-center max-w-md pt-[min(18vh,8rem)] px-6">
+            <div className="relative z-[1] flex max-w-md flex-col items-center px-4 text-center pt-[min(14vh,6rem)] min-[400px]:px-6 min-[400px]:pt-[min(18vh,8rem)]">
               <h2 className="text-white font-light mb-5" style={{ fontFamily: SERIF, fontSize: 'clamp(1.65rem, 3.8vw, 2.35rem)', letterSpacing: '-0.035em', lineHeight: 1.15 }}>
                 <span className="italic opacity-95">One team</span>
                 {' '}
@@ -462,18 +473,18 @@ export default function CinematicHero() {
               <p className="text-white/35 mb-9 text-[11px]" style={{ fontFamily: SANS, fontWeight: 400, letterSpacing: '0.22em', lineHeight: 1.5, textTransform: 'uppercase' as const }}>
                 Estimate · showroom · build
               </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 sm:gap-6 pointer-events-auto">
+              <div className="flex w-full max-w-sm flex-col items-center justify-center gap-4 pointer-events-auto min-[400px]:flex-row min-[400px]:max-w-none min-[400px]:gap-6 sm:flex-row sm:gap-6">
                 <button
                   type="button"
                   onClick={() => openStepper()}
-                  className="rounded-full px-10 py-3.5 text-white text-[11px] font-medium tracking-[0.2em] uppercase shadow-lg shadow-black/25 hover:brightness-[1.06] transition-[filter] duration-300"
+                  className="min-h-[48px] w-full min-[400px]:w-auto rounded-full px-9 py-3.5 text-[11px] font-medium uppercase tracking-[0.2em] text-white shadow-lg shadow-black/25 transition-[filter] duration-300 hover:brightness-[1.06] [-webkit-tap-highlight-color:transparent]"
                   style={{ fontFamily: SANS, background: CTA_BLUE, border: 'none' }}
                 >
                   Free estimate
                 </button>
                 <a
                   href={BUSINESS.phoneHref}
-                  className="text-white/38 hover:text-white/55 transition-colors text-[11px] tracking-[0.14em] uppercase"
+                  className="flex min-h-[48px] min-w-[44px] items-center justify-center text-[11px] uppercase tracking-[0.14em] text-white/38 transition-colors hover:text-white/55 min-[400px]:inline-flex"
                   style={{ fontFamily: SANS, fontWeight: 500 }}
                 >
                   <span className="inline-flex items-center gap-2">

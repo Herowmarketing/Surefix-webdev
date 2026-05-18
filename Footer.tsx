@@ -26,7 +26,7 @@ export default function Footer() {
       {/* Top gradient accent */}
       <div className="h-px bg-gradient-to-r from-transparent via-[#394696]/50 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-5 lg:px-8 py-16">
+      <div className="mx-auto max-w-7xl px-4 py-14 pb-[max(4rem,calc(3rem+env(safe-area-inset-bottom,0px)))] pt-14 min-[400px]:px-5 lg:px-8 lg:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="lg:col-span-1">
@@ -65,7 +65,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-110"
+                  className="flex size-11 min-h-[44px] min-w-[44px] shrink-0 items-center justify-center rounded-lg transition-all duration-200 hover:scale-110 [-webkit-tap-highlight-color:transparent]"
                   style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)' }}
                   onMouseEnter={e => (e.currentTarget.style.background = '#394696')}
                   onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
@@ -119,7 +119,7 @@ export default function Footer() {
             <button
               type="button"
               onClick={() => openStepper()}
-              className="flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-black text-white cursor-pointer uppercase tracking-wider w-full"
+              className="flex min-h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-xs font-black uppercase tracking-wider text-white sm:w-auto [-webkit-tap-highlight-color:transparent]"
               style={{ background: '#983631', border: 'none' }}
             >
               Free Estimate <ArrowRight size={13} />
@@ -129,8 +129,8 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-white/5 py-5">
-        <div className="max-w-7xl mx-auto px-5 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/30">
+      <div className="border-t border-white/5 py-5 pb-[max(1.25rem,env(safe-area-inset-bottom,0px)+0.5rem)]">
+        <div className="max-w-7xl mx-auto px-4 min-[400px]:px-5 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-white/30">
           <p>© {new Date().getFullYear()} Sure-Fix Remodeling LLC. All rights reserved.</p>
           <p>Licensed & Insured · Serving PA, NJ & NY</p>
         </div>

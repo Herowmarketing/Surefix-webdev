@@ -115,6 +115,8 @@
   }
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
   body {
     @apply bg-background text-foreground;
@@ -122,6 +124,10 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+  }
+  #root {
+    min-height: 100vh;
+    min-height: 100dvh;
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Figtree', sans-serif;
