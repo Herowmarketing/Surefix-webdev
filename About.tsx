@@ -26,7 +26,7 @@ export default function About() {
               Our Story
             </motion.p>
             <motion.h1 variants={fadeUp} custom={1} className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight" style={{ fontFamily: 'Figtree, sans-serif' }}>
-              Built on Family.<br />Built to Last.
+              Built on Family.<br />Built for the Forever Home.
             </motion.h1>
             <motion.p variants={fadeUp} custom={2} className="text-white/65 text-lg leading-relaxed mb-6" style={{ fontFamily: 'Georgia, serif' }}>
               Sure-Fix owner Henry Rouhana has a passion for construction that began when he was a young man working alongside his father in Lebanon. He took that passion to college, where he received his degree in Architecture.
@@ -78,6 +78,56 @@ export default function About() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ─── TRUSTED PROFESSIONAL POSITIONING ─── */}
+      <section className="relative overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              'radial-gradient(ellipse 55% 65% at 90% 0%, rgba(57,70,150,0.16) 0%, transparent 60%), radial-gradient(ellipse 55% 60% at 0% 100%, rgba(152,54,49,0.1) 0%, transparent 65%)',
+          }}
+        />
+        <div className="relative mx-auto max-w-5xl px-5 py-20 text-center lg:px-8 lg:py-24">
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-4 text-[10px] font-bold uppercase tracking-[0.4em] text-[#394696]"
+            style={{ fontFamily: 'Figtree, sans-serif' }}
+          >
+            The Trusted Professional sweet spot
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.05 }}
+            className="mx-auto max-w-3xl text-white"
+            style={{
+              fontFamily: '"Cormorant Garamond", Georgia, serif',
+              fontWeight: 300,
+              fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
+              letterSpacing: '-0.022em',
+              lineHeight: 1.05,
+            }}
+          >
+            High-end firm <span className="italic">reliability.</span> Family-run <span className="italic">accountability.</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7, delay: 0.12 }}
+            className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg"
+            style={{ fontFamily: 'Georgia, serif' }}
+          >
+            Sure-Fix delivers the reliability, quality, and service of a high-end firm without the inflated overhead — while far outperforming small general contractors in communication and accountability. It’s why our clients come back, and why they refer the people they love.
+          </motion.p>
         </div>
       </section>
 

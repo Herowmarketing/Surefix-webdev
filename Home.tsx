@@ -5,7 +5,7 @@
  */
 import { motion } from 'framer-motion';
 import { Link } from 'wouter';
-import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle } from 'lucide-react';
+import { Phone, ArrowRight, Star, Shield, Award, Clock, CheckCircle, Home as HomeIcon, Sparkles, Layers } from 'lucide-react';
 import { BUSINESS, SERVICES, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { INTERIOR_DESIGN_HOME_IMAGE } from '@/lib/site-images';
@@ -46,6 +46,138 @@ export default function Home() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ─── FOREVER HOME PILLARS (2026 positioning) ─── */}
+      <section className="relative overflow-hidden border-b border-white/[0.05]">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              'radial-gradient(ellipse 55% 65% at 85% 0%, rgba(57,70,150,0.18) 0%, transparent 60%), radial-gradient(ellipse 55% 60% at 0% 100%, rgba(152,54,49,0.1) 0%, transparent 65%)',
+          }}
+        />
+        <div className="relative mx-auto max-w-7xl px-4 py-20 min-[400px]:px-5 lg:px-8 lg:py-24">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={stagger}
+            className="mb-12 max-w-3xl"
+          >
+            <motion.p
+              variants={fadeUp}
+              custom={0}
+              className="mb-3 text-[10px] font-bold uppercase tracking-[0.4em] text-[#394696]"
+              style={{ fontFamily: 'Figtree, sans-serif' }}
+            >
+              Modernizing Your Forever Home
+            </motion.p>
+            <motion.h2
+              variants={fadeUp}
+              custom={1}
+              className="mb-4 text-white"
+              style={{
+                fontFamily: '"Cormorant Garamond", Georgia, serif',
+                fontWeight: 300,
+                fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
+                letterSpacing: '-0.022em',
+                lineHeight: 1.06,
+              }}
+            >
+              Not <span className="italic">luxury upgrades</span>. The home you live in <span className="italic">for the long haul.</span>
+            </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              custom={2}
+              className="max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              Sure-Fix builds the necessary infrastructure updates alongside the lifestyle improvements you actually feel — so the home you love today still works for you in twenty years. Three pillars guide every project we accept.
+            </motion.p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+            variants={stagger}
+            className="grid grid-cols-1 gap-5 md:grid-cols-3"
+          >
+            {[
+              {
+                icon: HomeIcon,
+                tag: 'Aging in Place',
+                title: 'Custom solutions for forever homes.',
+                body:
+                  'Curb-less showers, lever hardware, wider transitions, primary suites on the main floor — built-in design choices that let you stay where you love, comfortably, for decades.',
+              },
+              {
+                icon: Layers,
+                tag: 'Transformation Specialists',
+                title: 'Authority in additions & full remodels.',
+                body:
+                  'Sunrooms, second-story additions, garage conversions, and whole-home overhauls — engineered to integrate with the architecture you already have and the lifestyle you want next.',
+              },
+              {
+                icon: Sparkles,
+                tag: 'Full-Service Capability',
+                title: 'We handle the complexity so you don’t have to.',
+                body:
+                  'Design, permits, materials, trades, finish work, and the in-house showroom — under one Sure-Fix roof. One number to call, one project manager, one accountability.',
+              },
+            ].map((p, i) => {
+              const Icon = p.icon;
+              return (
+                <motion.article
+                  key={p.tag}
+                  variants={fadeUp}
+                  custom={i}
+                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-white/[0.08] p-7"
+                  style={{
+                    background:
+                      'linear-gradient(155deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.012) 60%, rgba(13,17,23,0.5) 100%)',
+                  }}
+                >
+                  <span
+                    className="inline-flex h-12 w-12 items-center justify-center rounded-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(57,70,150,0.35), rgba(152,54,49,0.22))',
+                      color: '#fff',
+                    }}
+                  >
+                    <Icon size={20} />
+                  </span>
+                  <p
+                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-[#394696]"
+                    style={{ fontFamily: 'Figtree, sans-serif' }}
+                  >
+                    {p.tag}
+                  </p>
+                  <h3
+                    className="text-white"
+                    style={{
+                      fontFamily: '"Cormorant Garamond", Georgia, serif',
+                      fontWeight: 400,
+                      fontSize: 'clamp(1.45rem, 2.4vw, 1.85rem)',
+                      letterSpacing: '-0.014em',
+                      lineHeight: 1.08,
+                    }}
+                  >
+                    {p.title}
+                  </h3>
+                  <p
+                    className="text-sm leading-relaxed text-white/60"
+                    style={{ fontFamily: 'Georgia, serif' }}
+                  >
+                    {p.body}
+                  </p>
+                </motion.article>
+              );
+            })}
+          </motion.div>
         </div>
       </section>
 
@@ -112,11 +244,19 @@ export default function Home() {
         <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
             <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
-              Why Sure-Fix
+              The Trusted Professional sweet spot
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white mb-12 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white mb-4 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Built on Trust. Delivered with Pride.
             </motion.h2>
+            <motion.p
+              variants={fadeUp}
+              custom={2}
+              className="mx-auto mb-12 max-w-2xl text-center text-base leading-relaxed text-white/55"
+              style={{ fontFamily: 'Georgia, serif' }}
+            >
+              Sure-Fix occupies the Trusted Professional sweet spot — the reliability, quality, and service of a high-end firm without the inflated overhead, while far outperforming small general contractors in communication and accountability.
+            </motion.p>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
                 { icon: <Award size={28} />, title: '25+ Years Experience', desc: 'Henry founded Sure-Fix in 2008 after decades in construction. Every project carries that legacy.' },
@@ -195,9 +335,9 @@ export default function Home() {
             <div className="p-10 lg:p-14 flex flex-col justify-center" style={{ background: 'rgba(57,70,150,0.08)' }}>
               <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
                 <p className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>The Sure-Fix Difference</p>
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>Your One-Stop Shop for Everything.</h2>
+                <h2 className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>Full-Service Capability. One roof. One team.</h2>
                 <p className="text-white/60 leading-relaxed mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-                  Most contractors send you to Home Depot or Lowe's to find your own materials. Not us. Sure-Fix has its own showroom stocked with countertops, flooring, tile, fixtures, siding, roofing, and more — all available to touch and compare in person. We supply every material your renovation needs, so your project stays on schedule and on budget.
+                  Most contractors send you to Home Depot or Lowe's to find your own materials. Not us. Sure-Fix runs an in-house showroom stocked with countertops, flooring, tile, brand-allied fixtures, siding, and roofing — every material your forever-home modernization needs, available to touch and compare in person. We handle the complexity so you don’t have to.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-8">
                   {['Countertops', 'Flooring', 'Tile', 'Fixtures', 'Siding', 'Roofing', 'Windows'].map(item => (
@@ -264,12 +404,12 @@ export default function Home() {
             <motion.h2 variants={fadeUp} custom={0}
               className="text-4xl md:text-5xl font-black text-white mb-4"
               style={{ fontFamily: 'Figtree, sans-serif' }}>
-              Ready to Start Your Project?
+              Ready to modernize your forever home?
             </motion.h2>
             <motion.p variants={fadeUp} custom={1}
               className="text-white/75 text-lg mb-8 max-w-xl mx-auto"
               style={{ fontFamily: 'Georgia, serif' }}>
-              Get a free, no-obligation estimate from Lehigh Valley's most trusted remodeling team. We'll visit your home and create a plan around your vision and budget.
+              Free, no-obligation estimate from the Lehigh Valley’s most trusted remodeling team. We'll walk the home with you and put together a plan that respects both the lifestyle upgrades and the infrastructure that has to come with them.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap justify-center gap-4">
               <motion.button
