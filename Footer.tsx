@@ -17,7 +17,16 @@ const SERVICE_LINKS = [
   { label: 'Flooring & Tile', href: '/services/flooring' },
 ];
 
-const AREAS = ['Easton, PA', 'Bethlehem, PA', 'Allentown, PA', 'Phillipsburg, NJ', 'Hackettstown, NJ', 'Washington, NJ'];
+const AREAS: { label: string; href: string }[] = [
+  { label: 'Easton, PA', href: '/locations/easton-pa' },
+  { label: 'Bethlehem, PA', href: '/locations/bethlehem-pa' },
+  { label: 'Allentown, PA', href: '/locations/allentown-pa' },
+  { label: 'Coopersburg, PA', href: '/locations/coopersburg-pa' },
+  { label: 'Center Valley, PA', href: '/locations/center-valley-pa' },
+  { label: 'Phillipsburg, NJ', href: '/locations/phillipsburg-nj' },
+  { label: 'Hackettstown, NJ', href: '/locations/hackettstown-nj' },
+  { label: 'Washington, NJ', href: '/locations/washington-nj' },
+];
 
 export default function Footer() {
   const { openStepper } = useLeadStepper();
@@ -40,11 +49,17 @@ export default function Footer() {
               </Link>
             </div>
             <p className="text-sm leading-relaxed mb-5" style={{ fontFamily: 'Georgia, serif' }}>
-              Premium home renovation services in Easton, PA and the Greater Lehigh Valley. Family-run and trusted since 2008.
+              Modernizing forever homes across Easton, PA and the Greater Lehigh Valley — full-service design-build for aging-in-place, additions, and whole-home transformations. Family-run and trusted since 2008.
             </p>
             <div className="mb-5 flex flex-wrap gap-x-4 gap-y-2 text-sm">
+              <Link href="/promotions" className="text-[#983631] transition-colors hover:text-white">
+                Promotions
+              </Link>
               <Link href="/publications" className="text-[#394696] transition-colors hover:text-white">
                 Publications &amp; blog
+              </Link>
+              <Link href="/locations" className="text-white/50 transition-colors hover:text-white">
+                Locations
               </Link>
               <Link href="/about" className="text-white/50 transition-colors hover:text-white">
                 About
@@ -95,7 +110,11 @@ export default function Footer() {
             <h4 className="text-white font-black text-xs uppercase tracking-widest mb-5">Service Areas</h4>
             <ul className="space-y-2.5">
               {AREAS.map(a => (
-                <li key={a} className="text-sm">{a}</li>
+                <li key={a.label}>
+                  <Link href={a.href}>
+                    <span className="text-sm hover:text-white transition-colors cursor-pointer">{a.label}</span>
+                  </Link>
+                </li>
               ))}
             </ul>
           </div>

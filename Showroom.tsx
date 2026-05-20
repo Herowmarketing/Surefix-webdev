@@ -7,7 +7,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'wouter'
 import { useRef } from 'react'
-import { ArrowRight, CheckCircle, Star, Layers, Wrench, Home } from 'lucide-react'
+import { ArrowRight, CheckCircle, Star, Layers, Wrench, Home, Award, Sparkles, ShieldCheck, Droplets } from 'lucide-react'
 import { Interactive3DMaterial, Interactive3DMaterialFeatured } from '@/components/Interactive3DMaterial'
 import { BUSINESS } from '@/lib/constants'
 import { SHOWROOM_MATERIAL_IMAGES } from '@/lib/site-images'
@@ -89,9 +89,11 @@ const GRID_MATERIALS = [
 ]
 
 const PARTNER_BRANDS = [
+  { name: 'Moen', category: 'Plumbing · Enduring Ally' },
+  { name: 'Gerber', category: 'Toilets · Enduring Ally' },
+  { name: 'Henry', category: 'Building Envelope · Enduring Ally' },
   { name: 'Woodura', category: 'Flooring' },
   { name: 'Kohler', category: 'Plumbing' },
-  { name: 'Moen', category: 'Plumbing' },
   { name: 'James Hardie', category: 'Exterior' },
   { name: 'GAF', category: 'Roofing' },
   { name: 'CertainTeed', category: 'Roofing' },
@@ -106,6 +108,32 @@ const PARTNER_BRANDS = [
   { name: 'Hansgrohe', category: 'Plumbing' },
   { name: 'Andersen', category: 'Windows' },
 ]
+
+/** Enduring Brand Allies bundle — long-standing manufacturer relationships highlighted
+ *  separately from the wider marquee. Marketing brief, 2026 Q1.                                       */
+const ENDURING_ALLIES = [
+  {
+    name: 'Moen',
+    role: 'Plumbing fixtures',
+    icon: Droplets,
+    blurb:
+      'Lifetime-rated finishes, spec-matched valves, and faucet families our crews install every week. Moen sits inside our standard kitchen and bath packages so what you choose on the showroom floor is what shows up at install.',
+  },
+  {
+    name: 'Gerber',
+    role: 'High-efficiency toilets',
+    icon: ShieldCheck,
+    blurb:
+      'Performance-grade toilets that solve real renovation problems — quiet flush, rough-in flexibility, and water-saving ratings that satisfy modern code without sacrificing comfort.',
+  },
+  {
+    name: 'Henry',
+    role: 'Building envelope',
+    icon: Sparkles,
+    blurb:
+      'Weather-resistive barriers, sealants, and roofing adhesives engineered for Pennsylvania weather swings. Henry products quietly do the work that keeps a finish-grade renovation watertight for decades.',
+  },
+] as const
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -275,6 +303,173 @@ export default function Showroom() {
           {GRID_MATERIALS.map((mat, i) => (
             <Interactive3DMaterial key={mat.title} imageUrl={mat.imageUrl} title={mat.title} badge={mat.badge} accentColor={mat.accentColor} index={i} />
           ))}
+        </div>
+      </section>
+
+      {/* ─── OUR ENDURING BRAND ALLIES BUNDLE ─── */}
+      <section className="relative overflow-hidden border-t border-white/[0.06]">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage:
+              'radial-gradient(ellipse 60% 70% at 90% 0%, rgba(57,70,150,0.16) 0%, transparent 60%), radial-gradient(ellipse 60% 65% at 0% 100%, rgba(152,54,49,0.1) 0%, transparent 65%)',
+          }}
+        />
+        <div className="relative mx-auto max-w-7xl px-5 py-20 lg:px-8 lg:py-24">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            variants={stagger}
+            className="mb-12 grid grid-cols-1 items-end gap-8 lg:grid-cols-[1.2fr_1fr]"
+          >
+            <div>
+              <motion.span
+                variants={fadeUp}
+                custom={0}
+                className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[#394696]/40 px-3 py-1 text-[10px] font-black uppercase tracking-[0.32em] text-white/90"
+                style={{ background: 'rgba(57,70,150,0.18)', fontFamily: 'Figtree, sans-serif' }}
+              >
+                <Award size={11} /> Our Enduring Brand Allies Bundle
+              </motion.span>
+              <motion.h2
+                variants={fadeUp}
+                custom={1}
+                className="text-white"
+                style={{
+                  fontFamily: '"Cormorant Garamond", Georgia, serif',
+                  fontWeight: 300,
+                  fontSize: 'clamp(2rem, 4.6vw, 3.1rem)',
+                  letterSpacing: '-0.022em',
+                  lineHeight: 1.06,
+                }}
+              >
+                A <span className="italic">stack above</span> big-box stores.
+              </motion.h2>
+              <motion.p
+                variants={fadeUp}
+                custom={2}
+                className="mt-5 max-w-2xl text-base leading-relaxed text-white/65"
+                style={{ fontFamily: 'Georgia, serif' }}
+              >
+                Most contractors hand you a vendor list and a parking pass. Sure-Fix walks you through a curated material selection inside our showroom — fixtures by <strong className="text-white">Moen</strong>, toilets by <strong className="text-white">Gerber</strong>, and weather-grade envelope products by <strong className="text-white">Henry</strong>. Long-standing manufacturer relationships, applied to every project.
+              </motion.p>
+              <motion.div
+                variants={fadeUp}
+                custom={3}
+                className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-white/[0.08] px-4 py-3 text-sm"
+                style={{ background: 'rgba(255,255,255,0.03)', fontFamily: 'Figtree, sans-serif' }}
+              >
+                <Sparkles size={14} className="text-[#983631]" />
+                <span className="font-bold text-white">Featuring Henry</span>
+                <span className="text-white/55">— bundle add-on ($200 value)</span>
+              </motion.div>
+            </div>
+            <motion.ul
+              variants={fadeUp}
+              custom={1}
+              className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1"
+            >
+              {ENDURING_ALLIES.map((ally) => {
+                const Icon = ally.icon
+                return (
+                  <li
+                    key={ally.name}
+                    className="flex items-start gap-3 rounded-2xl border border-white/[0.08] p-4"
+                    style={{ background: 'rgba(255,255,255,0.025)' }}
+                  >
+                    <span
+                      className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                      style={{ background: 'rgba(57,70,150,0.18)', color: '#cdd5f4' }}
+                    >
+                      <Icon size={15} />
+                    </span>
+                    <div className="min-w-0">
+                      <p
+                        className="text-sm font-black text-white"
+                        style={{ fontFamily: 'Figtree, sans-serif' }}
+                      >
+                        {ally.name}
+                      </p>
+                      <p
+                        className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#394696]"
+                        style={{ fontFamily: 'Figtree, sans-serif' }}
+                      >
+                        {ally.role}
+                      </p>
+                    </div>
+                  </li>
+                )
+              })}
+            </motion.ul>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            variants={stagger}
+            className="grid grid-cols-1 gap-5 md:grid-cols-3"
+          >
+            {ENDURING_ALLIES.map((ally, i) => {
+              const Icon = ally.icon
+              return (
+                <motion.article
+                  key={ally.name}
+                  variants={fadeUp}
+                  custom={i}
+                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-white/[0.08] p-7"
+                  style={{
+                    background:
+                      'linear-gradient(155deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.012) 60%, rgba(13,17,23,0.45) 100%)',
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <span
+                      className="inline-flex h-12 w-12 items-center justify-center rounded-2xl"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(57,70,150,0.35), rgba(152,54,49,0.25))',
+                        color: '#fff',
+                      }}
+                    >
+                      <Icon size={20} />
+                    </span>
+                    <span
+                      className="text-[10px] font-bold uppercase tracking-[0.32em] text-white/40"
+                      style={{ fontFamily: 'Figtree, sans-serif' }}
+                    >
+                      Enduring Ally
+                    </span>
+                  </div>
+                  <h3
+                    className="text-white"
+                    style={{
+                      fontFamily: '"Cormorant Garamond", Georgia, serif',
+                      fontWeight: 400,
+                      fontSize: 'clamp(1.5rem, 2.4vw, 1.85rem)',
+                      letterSpacing: '-0.012em',
+                      lineHeight: 1.05,
+                    }}
+                  >
+                    {ally.name}
+                  </h3>
+                  <p
+                    className="text-[11px] font-bold uppercase tracking-[0.32em] text-[#394696]"
+                    style={{ fontFamily: 'Figtree, sans-serif' }}
+                  >
+                    {ally.role}
+                  </p>
+                  <p
+                    className="text-sm leading-relaxed text-white/65"
+                    style={{ fontFamily: 'Georgia, serif' }}
+                  >
+                    {ally.blurb}
+                  </p>
+                </motion.article>
+              )
+            })}
+          </motion.div>
         </div>
       </section>
 
