@@ -153,6 +153,17 @@ export default function Footer() {
           <p>© {new Date().getFullYear()} Sure-Fix Remodeling LLC. All rights reserved.</p>
           <p>Licensed & Insured · Serving PA, NJ & NY</p>
         </div>
+        <p className="mt-3 text-center text-[10px] tracking-wide text-white/25">
+          Website created by{' '}
+          <a
+            href="https://herowmarketing.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/40 transition-colors hover:text-[#394696]"
+          >
+            Herow Marketing
+          </a>
+        </p>
       </div>
     </footer>
   );
