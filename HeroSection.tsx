@@ -45,7 +45,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0d1117]">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-white">
       {/* ── Video Background ── */}
       <div className="absolute inset-0 z-0">
         <video
@@ -92,7 +92,7 @@ export default function HeroSection() {
           >
             {/* Location badge */}
             <motion.div variants={slideRight} className="mb-7">
-              <span className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-white/20 bg-white/6 backdrop-blur-sm"
+              <span className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full border border-slate-300 bg-white/6 backdrop-blur-sm"
                 style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600, fontSize: '0.7rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.65)' }}>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#983631] animate-pulse flex-shrink-0" />
                 Easton, PA · Lehigh Valley
@@ -117,7 +117,7 @@ export default function HeroSection() {
 
             {/* Subheadline */}
             <motion.p variants={fadeUp}
-              className="text-lg text-white/65 max-w-[480px] mb-8 leading-relaxed"
+              className="text-lg text-slate-600 max-w-[480px] mb-8 leading-relaxed"
               style={{ fontFamily: 'Georgia, serif' }}>
               Premium kitchen, bathroom, basement, and exterior renovations.
               Craftsmanship you can trust — results that last a lifetime.
@@ -129,14 +129,14 @@ export default function HeroSection() {
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} size={13} className="fill-[#983631] text-[#983631]" />
                 ))}
-                <span className="text-white/55 text-xs ml-1" style={{ fontFamily: 'Figtree, sans-serif' }}>5.0</span>
+                <span className="text-slate-600 text-xs ml-1" style={{ fontFamily: 'Figtree, sans-serif' }}>5.0</span>
               </div>
-              <span className="text-white/25">|</span>
-              <span className="text-white/55 text-sm flex items-center gap-1.5" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+              <span className="text-slate-400">|</span>
+              <span className="text-slate-600 text-sm flex items-center gap-1.5" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                 <Shield size={13} className="text-[#394696]" /> Licensed & Insured
               </span>
-              <span className="text-white/25">|</span>
-              <span className="text-white/55 text-sm flex items-center gap-1.5" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+              <span className="text-slate-400">|</span>
+              <span className="text-slate-600 text-sm flex items-center gap-1.5" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                 <Award size={13} className="text-[#394696]" /> 15+ Years
               </span>
             </motion.div>
@@ -163,16 +163,16 @@ export default function HeroSection() {
 
             {/* Stats */}
             <motion.div variants={fadeUp}
-              className="grid grid-cols-3 gap-6 pt-8 border-t border-white/10">
+              className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-200">
               {[
                 { value: '500+', label: 'Projects Done' },
                 { value: '15+', label: 'Years Experience' },
                 { value: '100%', label: 'Licensed & Insured' },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <div className="text-2xl font-black text-white mb-0.5"
+                  <div className="text-2xl font-black text-slate-900 mb-0.5"
                     style={{ fontFamily: 'Figtree, sans-serif' }}>{stat.value}</div>
-                  <div className="text-xs text-white/45 uppercase tracking-wide"
+                  <div className="text-xs text-slate-500 uppercase tracking-wide"
                     style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>{stat.label}</div>
                 </div>
               ))}
@@ -221,7 +221,7 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 2, duration: 0.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-white/35 hover:text-white/65 transition-colors"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-slate-400 hover:text-slate-600 transition-colors"
       >
         <span className="text-[10px] tracking-[0.2em] uppercase"
           style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>Scroll</span>

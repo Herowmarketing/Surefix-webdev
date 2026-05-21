@@ -54,7 +54,7 @@ function PromoBadge({ children, accent }: { children: React.ReactNode; accent: '
       style={{
         borderColor: `${color}66`,
         background: `${color}1f`,
-        color: 'rgba(255,255,255,0.92)',
+        color: '#0f172a',
         fontFamily: SANS,
       }}
     >
@@ -69,10 +69,10 @@ function YearRoundCard({ promo, index }: { promo: PromoBundle; index: number }) 
     <motion.article
       variants={fadeUp}
       custom={index}
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.08] p-6 sm:p-8"
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200 p-6 sm:p-8"
       style={{
         background:
-          'linear-gradient(150deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.015) 60%, rgba(13,17,23,0.4) 100%)',
+          'linear-gradient(150deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%)',
         backdropFilter: 'blur(8px)',
       }}
     >
@@ -87,7 +87,7 @@ function YearRoundCard({ promo, index }: { promo: PromoBundle; index: number }) 
           style={{
             borderColor: `${accent}55`,
             background: `${accent}1a`,
-            color: 'rgba(255,255,255,0.92)',
+            color: '#0f172a',
             fontFamily: SERIF,
           }}
         >
@@ -97,31 +97,31 @@ function YearRoundCard({ promo, index }: { promo: PromoBundle; index: number }) 
       </div>
 
       <p
-        className="mb-1 text-[10px] font-bold uppercase tracking-[0.32em] text-white/40"
+        className="mb-1 text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
         style={{ fontFamily: SANS }}
       >
         {promo.tag}
       </p>
       <h3
-        className="mb-3 text-2xl leading-tight text-white sm:text-[1.65rem]"
+        className="mb-3 text-2xl leading-tight text-slate-900 sm:text-[1.65rem]"
         style={{ fontFamily: SERIF, fontWeight: 400, letterSpacing: '-0.01em' }}
       >
         {promo.title}
       </h3>
       <p
-        className="mb-4 text-base font-semibold text-white/85"
+        className="mb-4 text-base font-semibold text-slate-800"
         style={{ fontFamily: SANS }}
       >
         {promo.headline}
       </p>
       <p
-        className="mb-6 text-sm leading-relaxed text-white/55"
+        className="mb-6 text-sm leading-relaxed text-slate-600"
         style={{ fontFamily: 'Georgia, serif' }}
       >
         {promo.savings}
       </p>
       <p
-        className="mt-auto text-xs italic leading-relaxed text-white/45"
+        className="mt-auto text-xs italic leading-relaxed text-slate-500"
         style={{ fontFamily: 'Georgia, serif' }}
       >
         {promo.positioning}
@@ -136,14 +136,14 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
     <motion.article
       variants={fadeUp}
       custom={index}
-      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/[0.08]"
-      style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.04), rgba(13,17,23,0.55) 75%)' }}
+      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200"
+      style={{ background: 'linear-gradient(180deg, #ffffff, #f8fafc 75%)' }}
     >
       <div
         className="px-6 pt-6 pb-4 sm:px-8 sm:pt-8"
         style={{
           background:
-            'linear-gradient(120deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 70%)',
+            'linear-gradient(120deg, #f8fafc 0%, #ffffff 70%)',
         }}
       >
         <div className="flex items-center justify-between gap-2">
@@ -153,7 +153,7 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
           </PromoBadge>
           {promo.spotlight && (
             <span
-              className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/45"
+              className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500"
               style={{ fontFamily: SANS }}
             >
               {promo.spotlight}
@@ -161,13 +161,13 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
           )}
         </div>
         <p
-          className="mt-5 text-[10px] font-bold uppercase tracking-[0.32em] text-white/45"
+          className="mt-5 text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
           style={{ fontFamily: SANS }}
         >
           {promo.tag}
         </p>
         <h3
-          className="mt-1 text-2xl leading-tight text-white sm:text-[1.7rem]"
+          className="mt-1 text-2xl leading-tight text-slate-900 sm:text-[1.7rem]"
           style={{ fontFamily: SERIF, fontWeight: 400, letterSpacing: '-0.012em' }}
         >
           {promo.title}
@@ -179,35 +179,35 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
           className="flex items-baseline gap-2"
           style={{ fontFamily: SANS }}
         >
-          <span className="text-xl font-black text-white">{promo.headline}</span>
+          <span className="text-xl font-black text-slate-900">{promo.headline}</span>
         </div>
-        <p className="text-sm leading-relaxed text-white/65" style={{ fontFamily: 'Georgia, serif' }}>
+        <p className="text-sm leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
           {promo.savings}
         </p>
 
         {promo.bonus && (
           <div
-            className="flex items-start gap-3 rounded-2xl border border-white/[0.07] px-4 py-3"
-            style={{ background: 'rgba(255,255,255,0.025)' }}
+            className="flex items-start gap-3 rounded-2xl border border-slate-200 px-4 py-3"
+            style={{ background: '#f8fafc' }}
           >
             <span
               className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-              style={{ background: `${accent}26`, color: 'rgba(255,255,255,0.95)' }}
+              style={{ background: `${accent}26`, color: '#0f172a' }}
             >
               <Sparkles size={13} />
             </span>
             <div className="min-w-0">
               <p
-                className="text-[11px] font-bold uppercase tracking-[0.22em] text-white/50"
+                className="text-[11px] font-bold uppercase tracking-[0.22em] text-slate-500"
                 style={{ fontFamily: SANS }}
               >
                 Included Bonus
               </p>
-              <p className="text-sm font-semibold text-white" style={{ fontFamily: SANS }}>
+              <p className="text-sm font-semibold text-slate-900" style={{ fontFamily: SANS }}>
                 {promo.bonus}
               </p>
               {promo.bonusValue && (
-                <p className="text-xs text-white/45" style={{ fontFamily: SANS }}>
+                <p className="text-xs text-slate-500" style={{ fontFamily: SANS }}>
                   {promo.bonusValue}
                 </p>
               )}
@@ -216,7 +216,7 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
         )}
 
         <p
-          className="mt-auto text-xs italic leading-relaxed text-white/55"
+          className="mt-auto text-xs italic leading-relaxed text-slate-600"
           style={{ fontFamily: 'Georgia, serif' }}
         >
           “{promo.positioning}”
@@ -224,7 +224,7 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
 
         {promo.window && (
           <p
-            className="text-[10px] font-bold uppercase tracking-[0.28em] text-white/35"
+            className="text-[10px] font-bold uppercase tracking-[0.28em] text-slate-400"
             style={{ fontFamily: SANS }}
           >
             {promo.window}
@@ -239,7 +239,7 @@ export default function Promotions() {
   const { openStepper } = useLeadStepper();
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
+    <div className="min-h-screen bg-white">
       {/* ── HERO ─────────────────────────────────────────── */}
       <section className="relative overflow-hidden">
         <div
@@ -255,7 +255,7 @@ export default function Promotions() {
           className="absolute inset-0 pointer-events-none opacity-[0.06]"
           style={{
             backgroundImage:
-              'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
+              'linear-gradient(rgba(15,23,42,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.06) 1px, transparent 1px)',
             backgroundSize: '64px 64px',
           }}
         />
@@ -272,7 +272,7 @@ export default function Promotions() {
             <motion.h1
               variants={fadeUp}
               custom={1}
-              className="mb-5 text-white"
+              className="mb-5 text-slate-900"
               style={{
                 fontFamily: SERIF,
                 fontWeight: 300,
@@ -287,7 +287,7 @@ export default function Promotions() {
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="mb-8 max-w-2xl text-base leading-relaxed text-white/65 sm:text-lg"
+              className="mb-8 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               Honest savings, season-aware bundles, and 0% financing for the homeowners who treat their home like a forever home. Every promotion below is built around the same belief: the right project should never feel like a financial detour.
@@ -306,7 +306,7 @@ export default function Promotions() {
               </motion.button>
               <a
                 href={BUSINESS.phoneHref}
-                className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/85 transition-colors hover:bg-white/[0.06]"
+                className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={14} />
@@ -318,7 +318,7 @@ export default function Promotions() {
       </section>
 
       {/* ── YEAR-ROUND PILLARS ───────────────────────────── */}
-      <section className="border-y border-white/[0.06] bg-[rgba(57,70,150,0.06)]">
+      <section className="border-y border-slate-200 bg-[rgba(57,70,150,0.04)]">
         <div className="mx-auto max-w-7xl px-5 py-16 sm:py-20 lg:px-8 lg:py-24">
           <motion.div
             initial="hidden"
@@ -338,7 +338,7 @@ export default function Promotions() {
             <motion.h2
               variants={fadeUp}
               custom={1}
-              className="mb-3 text-white"
+              className="mb-3 text-slate-900"
               style={{
                 fontFamily: SERIF,
                 fontWeight: 300,
@@ -352,7 +352,7 @@ export default function Promotions() {
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="max-w-2xl text-base leading-relaxed text-white/55"
+              className="max-w-2xl text-base leading-relaxed text-slate-600"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               These offers are always live — no expiration, no fine-print countdown. Whether you’re a returning client, a service member, a service-area neighbor, or someone planning a long-horizon transformation, there’s a Sure-Fix pathway sized to your project.
@@ -380,7 +380,7 @@ export default function Promotions() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative grid grid-cols-1 gap-0 overflow-hidden rounded-3xl border border-white/[0.08] lg:grid-cols-[1.1fr_1fr]"
+          className="relative grid grid-cols-1 gap-0 overflow-hidden rounded-3xl border border-slate-200 lg:grid-cols-[1.1fr_1fr]"
           style={{
             background:
               'linear-gradient(135deg, rgba(57,70,150,0.18) 0%, rgba(152,54,49,0.12) 100%)',
@@ -404,7 +404,7 @@ export default function Promotions() {
               style={{ perspective: 1200 }}
             >
               <div
-                className="overflow-hidden rounded-2xl border border-white/15 p-6 sm:p-7"
+                className="overflow-hidden rounded-2xl border border-slate-300 p-6 sm:p-7"
                 style={{
                   background:
                     'linear-gradient(135deg, #0d1117 0%, #1a2440 50%, #983631 100%)',
@@ -414,22 +414,22 @@ export default function Promotions() {
               >
                 <div className="flex items-center justify-between">
                   <span
-                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-white/60"
+                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-slate-600"
                     style={{ fontFamily: SANS }}
                   >
                     Sure-Fix · Friends & Family
                   </span>
-                  <Gift size={18} className="text-white/70" />
+                  <Gift size={18} className="text-slate-700" />
                 </div>
                 <div className="mt-8 mb-2">
                   <p
-                    className="text-[10px] font-semibold uppercase tracking-[0.32em] text-white/50"
+                    className="text-[10px] font-semibold uppercase tracking-[0.32em] text-slate-500"
                     style={{ fontFamily: SANS }}
                   >
                     Gift Card Value
                   </p>
                   <p
-                    className="mt-1 leading-none text-white"
+                    className="mt-1 leading-none text-slate-900"
                     style={{
                       fontFamily: SERIF,
                       fontWeight: 400,
@@ -442,13 +442,13 @@ export default function Promotions() {
                 </div>
                 <div className="mt-6 flex items-end justify-between">
                   <p
-                    className="text-xs italic text-white/60"
+                    className="text-xs italic text-slate-600"
                     style={{ fontFamily: 'Georgia, serif' }}
                   >
                     Toward any future Sure-Fix project.
                   </p>
                   <p
-                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-white/50"
+                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
                     style={{ fontFamily: SANS }}
                   >
                     Est. 2008
@@ -464,7 +464,7 @@ export default function Promotions() {
               <Gift size={11} /> Friends & Family
             </PromoBadge>
             <h3
-              className="text-white"
+              className="text-slate-900"
               style={{
                 fontFamily: SERIF,
                 fontWeight: 300,
@@ -475,17 +475,17 @@ export default function Promotions() {
             >
               A keepsake card. <span className="italic">Real design budget.</span>
             </h3>
-            <p className="text-base leading-relaxed text-white/65" style={{ fontFamily: 'Georgia, serif' }}>
+            <p className="text-base leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
               Present the $500 Friends & Family card at your first appointment and we’ll apply it directly to your future project. Pass it along, frame it, gift it — and when your loved one is ready to remodel, the savings are waiting.
             </p>
-            <div className="mt-1 rounded-2xl border border-white/[0.08] bg-white/[0.025] p-4">
+            <div className="mt-1 rounded-2xl border border-slate-200 bg-white/[0.025] p-4">
               <p
-                className="mb-1 text-[10px] font-bold uppercase tracking-[0.28em] text-white/55"
+                className="mb-1 text-[10px] font-bold uppercase tracking-[0.28em] text-slate-600"
                 style={{ fontFamily: SANS }}
               >
                 Terms apply
               </p>
-              <p className="text-xs leading-relaxed text-white/50" style={{ fontFamily: 'Georgia, serif' }}>
+              <p className="text-xs leading-relaxed text-slate-500" style={{ fontFamily: 'Georgia, serif' }}>
                 {GIFT_CARD_TERMS}
               </p>
             </div>
@@ -494,7 +494,7 @@ export default function Promotions() {
       </section>
 
       {/* ── MONTHLY + SEASONAL BUNDLES ───────────────────── */}
-      <section className="border-y border-white/[0.06]">
+      <section className="border-y border-slate-200">
         <div className="mx-auto max-w-7xl px-5 py-16 sm:py-20 lg:px-8 lg:py-24">
           <motion.div
             initial="hidden"
@@ -514,7 +514,7 @@ export default function Promotions() {
             <motion.h2
               variants={fadeUp}
               custom={1}
-              className="mb-3 text-white"
+              className="mb-3 text-slate-900"
               style={{
                 fontFamily: SERIF,
                 fontWeight: 300,
@@ -528,7 +528,7 @@ export default function Promotions() {
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="max-w-2xl text-base leading-relaxed text-white/55"
+              className="max-w-2xl text-base leading-relaxed text-slate-600"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               Each bundle pairs a project discount with a free professional add-on — design preview, energy analysis, durability assessment — that genuinely de-risks the decision. Use them as planning tools first, savings second.
@@ -573,7 +573,7 @@ export default function Promotions() {
                 <Wallet size={11} /> 0% Financing · Year-round
               </PromoBadge>
               <h3
-                className="mt-5 text-white"
+                className="mt-5 text-slate-900"
                 style={{
                   fontFamily: SERIF,
                   fontWeight: 300,
@@ -584,7 +584,7 @@ export default function Promotions() {
               >
                 <span className="italic">Finance smarter.</span> Build better.
               </h3>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-white/65" style={{ fontFamily: 'Georgia, serif' }}>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
                 Twelve months of zero-interest financing with flexible payment plans. We build the timeline around your life — not around the calendar of an outside lender — so the right project never has to wait for the right month.
               </p>
               <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -596,7 +596,7 @@ export default function Promotions() {
                 ].map((line) => (
                   <li
                     key={line}
-                    className="flex items-center gap-2 text-sm text-white/75"
+                    className="flex items-center gap-2 text-sm text-slate-700"
                     style={{ fontFamily: SANS, fontWeight: 600 }}
                   >
                     <CheckCircle2 size={15} className="text-[#394696]" />
@@ -620,7 +620,7 @@ export default function Promotions() {
               </motion.button>
               <Link href="/contact">
                 <span
-                  className="inline-flex min-h-[52px] cursor-pointer items-center justify-center gap-2 rounded-2xl border border-white/20 px-7 py-4 text-[12px] font-bold uppercase tracking-[0.22em] text-white/85 transition-colors hover:bg-white/[0.06]"
+                  className="inline-flex min-h-[52px] cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-300 px-7 py-4 text-[12px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                   style={{ fontFamily: SANS }}
                 >
                   Talk to our team

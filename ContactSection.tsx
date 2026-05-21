@@ -37,7 +37,7 @@ export default function ContactSection() {
   };
 
   const inputClass = `w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none transition-all duration-200`
-    + ` bg-white/5 border border-white/10 focus:border-[#394696]/60 focus:bg-white/8 focus:ring-2 focus:ring-[#394696]/20`;
+    + ` bg-white/5 border border-slate-200 focus:border-[#394696]/60 focus:bg-white/8 focus:ring-2 focus:ring-[#394696]/20`;
 
   return (
     <section id="contact" className="py-24 bg-[#111827]" ref={ref}>
@@ -50,11 +50,11 @@ export default function ContactSection() {
           className="text-center mb-16"
         >
           <span className="section-label justify-center mb-4 block">Get Started</span>
-          <h2 className="text-4xl lg:text-5xl font-black text-white mb-4"
+          <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-4"
             style={{ fontFamily: 'Figtree, sans-serif', lineHeight: 1.05 }}>
             Request Your Free Estimate
           </h2>
-          <p className="text-white/50 text-lg max-w-xl mx-auto"
+          <p className="text-slate-500 text-lg max-w-xl mx-auto"
             style={{ fontFamily: 'Georgia, serif' }}>
             Tell us about your project and we'll get back to you within 24 hours to schedule your free in-home consultation.
           </p>
@@ -73,16 +73,16 @@ export default function ContactSection() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="rounded-2xl p-10 text-center"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                style={{ background: '#f1f5f9', border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                   style={{ background: 'rgba(57,70,150,0.2)', border: '1px solid rgba(57,70,150,0.4)' }}>
                   <CheckCircle2 size={32} className="text-[#394696]" />
                 </div>
-                <h3 className="text-2xl font-black text-white mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
+                <h3 className="text-2xl font-black text-slate-900 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
                   Request Received!
                 </h3>
-                <p className="text-white/55" style={{ fontFamily: 'Georgia, serif' }}>
+                <p className="text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
                   We'll contact you within 24 hours to schedule your free consultation. Looking forward to working with you!
                 </p>
               </motion.div>
@@ -90,11 +90,11 @@ export default function ContactSection() {
               <form
                 onSubmit={handleSubmit}
                 className="rounded-2xl p-8 space-y-5"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                style={{ background: '#f1f5f9', border: '1px solid rgba(255,255,255,0.08)' }}
               >
                 <div className="grid sm:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2"
+                    <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
                       style={{ fontFamily: 'Figtree, sans-serif' }}>Full Name *</label>
                     <input required type="text" value={form.name}
                       onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
@@ -102,7 +102,7 @@ export default function ContactSection() {
                       style={{ fontFamily: 'Figtree, sans-serif' }} />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2"
+                    <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
                       style={{ fontFamily: 'Figtree, sans-serif' }}>Phone Number *</label>
                     <input required type="tel" value={form.phone}
                       onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
@@ -111,7 +111,7 @@ export default function ContactSection() {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2"
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
                     style={{ fontFamily: 'Figtree, sans-serif' }}>Email Address *</label>
                   <input required type="email" value={form.email}
                     onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
@@ -119,7 +119,7 @@ export default function ContactSection() {
                     style={{ fontFamily: 'Figtree, sans-serif' }} />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2"
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
                     style={{ fontFamily: 'Figtree, sans-serif' }}>Service Needed</label>
                   <select value={form.service}
                     onChange={e => setForm(f => ({ ...f, service: e.target.value }))}
@@ -132,7 +132,7 @@ export default function ContactSection() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-white/50 mb-2"
+                  <label className="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2"
                     style={{ fontFamily: 'Figtree, sans-serif' }}>Tell Us About Your Project</label>
                   <textarea rows={4} value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
@@ -148,7 +148,7 @@ export default function ContactSection() {
                 >
                   Send My Request <ArrowRight size={16} />
                 </motion.button>
-                <p className="text-white/30 text-xs text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+                <p className="text-slate-400 text-xs text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
                   We respond within 24 hours. No spam, ever.
                 </p>
               </form>
@@ -178,7 +178,7 @@ export default function ContactSection() {
                 transition={{ duration: 0.2 }}
                 className="flex items-start gap-4 rounded-xl p-4 group transition-all duration-200"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
+                  background: '#f1f5f9',
                   border: '1px solid rgba(255,255,255,0.08)',
                 }}
               >
@@ -189,7 +189,7 @@ export default function ContactSection() {
                 <div>
                   <p className="text-xs font-bold uppercase tracking-widest mb-0.5"
                     style={{ color, fontFamily: 'Figtree, sans-serif' }}>{label}</p>
-                  <p className="text-white/70 font-semibold text-sm"
+                  <p className="text-slate-700 font-semibold text-sm"
                     style={{ fontFamily: 'Figtree, sans-serif' }}>{value}</p>
                 </div>
               </motion.a>

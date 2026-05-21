@@ -46,15 +46,15 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
       animate="visible"
       variants={fadeUp}
       custom={index}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.06] to-white/[0.02] p-4 shadow-lg shadow-black/20 sm:p-5"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white p-4 shadow-lg shadow-black/20 sm:p-5"
       style={{ fontFamily: 'Figtree, sans-serif' }}
     >
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <span
           className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
             isPrint
-              ? 'border border-[#394696]/40 bg-[#394696]/20 text-white/90'
-              : 'border border-[#983631]/40 bg-[#983631]/15 text-white/90'
+              ? 'border border-[#394696]/40 bg-[#394696]/20 text-slate-800'
+              : 'border border-[#983631]/40 bg-[#983631]/15 text-slate-800'
           }`}
         >
           {isPrint ? (
@@ -67,14 +67,14 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
             </>
           )}
         </span>
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-white/40">
+        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
           {item.formatLabel}
         </span>
-        <span className="ml-auto text-[10px] text-white/35">{item.dateLabel}</span>
+        <span className="ml-auto text-[10px] text-slate-400">{item.dateLabel}</span>
       </div>
 
       <h2 className="mb-2 text-lg font-black leading-snug text-white">{item.title}</h2>
-      <p className="mb-5 flex-1 text-sm leading-relaxed text-white/55" style={{ fontFamily: 'Georgia, serif' }}>
+      <p className="mb-5 flex-1 text-sm leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
         {item.excerpt}
       </p>
 
@@ -82,7 +82,7 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
         {canLink ? (
           isInternal ? (
             <Link href={href}>
-              <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-white/[0.08] px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
+              <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
                 Read post <ChevronRight size={14} aria-hidden />
               </span>
             </Link>
@@ -90,7 +90,7 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
             <a
               href={href}
               {...(isMailto ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-white/[0.08] px-4 py-3 text-xs font-bold text-white transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
             >
               {isPrint ? (
                 <>
@@ -104,7 +104,7 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
             </a>
           )
         ) : (
-          <span className="inline-flex items-center gap-2 rounded-lg border border-dashed border-white/15 px-3 py-2 text-xs font-semibold text-white/40">
+          <span className="inline-flex items-center gap-2 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-xs font-semibold text-slate-500">
             Coming soon
           </span>
         )}
@@ -128,7 +128,7 @@ export default function Publications() {
   }, [filter]);
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
+    <div className="min-h-screen bg-white">
       <section className="mx-auto max-w-7xl px-4 pb-16 pt-[max(9rem,calc(8rem+env(safe-area-inset-top,0px)))] sm:px-5 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -148,7 +148,7 @@ export default function Publications() {
           >
             Publications &amp; Blog
           </h1>
-          <p className="mx-auto max-w-xl text-base leading-relaxed text-white/60 min-[400px]:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
+          <p className="mx-auto max-w-xl text-base leading-relaxed text-slate-600 min-[400px]:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
             Browse Sure-Fix print pieces we distribute at home shows and in the community, plus articles from our
             online blog—remodeling tips, project stories, and homeowner guides.
           </p>
@@ -156,11 +156,11 @@ export default function Publications() {
 
         <div className="mx-auto mb-8 flex w-full max-w-full justify-center sm:mb-10">
           <div
-            className="inline-flex max-w-full snap-x snap-mandatory items-center gap-1 overflow-x-auto rounded-full border border-white/[0.1] bg-white/[0.04] p-1 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            className="inline-flex max-w-full snap-x snap-mandatory items-center gap-1 overflow-x-auto rounded-full border border-white/[0.1] bg-slate-50 p-1 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             role="tablist"
             aria-label="Filter publications"
           >
-            <Filter size={14} className="mx-1 shrink-0 text-white/35 sm:mx-2" aria-hidden />
+            <Filter size={14} className="mx-1 shrink-0 text-slate-400 sm:mx-2" aria-hidden />
             {FILTERS.map(({ id, label }) => (
               <button
                 key={id}
@@ -171,7 +171,7 @@ export default function Publications() {
                 className={`min-h-[44px] shrink-0 snap-start rounded-full px-4 py-2.5 text-xs font-black uppercase tracking-wider transition-colors ${
                   filter === id
                     ? 'bg-[#394696] text-white'
-                    : 'text-white/55 hover:text-white'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
                 style={{ fontFamily: 'Figtree, sans-serif' }}
               >
@@ -198,7 +198,7 @@ export default function Publications() {
         </AnimatePresence>
 
         {filtered.length === 0 && (
-          <p className="py-12 text-center text-white/45" style={{ fontFamily: 'Figtree, sans-serif' }}>
+          <p className="py-12 text-center text-slate-500" style={{ fontFamily: 'Figtree, sans-serif' }}>
             No items in this category yet.
           </p>
         )}
@@ -210,10 +210,10 @@ export default function Publications() {
           transition={{ duration: 0.5 }}
           className="mx-auto mt-12 max-w-2xl rounded-2xl border border-[#983631]/25 bg-[#983631]/10 px-5 py-7 text-center min-[400px]:p-8 sm:mt-16"
         >
-          <h3 className="mb-2 text-xl font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>
+          <h3 className="mb-2 text-xl font-black text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Need a custom packet for your project?
           </h3>
-          <p className="mb-5 text-sm leading-relaxed text-white/65" style={{ fontFamily: 'Georgia, serif' }}>
+          <p className="mb-5 text-sm leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
             Ask us for physical collateral, or subscribe to new blog posts—we&apos;ll tailor recommendations to your
             remodel.
           </p>
@@ -227,7 +227,7 @@ export default function Publications() {
               Start a conversation
             </button>
             <Link href="/contact">
-              <span className="inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center rounded-xl border border-white/15 px-6 py-3.5 text-xs font-black uppercase tracking-wider text-white/85 transition-colors hover:bg-white/[0.06] active:bg-white/[0.1] min-[480px]:w-auto">
+              <span className="inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center rounded-xl border border-slate-300 px-6 py-3.5 text-xs font-black uppercase tracking-wider text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-200 min-[480px]:w-auto">
                 Contact
               </span>
             </Link>

@@ -58,7 +58,7 @@ function ProgressBar({ step, total }: { step: number; total: number }) {
           />
         </div>
       ))}
-      <span className="text-xs text-white/40 font-semibold ml-1 whitespace-nowrap">
+      <span className="text-xs text-slate-500 font-semibold ml-1 whitespace-nowrap">
         {step} / {total}
       </span>
     </div>
@@ -103,10 +103,10 @@ function Step1({
 }) {
   return (
     <div>
-      <h2 className="text-2xl font-black text-white mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
         What are you looking to renovate?
       </h2>
-      <p className="text-sm text-white/50 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
         Select the project type that best fits your needs.
       </p>
       <div className="grid grid-cols-2 gap-3">
@@ -115,8 +115,8 @@ function Step1({
             <div className="flex items-center gap-3">
               <span className="text-xl leading-none">{s.icon}</span>
               <div>
-                <div className="text-sm font-bold text-white">{s.label}</div>
-                <div className="text-xs text-white/40 leading-tight">{s.desc}</div>
+                <div className="text-sm font-bold text-slate-900">{s.label}</div>
+                <div className="text-xs text-slate-500 leading-tight">{s.desc}</div>
               </div>
             </div>
           </OptionCard>
@@ -135,10 +135,10 @@ function Step2({
 }) {
   return (
     <div>
-      <h2 className="text-2xl font-black text-white mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
         When are you hoping to start?
       </h2>
-      <p className="text-sm text-white/50 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
         This helps us schedule your free estimate at the right time.
       </p>
       <div className="flex flex-col gap-3">
@@ -146,8 +146,8 @@ function Step2({
           <OptionCard key={t.id} selected={timeline === t.id} onClick={() => onTimeline(t.id)}>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-bold text-white">{t.label}</div>
-                <div className="text-xs text-white/40">{t.sub}</div>
+                <div className="text-sm font-bold text-slate-900">{t.label}</div>
+                <div className="text-xs text-slate-500">{t.sub}</div>
               </div>
               {timeline === t.id && (
                 <motion.div
@@ -175,10 +175,10 @@ function Step3({
 }) {
   return (
     <div>
-      <h2 className="text-2xl font-black text-white mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
         What's your approximate budget?
       </h2>
-      <p className="text-sm text-white/50 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
         No commitment — this helps us tailor the right solution for you.
       </p>
       <div className="flex flex-col gap-3">
@@ -186,8 +186,8 @@ function Step3({
           <OptionCard key={b.id} selected={budget === b.id} onClick={() => onBudget(b.id)}>
             <div className="flex items-center justify-between">
               <div>
-                <div className="text-sm font-bold text-white">{b.label}</div>
-                <div className="text-xs text-white/40">{b.sub}</div>
+                <div className="text-sm font-bold text-slate-900">{b.label}</div>
+                <div className="text-xs text-slate-500">{b.sub}</div>
               </div>
               {budget === b.id && (
                 <motion.div
@@ -214,22 +214,22 @@ function Step4({
   onChange: (field: string, value: string) => void
 }) {
   const inputClass = `
-    w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/30
-    bg-white/5 border border-white/10
+    w-full px-4 py-3 rounded-xl text-sm text-slate-900 placeholder-slate-400 bg-white border border-slate-200
+    bg-white/5 border border-slate-200
     focus:outline-none focus:border-[#394696] focus:bg-white/8
     transition-all duration-200
   `
   return (
     <div>
-      <h2 className="text-2xl font-black text-white mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
         Almost there — how do we reach you?
       </h2>
-      <p className="text-sm text-white/50 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
         We'll reach out within 24 hours to schedule your free, no-obligation estimate.
       </p>
       <div className="flex flex-col gap-4">
         <div className="relative">
-          <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
+          <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             className={inputClass + ' pl-10'}
             placeholder="Full Name *"
@@ -239,7 +239,7 @@ function Step4({
           />
         </div>
         <div className="relative">
-          <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
+          <Phone size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             className={inputClass + ' pl-10'}
             placeholder="Phone Number *"
@@ -250,7 +250,7 @@ function Step4({
           />
         </div>
         <div className="relative">
-          <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
+          <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             className={inputClass + ' pl-10'}
             placeholder="Email Address *"
@@ -261,7 +261,7 @@ function Step4({
           />
         </div>
         <div className="relative">
-          <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/30" />
+          <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             className={inputClass + ' pl-10'}
             placeholder="ZIP Code"
@@ -271,7 +271,7 @@ function Step4({
             maxLength={5}
           />
         </div>
-        <p className="text-xs text-white/25 leading-relaxed">
+        <p className="text-xs text-slate-400 leading-relaxed">
           By submitting you agree to be contacted by Sure-Fix Remodeling. We never share your info.
         </p>
       </div>
@@ -296,15 +296,15 @@ function StepSuccess({ name }: { name: string }) {
       >
         <CheckCircle2 size={40} className="text-[#394696]" />
       </motion.div>
-      <h2 className="text-2xl font-black text-white mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>
+      <h2 className="text-2xl font-black text-slate-900 mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>
         {name ? `Thanks, ${name.split(' ')[0]}!` : 'Request Received!'}
       </h2>
-      <p className="text-white/60 leading-relaxed max-w-xs" style={{ fontFamily: 'Georgia, serif' }}>
-        We'll be in touch within <strong className="text-white">24 hours</strong> to schedule your free, no-obligation estimate.
+      <p className="text-slate-600 leading-relaxed max-w-xs" style={{ fontFamily: 'Georgia, serif' }}>
+        We'll be in touch within <strong className="text-slate-900">24 hours</strong> to schedule your free, no-obligation estimate.
       </p>
       <div
-        className="mt-6 px-5 py-3 rounded-xl text-sm font-bold text-white/50"
-        style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)' }}
+        className="mt-6 px-5 py-3 rounded-xl text-sm font-bold text-slate-500"
+        style={{ background: '#f8fafc', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         📞 (610) 392-0990 · Mon–Fri 8AM–7PM
       </div>
@@ -434,7 +434,7 @@ export default function LeadStepper() {
             <div
               className="relative w-full max-w-lg rounded-2xl overflow-hidden"
               style={{
-                background: 'linear-gradient(145deg, #0f1520 0%, #0d1117 100%)',
+                background: 'linear-gradient(145deg, #ffffff 0%, #f8fafc 100%)',
                 border: '1px solid rgba(57,70,150,0.25)',
                 boxShadow: '0 32px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(57,70,150,0.1)',
                 pointerEvents: 'auto',
@@ -452,14 +452,14 @@ export default function LeadStepper() {
                     Free Estimate
                   </div>
                   {!submitted && (
-                    <div className="text-xs text-white/30 font-medium">
+                    <div className="text-xs text-slate-400 font-medium">
                       Step {step} of {TOTAL_STEPS} — {stepLabel}
                     </div>
                   )}
                 </div>
                 <button
                   onClick={closeStepper}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
+                  className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all"
                 >
                   <X size={16} />
                 </button>
@@ -520,7 +520,7 @@ export default function LeadStepper() {
                   <button
                     onClick={goBack}
                     disabled={step === 1}
-                    className="flex items-center gap-1.5 text-sm font-semibold text-white/40 hover:text-white disabled:opacity-0 disabled:pointer-events-none transition-all"
+                    className="flex items-center gap-1.5 text-sm font-semibold text-slate-500 hover:text-slate-900 disabled:opacity-0 disabled:pointer-events-none transition-all"
                   >
                     <ArrowLeft size={15} /> Back
                   </button>
@@ -530,7 +530,7 @@ export default function LeadStepper() {
                     disabled={!canAdvance()}
                     whileHover={canAdvance() ? { scale: 1.03 } : {}}
                     whileTap={canAdvance() ? { scale: 0.97 } : {}}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white uppercase tracking-wider transition-all duration-200"
+                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-slate-900 uppercase tracking-wider transition-all duration-200"
                     style={{
                       background: canAdvance() ? '#983631' : 'rgba(255,255,255,0.08)',
                       color: canAdvance() ? '#fff' : 'rgba(255,255,255,0.3)',
@@ -550,7 +550,7 @@ export default function LeadStepper() {
                     onClick={closeStepper}
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="px-8 py-3 rounded-xl text-sm font-black text-white uppercase tracking-wider"
+                    className="px-8 py-3 rounded-xl text-sm font-black text-slate-900 uppercase tracking-wider"
                     style={{ background: '#394696', fontFamily: 'Figtree, sans-serif' }}
                   >
                     Close

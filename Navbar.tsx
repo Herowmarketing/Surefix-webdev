@@ -18,25 +18,29 @@ type LeafNavEntry = Extract<PrimaryNavEntry, { href: string }>;
 const PRIMARY_NAV_ENTRIES = buildPrimaryNav(SERVICES);
 const springEase: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-function MenuMorphGlyph({ open }: { open: boolean }) {
+function MenuMorphGlyph({ open, light }: { open: boolean; light?: boolean }) {
+  const line = light ? 'bg-slate-900' : 'bg-white';
+  const lineMuted = light ? 'bg-slate-800' : 'bg-white/90';
   return (
     <div
-      className="relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-white/[0.12] bg-white/[0.06] shadow-[0_0_0_1px_rgba(255,255,255,0.04)_inset] backdrop-blur-md"
+      className={`relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full border shadow-[0_0_0_1px_rgba(0,0,0,0.04)_inset] backdrop-blur-md ${
+        light ? 'border-slate-200 bg-white/90' : 'border-white/[0.12] bg-white/[0.06]'
+      }`}
       aria-hidden
     >
       <div className="relative flex h-[15px] w-[22px] flex-col justify-between">
         <motion.span
-          className="block h-[2px] w-full origin-center rounded-full bg-white"
+          className={`block h-[2px] w-full origin-center rounded-full ${line}`}
           animate={open ? { rotate: 45, y: 6.5 } : { rotate: 0, y: 0 }}
           transition={{ type: 'spring', stiffness: 380, damping: 26 }}
         />
         <motion.span
-          className="block h-[2px] w-full rounded-full bg-white/90"
+          className={`block h-[2px] w-full rounded-full ${lineMuted}`}
           animate={open ? { opacity: 0, scaleX: 0.2 } : { opacity: 1, scaleX: 1 }}
           transition={{ duration: 0.18 }}
         />
         <motion.span
-          className="block h-[2px] w-full origin-center rounded-full bg-white"
+          className={`block h-[2px] w-full origin-center rounded-full ${line}`}
           animate={open ? { rotate: -45, y: -6.5 } : { rotate: 0, y: 0 }}
           transition={{ type: 'spring', stiffness: 380, damping: 26 }}
         />
@@ -83,23 +87,32 @@ export default function Navbar() {
   }, [mobileOpen, mobileServicesOpen]);
 
   const solid = scrolled || mobileOpen || mobileServicesOpen;
+  const onHero = location === '/' && !solid;
 
   const servicesEntry = PRIMARY_NAV_ENTRIES.find((e) => e.id === 'services' && hasNavChildren(e));
+
+  const navTextActive = onHero ? 'text-white' : 'text-slate-900';
+  const navText = onHero ? 'text-white/75 hover:text-white' : 'text-slate-600 hover:text-slate-900';
+  const navTextMuted = onHero ? 'text-white/65 hover:text-white' : 'text-slate-600 hover:text-slate-900';
+  const phoneText = onHero ? 'text-white/80 hover:text-white' : 'text-slate-700 hover:text-slate-900';
 
   return (
     <header
       className={`fixed left-0 right-0 top-0 z-50 pt-[env(safe-area-inset-top,0px)] transition-all duration-300 ${
         solid
-          ? 'border-b border-white/5 bg-[#0d1117]/98 shadow-lg shadow-black/30 backdrop-blur-md'
-          : 'bg-transparent'
+          ? 'border-b border-slate-200 bg-white/98 shadow-lg shadow-slate-200/60 backdrop-blur-md'
+          : onHero
+            ? 'bg-transparent'
+            : 'border-b border-slate-200/80 bg-white/90 backdrop-blur-sm'
       }`}
     >
       <div
-        className="hidden items-center justify-between border-b border-white/5 px-6 py-1.5 md:flex"
-        style={{ background: 'rgba(13,17,23,0.92)' }}
+        className={`hidden items-center justify-between border-b px-6 py-1.5 md:flex ${
+          onHero && !solid ? 'border-white/10 bg-black/20 text-white/70' : 'border-slate-200 bg-slate-50 text-slate-600'
+        }`}
       >
         <div
-          className="flex items-center gap-6 text-xs text-white/50"
+          className="flex items-center gap-6 text-xs"
           style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500 }}
         >
           <span>📍 {BUSINESS.address}</span>
@@ -111,7 +124,7 @@ export default function Navbar() {
           </span>
           <a
             href={BUSINESS.phoneHref}
-            className="flex items-center gap-1.5 text-xs font-bold text-white/80 transition-colors hover:text-white"
+            className={`flex items-center gap-1.5 text-xs font-bold transition-colors ${onHero && !solid ? 'text-white/90 hover:text-white' : 'text-slate-800 hover:text-slate-900'}`}
             style={{ fontFamily: 'Figtree, sans-serif' }}
           >
             <Phone size={11} /> {BUSINESS.phone}
@@ -143,8 +156,8 @@ export default function Navbar() {
                     type="button"
                     className={`flex items-center gap-1 rounded-md px-3 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${
                       location.startsWith('/services')
-                        ? 'text-white'
-                        : 'text-white/65 hover:text-white'
+                        ? navTextActive
+                        : navTextMuted
                     }`}
                     style={{ fontFamily: 'Figtree, sans-serif' }}
                     aria-expanded={desktopExpandedId === entry.id}
@@ -164,18 +177,14 @@ export default function Navbar() {
                         animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                         exit={{ opacity: 0, y: 8, filter: 'blur(4px)' }}
                         transition={{ duration: 0.28, ease: springEase }}
-                        className="absolute top-full left-0 mt-1 w-[17.5rem] overflow-hidden rounded-2xl border border-white/[0.08] shadow-2xl shadow-black/45"
-                        style={{
-                          background: 'linear-gradient(165deg,rgba(20,26,38,0.98),rgba(8,11,17,0.99))',
-                          backdropFilter: 'blur(22px)',
-                        }}
+                        className="absolute top-full left-0 mt-1 w-[17.5rem] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl shadow-slate-300/40"
                       >
                         <div className="pointer-events-none absolute inset-x-4 top-2 h-px rounded-full bg-gradient-to-r from-transparent via-[#394696]/50 to-transparent" />
                         <div className="max-h-[min(70vh,28rem)] overflow-y-auto px-2 py-2">
                           {entry.children.map((child) => (
                             <Link key={child.href + child.label} href={child.href}>
                               <motion.span
-                                className="group/drop flex cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-[13px] text-white/[0.75] transition-colors duration-300 hover:text-white"
+                                className="group/drop flex cursor-pointer items-center gap-3 rounded-xl px-3 py-3 text-[13px] text-slate-600 transition-colors duration-300 hover:bg-slate-50 hover:text-slate-900"
                                 style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}
                                 whileHover={{ x: 4 }}
                                 transition={{ type: 'spring', stiffness: 420, damping: 30 }}
@@ -201,8 +210,8 @@ export default function Navbar() {
                   <motion.span
                     className={`block cursor-pointer rounded-md px-3 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${
                       location === (entry as LeafNavEntry).href
-                        ? 'text-white'
-                        : 'text-white/65 hover:text-white'
+                        ? navTextActive
+                        : navTextMuted
                     }`}
                     style={{ fontFamily: 'Figtree, sans-serif' }}
                     whileHover={{ y: -1 }}
@@ -219,7 +228,7 @@ export default function Navbar() {
           <div className="hidden items-center gap-3 lg:flex">
             <a
               href={BUSINESS.phoneHref}
-              className="hidden items-center gap-2 text-sm font-bold text-white/80 transition-colors hover:text-white md:flex"
+              className={`hidden items-center gap-2 text-sm font-bold transition-colors md:flex ${phoneText}`}
               style={{ fontFamily: 'Figtree, sans-serif' }}
             >
               <Phone size={14} className="text-[#394696]" />
@@ -288,8 +297,8 @@ export default function Navbar() {
                           }
                           className={`inline-flex min-h-[44px] items-center gap-0.5 whitespace-nowrap rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-[0.18em] min-[400px]:px-2.5 min-[400px]:text-[11px] ${
                             mobileServicesOpen
-                              ? 'text-white'
-                              : 'text-white/75 hover:text-white'
+                              ? navTextActive
+                              : navText
                           }`}
                           style={{ fontFamily: 'Figtree, sans-serif' }}
                         >
@@ -314,8 +323,8 @@ export default function Navbar() {
                           onClick={() => setMobileOpen(false)}
                           className={`inline-flex min-h-[44px] cursor-pointer items-center whitespace-nowrap rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-[0.2em] min-[400px]:px-2.5 min-[400px]:text-[11px] ${
                             location === (entry as LeafNavEntry).href
-                              ? 'text-white'
-                              : 'text-white/75 hover:text-white'
+                              ? navTextActive
+                              : navText
                           }`}
                           style={{ fontFamily: 'Figtree, sans-serif' }}
                         >
@@ -347,11 +356,13 @@ export default function Navbar() {
                   setMobileOpen((o) => !o);
                   setMobileServicesOpen(false);
                 }}
-                className="relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full text-white/90 transition-colors hover:text-white [-webkit-tap-highlight-color:transparent] min-[400px]:size-[2.875rem]"
+                className={`relative z-10 flex size-11 shrink-0 items-center justify-center rounded-full transition-colors [-webkit-tap-highlight-color:transparent] min-[400px]:size-[2.875rem] ${
+                  onHero ? 'text-white/90 hover:text-white' : 'text-slate-800 hover:text-slate-900'
+                }`}
                 aria-expanded={mobileOpen}
                 aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'}
               >
-                <MenuMorphGlyph open={mobileOpen} />
+                <MenuMorphGlyph open={mobileOpen} light={!onHero} />
               </motion.button>
             </div>
 
@@ -365,11 +376,7 @@ export default function Navbar() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -4, scale: 0.99 }}
                   transition={{ duration: 0.22, ease: springEase }}
-                  className="absolute left-2 right-2 top-full z-[60] mx-auto mt-1 max-h-[min(62dvh,380px)] w-auto max-w-lg overflow-y-auto rounded-xl border border-white/[0.1] py-2 shadow-2xl min-[480px]:left-auto min-[480px]:right-0 min-[480px]:mx-0 min-[480px]:w-[min(18rem,calc(100vw-2.5rem))]"
-                  style={{
-                    background: 'linear-gradient(165deg,rgba(20,26,38,0.98),rgba(8,11,17,0.99))',
-                    backdropFilter: 'blur(18px)',
-                  }}
+                  className="absolute left-2 right-2 top-full z-[60] mx-auto mt-1 max-h-[min(62dvh,380px)] w-auto max-w-lg overflow-y-auto rounded-xl border border-slate-200 bg-white py-2 shadow-2xl min-[480px]:left-auto min-[480px]:right-0 min-[480px]:mx-0 min-[480px]:w-[min(18rem,calc(100vw-2.5rem))]"
                 >
                   {servicesEntry.children.map((child) => (
                     <Link key={child.href} href={child.href}>
@@ -378,7 +385,7 @@ export default function Navbar() {
                           setMobileOpen(false);
                           setMobileServicesOpen(false);
                         }}
-                        className="flex min-h-[48px] cursor-pointer items-center gap-3 px-4 py-3 text-sm font-semibold text-white/85 transition-colors active:bg-white/[0.08] hover:bg-white/[0.06] hover:text-white"
+                        className="flex min-h-[48px] cursor-pointer items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 transition-colors active:bg-slate-100 hover:bg-slate-50 hover:text-slate-900"
                         style={{ fontFamily: 'Figtree, sans-serif' }}
                         role="menuitem"
                       >

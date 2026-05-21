@@ -50,7 +50,7 @@ export default function ProcessSection() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="process" className="py-24 bg-[#0d1117] relative overflow-hidden" ref={ref}>
+    <section id="process" className="py-24 bg-white relative overflow-hidden" ref={ref}>
       {/* Top accent */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#394696]/40 to-transparent" />
 
@@ -63,11 +63,11 @@ export default function ProcessSection() {
           className="text-center mb-16"
         >
           <span className="section-label justify-center mb-4 block">How It Works</span>
-          <h2 className="text-4xl lg:text-5xl font-black text-white mb-5"
+          <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-5"
             style={{ fontFamily: 'Figtree, sans-serif', lineHeight: 1.05 }}>
             Our Proven Process
           </h2>
-          <p className="text-white/50 text-lg max-w-2xl mx-auto"
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto"
             style={{ fontFamily: 'Georgia, serif' }}>
             No surprises. No delays. Just a clear, professional process from the first call to the final nail.
           </p>
@@ -100,17 +100,17 @@ export default function ProcessSection() {
                     style={{ backgroundColor: step.color }}
                     whileHover={{ boxShadow: `0 0 28px ${step.color}80` }}
                   >
-                    <step.icon size={22} className="text-white" />
+                    <step.icon size={22} className="text-slate-900" />
                   </motion.div>
                   {/* Number badge */}
-                  <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#0d1117] border border-white/15 flex items-center justify-center">
+                  <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border border-slate-300 flex items-center justify-center">
                     <span className="text-white text-[9px] font-black" style={{ fontFamily: 'Figtree, sans-serif' }}>{step.number}</span>
                   </div>
                 </div>
 
-                <h3 className="text-base font-black text-white mb-2"
+                <h3 className="text-base font-black text-slate-900 mb-2"
                   style={{ fontFamily: 'Figtree, sans-serif' }}>{step.title}</h3>
-                <p className="text-white/45 text-sm leading-relaxed"
+                <p className="text-slate-500 text-sm leading-relaxed"
                   style={{ fontFamily: 'Georgia, serif' }}>{step.description}</p>
               </motion.div>
             ))}
@@ -130,7 +130,7 @@ export default function ProcessSection() {
               <p className="text-white font-black text-lg" style={{ fontFamily: 'Figtree, sans-serif' }}>
                 Ready to start your project?
               </p>
-              <p className="text-white/45 text-sm mt-0.5" style={{ fontFamily: 'Georgia, serif' }}>
+              <p className="text-slate-500 text-sm mt-0.5" style={{ fontFamily: 'Georgia, serif' }}>
                 Book your free consultation — we'll come to you.
               </p>
             </div>

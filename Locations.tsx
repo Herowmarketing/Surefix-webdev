@@ -38,7 +38,7 @@ export default function Locations() {
   );
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
+    <div className="min-h-screen bg-white">
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div
@@ -54,7 +54,7 @@ export default function Locations() {
           className="absolute inset-0 pointer-events-none opacity-[0.05]"
           style={{
             backgroundImage:
-              'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
+              'linear-gradient(rgba(15,23,42,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.06) 1px, transparent 1px)',
             backgroundSize: '64px 64px',
           }}
         />
@@ -71,7 +71,7 @@ export default function Locations() {
             <motion.h1
               variants={fadeUp}
               custom={1}
-              className="mb-5 text-white"
+              className="mb-5 text-slate-900"
               style={{
                 fontFamily: SERIF,
                 fontWeight: 300,
@@ -86,7 +86,7 @@ export default function Locations() {
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="mb-8 max-w-2xl text-base leading-relaxed text-white/65 sm:text-lg"
+              className="mb-8 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               Sure-Fix runs design-build projects across the Lehigh Valley and Western New Jersey from our Easton showroom. Pick your town to see the local crews, brand allies, and project specialties we bring to your block.
@@ -106,7 +106,7 @@ export default function Locations() {
               </motion.button>
               <a
                 href={BUSINESS.phoneHref}
-                className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/85 transition-colors hover:bg-white/[0.06]"
+                className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={14} />
@@ -121,7 +121,7 @@ export default function Locations() {
       {Object.entries(grouped).map(([state, list]) => (
         <section
           key={state}
-          className="border-t border-white/[0.05]"
+          className="border-t border-slate-200"
           style={{ background: state === 'PA' ? 'rgba(57,70,150,0.05)' : 'transparent' }}
         >
           <div className="mx-auto max-w-7xl px-5 py-14 sm:py-20 lg:px-8">
@@ -144,7 +144,7 @@ export default function Locations() {
                 <motion.h2
                   variants={fadeUp}
                   custom={1}
-                  className="text-white"
+                  className="text-slate-900"
                   style={{
                     fontFamily: SERIF,
                     fontWeight: 300,
@@ -156,7 +156,7 @@ export default function Locations() {
                   {state === 'PA' ? <>Pennsylvania <span className="italic">homes.</span></> : <>New Jersey <span className="italic">homes.</span></>}
                 </motion.h2>
               </div>
-              <Compass size={28} className="hidden text-white/30 sm:block" />
+              <Compass size={28} className="hidden text-slate-400 sm:block" />
             </motion.div>
 
             <motion.div
@@ -172,10 +172,10 @@ export default function Locations() {
                     <motion.div
                       whileHover={{ y: -6 }}
                       transition={{ type: 'spring', stiffness: 300, damping: 24 }}
-                      className="group relative flex h-full cursor-pointer flex-col gap-4 overflow-hidden rounded-3xl border border-white/[0.08] p-6 transition-colors hover:border-[#394696]/40 sm:p-7"
+                      className="group relative flex h-full cursor-pointer flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200 p-6 transition-colors hover:border-[#394696]/40 sm:p-7"
                       style={{
                         background:
-                          'linear-gradient(155deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.012) 60%, rgba(13,17,23,0.4) 100%)',
+                          'linear-gradient(155deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%)',
                       }}
                     >
                       <div className="flex items-center justify-between">
@@ -184,7 +184,7 @@ export default function Locations() {
                           style={{
                             borderColor: `${CTA_BLUE}55`,
                             background: `${CTA_BLUE}1f`,
-                            color: 'rgba(255,255,255,0.92)',
+                            color: '#0f172a',
                             fontFamily: SANS,
                           }}
                         >
@@ -192,12 +192,12 @@ export default function Locations() {
                         </span>
                         <ArrowRight
                           size={16}
-                          className="text-white/40 transition-transform group-hover:translate-x-1 group-hover:text-white"
+                          className="text-slate-500 transition-transform group-hover:translate-x-1 group-hover:text-slate-900"
                         />
                       </div>
                       <div>
                         <h3
-                          className="text-white"
+                          className="text-slate-900"
                           style={{
                             fontFamily: SERIF,
                             fontWeight: 400,
@@ -209,14 +209,14 @@ export default function Locations() {
                           {loc.city}
                         </h3>
                         <p
-                          className="mt-1 text-[10px] font-bold uppercase tracking-[0.32em] text-white/40"
+                          className="mt-1 text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
                           style={{ fontFamily: SANS }}
                         >
                           {loc.county} County
                         </p>
                       </div>
                       <p
-                        className="text-sm italic leading-relaxed text-white/60"
+                        className="text-sm italic leading-relaxed text-slate-600"
                         style={{ fontFamily: 'Georgia, serif' }}
                       >
                         {loc.tagline}
@@ -225,7 +225,7 @@ export default function Locations() {
                         {loc.featuredServices.slice(0, 3).map((svc) => (
                           <span
                             key={svc}
-                            className="rounded-full border border-white/[0.08] px-2.5 py-1 text-[10px] font-semibold text-white/55"
+                            className="rounded-full border border-slate-200 px-2.5 py-1 text-[10px] font-semibold text-slate-600"
                             style={{ fontFamily: SANS }}
                           >
                             {svc}
@@ -242,7 +242,7 @@ export default function Locations() {
       ))}
 
       {/* CTA */}
-      <section className="border-t border-white/[0.05] bg-[rgba(152,54,49,0.06)]">
+      <section className="border-t border-slate-200 bg-[rgba(152,54,49,0.05)]">
         <div className="mx-auto max-w-4xl px-5 py-16 text-center sm:py-20 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -257,7 +257,7 @@ export default function Locations() {
               Don’t see your town?
             </p>
             <h2
-              className="mb-4 text-white"
+              className="mb-4 text-slate-900"
               style={{
                 fontFamily: SERIF,
                 fontWeight: 300,
@@ -268,7 +268,7 @@ export default function Locations() {
               We cover the <span className="italic">entire Lehigh Valley</span> and most of Western NJ.
             </h2>
             <p
-              className="mx-auto max-w-2xl text-base leading-relaxed text-white/55"
+              className="mx-auto max-w-2xl text-base leading-relaxed text-slate-600"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               The cities above are where we work most often — but our crews routinely travel further when a project calls for it. Tell us your zip code and we’ll confirm coverage on the spot.
@@ -287,7 +287,7 @@ export default function Locations() {
               </motion.button>
               <a
                 href={BUSINESS.phoneHref}
-                className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-white/15 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/85 transition-colors hover:bg-white/[0.06]"
+                className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={14} />

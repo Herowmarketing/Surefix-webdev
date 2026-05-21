@@ -25,12 +25,12 @@ const stagger = {
 export default function Home() {
   const { openStepper } = useLeadStepper();
   return (
-    <div className="bg-[#0d1117]">
+    <div className="bg-white">
       {/* ─── HERO: Cinematic scroll-scrubbed video ─── */}
       <CinematicHero />
 
       {/* ─── SOCIAL PROOF BAR ─── */}
-      <section className="border-y border-white/8 py-5 min-[400px]:py-6" style={{ background: 'rgba(57,70,150,0.08)' }}>
+      <section className="border-y border-slate-200 py-5 min-[400px]:py-6" style={{ background: 'rgba(57,70,150,0.05)' }}>
         <div className="mx-auto max-w-7xl px-4 min-[400px]:px-5 lg:px-8">
           <div className="grid grid-cols-2 gap-4 text-center md:grid-cols-4 md:gap-6">
             {[
@@ -40,9 +40,9 @@ export default function Home() {
               { label: 'Facebook', value: '4.8★', sub: '21 votes' },
             ].map((item) => (
               <div key={item.label} className="flex min-w-0 flex-col items-center gap-0.5 px-1">
-                <span className="text-lg font-black tabular-nums text-white min-[400px]:text-xl" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.value}</span>
-                <span className="text-xs font-bold text-white/40 uppercase tracking-wider" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.label}</span>
-                <span className="text-xs text-white/30" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.sub}</span>
+                <span className="text-lg font-black tabular-nums text-slate-900 min-[400px]:text-xl" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.value}</span>
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.label}</span>
+                <span className="text-xs text-slate-400" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.sub}</span>
               </div>
             ))}
           </div>
@@ -50,7 +50,7 @@ export default function Home() {
       </section>
 
       {/* ─── FOREVER HOME PILLARS (2026 positioning) ─── */}
-      <section className="relative overflow-hidden border-b border-white/[0.05]">
+      <section className="relative overflow-hidden border-b border-slate-200">
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -78,7 +78,7 @@ export default function Home() {
             <motion.h2
               variants={fadeUp}
               custom={1}
-              className="mb-4 text-white"
+              className="mb-4 text-slate-900"
               style={{
                 fontFamily: '"Cormorant Garamond", Georgia, serif',
                 fontWeight: 300,
@@ -92,7 +92,7 @@ export default function Home() {
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg"
+              className="max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               Sure-Fix builds the necessary infrastructure updates alongside the lifestyle improvements you actually feel — so the home you love today still works for you in twenty years. Three pillars guide every project we accept.
@@ -135,7 +135,7 @@ export default function Home() {
                   key={p.tag}
                   variants={fadeUp}
                   custom={i}
-                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-white/[0.08] p-7"
+                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200 p-7"
                   style={{
                     background:
                       'linear-gradient(155deg, rgba(255,255,255,0.045) 0%, rgba(255,255,255,0.012) 60%, rgba(13,17,23,0.5) 100%)',
@@ -157,7 +157,7 @@ export default function Home() {
                     {p.tag}
                   </p>
                   <h3
-                    className="text-white"
+                    className="text-slate-900"
                     style={{
                       fontFamily: '"Cormorant Garamond", Georgia, serif',
                       fontWeight: 400,
@@ -169,7 +169,7 @@ export default function Home() {
                     {p.title}
                   </h3>
                   <p
-                    className="text-sm leading-relaxed text-white/60"
+                    className="text-sm leading-relaxed text-slate-600"
                     style={{ fontFamily: 'Georgia, serif' }}
                   >
                     {p.body}
@@ -191,10 +191,10 @@ export default function Home() {
           <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>
             What We Do
           </motion.p>
-          <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+          <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Complete Home Remodeling
           </motion.h2>
-          <motion.p variants={fadeUp} custom={2} className="text-white/50 max-w-xl mx-auto" style={{ fontFamily: 'Georgia, serif', fontSize: '1.05rem' }}>
+          <motion.p variants={fadeUp} custom={2} className="text-slate-500 max-w-xl mx-auto" style={{ fontFamily: 'Georgia, serif', fontSize: '1.05rem' }}>
             From kitchens to curb appeal — we handle every aspect of your home transformation under one roof.
           </motion.p>
         </motion.div>
@@ -226,7 +226,7 @@ export default function Home() {
                   <div className="absolute inset-0 p-6 flex flex-col justify-end">
                     <span className="text-3xl mb-2">{service.icon}</span>
                     <h3 className="text-xl font-black text-white mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>{service.title}</h3>
-                    <p className="text-sm text-white/60 mb-3 line-clamp-2" style={{ fontFamily: 'Georgia, serif' }}>{service.tagline}</p>
+                    <p className="text-sm text-white/70 mb-3 line-clamp-2" style={{ fontFamily: 'Georgia, serif' }}>{service.tagline}</p>
                     <span className="flex items-center gap-1.5 text-xs font-bold text-[#394696] uppercase tracking-wider group-hover:gap-3 transition-all duration-200"
                       style={{ fontFamily: 'Figtree, sans-serif' }}>
                       Learn More <ArrowRight size={13} />
@@ -240,19 +240,19 @@ export default function Home() {
       </section>
 
       {/* ─── WHY CHOOSE US ─── */}
-      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8" style={{ background: 'rgba(57,70,150,0.06)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+      <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8" style={{ background: 'rgba(57,70,150,0.04)', borderTop: '1px solid rgba(226,232,240,1)', borderBottom: '1px solid rgba(226,232,240,1)' }}>
         <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
             <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
               The Trusted Professional sweet spot
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white mb-4 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-slate-900 mb-4 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Built on Trust. Delivered with Pride.
             </motion.h2>
             <motion.p
               variants={fadeUp}
               custom={2}
-              className="mx-auto mb-12 max-w-2xl text-center text-base leading-relaxed text-white/55"
+              className="mx-auto mb-12 max-w-2xl text-center text-base leading-relaxed text-slate-600"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               Sure-Fix occupies the Trusted Professional sweet spot — the reliability, quality, and service of a high-end firm without the inflated overhead, while far outperforming small general contractors in communication and accountability.
@@ -265,14 +265,14 @@ export default function Home() {
                 { icon: <Clock size={28} />, title: 'On Time, On Budget', desc: 'Clear proposals, no hidden fees. We stick to the plan and keep you updated throughout.' },
               ].map((item, i) => (
                 <motion.div key={item.title} variants={fadeUp} custom={i}
-                  className="p-6 rounded-2xl border border-white/8 hover:border-[#394696]/40 transition-colors duration-300"
-                  style={{ background: 'rgba(255,255,255,0.03)' }}>
+                  className="p-6 rounded-2xl border border-slate-200 hover:border-[#394696]/40 transition-colors duration-300"
+                  style={{ background: '#f8fafc' }}>
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-[#394696]"
                     style={{ background: 'rgba(57,70,150,0.15)' }}>
                     {item.icon}
                   </div>
-                  <h3 className="text-lg font-black text-white mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.title}</h3>
-                  <p className="text-sm text-white/50 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{item.desc}</p>
+                  <h3 className="text-lg font-black text-slate-900 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{item.desc}</p>
                 </motion.div>
               ))}
             </div>
@@ -286,7 +286,7 @@ export default function Home() {
           <motion.div variants={fadeUp} custom={0} className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-10 gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>What Clients Say</p>
-              <h2 className="text-3xl md:text-4xl font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>Real Reviews. Real Results.</h2>
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>Real Reviews. Real Results.</h2>
             </div>
             <Link href="/reviews">
               <motion.span whileHover={{ x: 4 }} className="flex items-center gap-2 text-sm font-bold text-[#394696] cursor-pointer" style={{ fontFamily: 'Figtree, sans-serif' }}>
@@ -297,20 +297,20 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {REVIEWS.slice(0, 3).map((review, i) => (
               <motion.div key={review.name} variants={fadeUp} custom={i}
-                className="p-6 rounded-2xl border border-white/8"
-                style={{ background: 'rgba(255,255,255,0.03)' }}>
+                className="p-6 rounded-2xl border border-slate-200"
+                style={{ background: '#f8fafc' }}>
                 <div className="flex items-center gap-1 mb-3">
                   {[...Array(review.rating)].map((_, j) => <Star key={j} size={13} className="fill-yellow-400 text-yellow-400" />)}
                 </div>
-                <p className="text-white/70 text-sm leading-relaxed mb-4" style={{ fontFamily: 'Georgia, serif' }}>"{review.text}"</p>
+                <p className="text-slate-700 text-sm leading-relaxed mb-4" style={{ fontFamily: 'Georgia, serif' }}>"{review.text}"</p>
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black text-white"
                     style={{ background: '#394696', fontFamily: 'Figtree, sans-serif' }}>
                     {review.name[0]}
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>{review.name}</p>
-                    <p className="text-xs text-white/40" style={{ fontFamily: 'Figtree, sans-serif' }}>{review.source} Review</p>
+                    <p className="text-sm font-bold text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>{review.name}</p>
+                    <p className="text-xs text-slate-500" style={{ fontFamily: 'Figtree, sans-serif' }}>{review.source} Review</p>
                   </div>
                 </div>
               </motion.div>
@@ -322,9 +322,9 @@ export default function Home() {
       {/* ─── SHOWROOM BLURB ─── */}
       <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-white/8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-slate-200">
             {/* Video side — In-House Showroom */}
-            <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden bg-[#0d1117]">
+            <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden bg-white">
               <ShowroomHomeVideo />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to right, rgba(13,17,23,0.2), rgba(13,17,23,0.6))' }} />
               <div className="absolute top-5 left-5">
@@ -332,22 +332,22 @@ export default function Home() {
               </div>
             </div>
             {/* Content side */}
-            <div className="p-10 lg:p-14 flex flex-col justify-center" style={{ background: 'rgba(57,70,150,0.08)' }}>
+            <div className="p-10 lg:p-14 flex flex-col justify-center" style={{ background: 'rgba(57,70,150,0.05)' }}>
               <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
                 <p className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>The Sure-Fix Difference</p>
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>Full-Service Capability. One roof. One team.</h2>
-                <p className="text-white/60 leading-relaxed mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>Full-Service Capability. One roof. One team.</h2>
+                <p className="text-slate-600 leading-relaxed mb-6" style={{ fontFamily: 'Georgia, serif' }}>
                   Most contractors send you to Home Depot or Lowe's to find your own materials. Not us. Sure-Fix runs an in-house showroom stocked with countertops, flooring, tile, brand-allied fixtures, siding, and roofing — every material your forever-home modernization needs, available to touch and compare in person. We handle the complexity so you don’t have to.
                 </p>
                 <div className="flex flex-wrap gap-2 mb-8">
                   {['Countertops', 'Flooring', 'Tile', 'Fixtures', 'Siding', 'Roofing', 'Windows'].map(item => (
-                    <span key={item} className="flex items-center gap-1.5 text-sm text-white/60" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+                    <span key={item} className="flex items-center gap-1.5 text-sm text-slate-600" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                       <CheckCircle size={13} className="text-[#394696]" /> {item}
                     </span>
                   ))}
                 </div>
                 <Link href="/showroom">
-                  <motion.span whileHover={{ x: 6 }} className="inline-flex items-center gap-2 text-sm font-black text-white cursor-pointer uppercase tracking-wider" style={{ color: '#983631', fontFamily: 'Figtree, sans-serif' }}>
+                  <motion.span whileHover={{ x: 6 }} className="inline-flex items-center gap-2 text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider" style={{ color: '#983631', fontFamily: 'Figtree, sans-serif' }}>
                     Explore Our Showroom <ArrowRight size={16} />
                   </motion.span>
                 </Link>
@@ -360,16 +360,16 @@ export default function Home() {
       {/* ─── INTERIOR DESIGN BLURB ─── */}
       <section className="py-16 px-4 min-[400px]:py-20 min-[400px]:px-5 lg:px-8 relative overflow-hidden">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-white/8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-slate-200">
             {/* Content side */}
-            <div className="p-10 lg:p-14 flex flex-col justify-center order-2 lg:order-1" style={{ background: 'rgba(152,54,49,0.06)' }}>
+            <div className="p-10 lg:p-14 flex flex-col justify-center order-2 lg:order-1" style={{ background: 'rgba(152,54,49,0.05)' }}>
               <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
                 <p className="text-xs font-bold uppercase tracking-widest mb-3" style={{ color: '#983631', fontFamily: 'Figtree, sans-serif' }}>In-House Design Partner</p>
-                <h2 className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>Professional Interior Design, Built In.</h2>
-                <p className="text-white/60 leading-relaxed mb-4" style={{ fontFamily: 'Georgia, serif' }}>
-                  Sure-Fix is proud to partner with <strong className="text-white">Audra Frank</strong>, owner of Audra Frank Associates, as our in-house interior design professional. With a client list that includes Meryl Streep, Sting, Paul Simon, and Lorne Michaels, Audra brings world-class design expertise directly to your renovation.
+                <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>Professional Interior Design, Built In.</h2>
+                <p className="text-slate-600 leading-relaxed mb-4" style={{ fontFamily: 'Georgia, serif' }}>
+                  Sure-Fix is proud to partner with <strong className="text-slate-900">Audra Frank</strong>, owner of Audra Frank Associates, as our in-house interior design professional. With a client list that includes Meryl Streep, Sting, Paul Simon, and Lorne Michaels, Audra brings world-class design expertise directly to your renovation.
                 </p>
-                <p className="text-white/50 leading-relaxed mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+                <p className="text-slate-500 leading-relaxed mb-8" style={{ fontFamily: 'Georgia, serif' }}>
                   From space planning and material selection to colour palettes and custom furnishings — Audra's team handles every detail so your finished home is as beautiful as it is functional.
                 </p>
                 <Link href="/interior-design">
@@ -407,7 +407,7 @@ export default function Home() {
               Ready to modernize your forever home?
             </motion.h2>
             <motion.p variants={fadeUp} custom={1}
-              className="text-white/75 text-lg mb-8 max-w-xl mx-auto"
+              className="text-white/85 text-lg mb-8 max-w-xl mx-auto"
               style={{ fontFamily: 'Georgia, serif' }}>
               Free, no-obligation estimate from the Lehigh Valley’s most trusted remodeling team. We'll walk the home with you and put together a plan that respects both the lifestyle upgrades and the infrastructure that has to come with them.
             </motion.p>

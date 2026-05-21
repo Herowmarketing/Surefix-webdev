@@ -58,7 +58,7 @@ export default function TestimonialsSection() {
   };
 
   return (
-    <section className="py-24 bg-[#0d1117] relative overflow-hidden" ref={ref}>
+    <section className="py-24 bg-white relative overflow-hidden" ref={ref}>
       {/* Top accent */}
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#394696]/40 to-transparent" />
 
@@ -71,7 +71,7 @@ export default function TestimonialsSection() {
           className="text-center mb-16"
         >
           <span className="section-label justify-center mb-4 block">Client Stories</span>
-          <h2 className="text-4xl lg:text-5xl font-black text-white mb-4"
+          <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-4"
             style={{ fontFamily: 'Figtree, sans-serif', lineHeight: 1.05 }}>
             What Our Clients Say
           </h2>
@@ -80,7 +80,7 @@ export default function TestimonialsSection() {
               <Star key={i} size={18} className="fill-[#983631] text-[#983631]" />
             ))}
           </div>
-          <p className="text-white/40 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+          <p className="text-slate-500 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
             4.9 out of 5 — based on 120+ Google reviews
           </p>
         </motion.div>
@@ -97,13 +97,13 @@ export default function TestimonialsSection() {
               transition={{ duration: 0.4, ease: 'easeOut' }}
               className="rounded-2xl p-8 lg:p-10"
               style={{
-                background: 'rgba(255,255,255,0.04)',
+                background: '#f1f5f9',
                 border: '1px solid rgba(255,255,255,0.08)',
                 backdropFilter: 'blur(16px)',
               }}
             >
               <Quote size={36} style={{ color: `${testimonials[current].color}50` }} className="mb-6" />
-              <p className="text-white/75 text-lg lg:text-xl leading-relaxed mb-8 italic"
+              <p className="text-slate-700 text-lg lg:text-xl leading-relaxed mb-8 italic"
                 style={{ fontFamily: 'Georgia, serif' }}>
                 "{testimonials[current].text}"
               </p>
@@ -118,7 +118,7 @@ export default function TestimonialsSection() {
                     <p className="text-white font-black" style={{ fontFamily: 'Figtree, sans-serif' }}>
                       {testimonials[current].name}
                     </p>
-                    <p className="text-white/40 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500 }}>
+                    <p className="text-slate-500 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500 }}>
                       {testimonials[current].location} · {testimonials[current].project}
                     </p>
                   </div>
@@ -138,7 +138,7 @@ export default function TestimonialsSection() {
               onClick={() => go(-1)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors"
+              className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
             >
               <ChevronLeft size={18} />
             </motion.button>
@@ -157,7 +157,7 @@ export default function TestimonialsSection() {
               onClick={() => go(1)}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.95 }}
-              className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-white/60 hover:text-white hover:border-white/30 transition-colors"
+              className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
             >
               <ChevronRight size={18} />
             </motion.button>

@@ -45,7 +45,7 @@ export default function StatsBar() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section ref={ref} className="bg-[#111827] border-y border-white/8 py-12">
+    <section ref={ref} className="bg-[#111827] border-y border-slate-200 py-12">
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, i) => (
@@ -60,11 +60,11 @@ export default function StatsBar() {
                 style={{ background: `${stat.color}20`, border: `1px solid ${stat.color}40` }}>
                 <stat.icon size={22} style={{ color: stat.color }} />
               </div>
-              <div className="text-4xl font-black text-white"
+              <div className="text-4xl font-black text-slate-900"
                 style={{ fontFamily: 'Figtree, sans-serif' }}>
                 {inView && <AnimatedCounter value={stat.value} suffix={stat.suffix} />}
               </div>
-              <div className="text-xs text-white/50 uppercase tracking-widest"
+              <div className="text-xs text-slate-500 uppercase tracking-widest"
                 style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                 {stat.label}
               </div>
