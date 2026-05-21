@@ -82,17 +82,17 @@ const PLATFORM_STATS = [
 export default function Reviews() {
   const { openStepper } = useLeadStepper();
   return (
-    <div className="bg-[#0d1117] min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* Hero */}
       <section className="pt-36 pb-16 px-5 lg:px-8 max-w-7xl mx-auto">
         <motion.div initial="hidden" animate="visible" variants={stagger}>
           <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
             What Our Clients Say
           </motion.p>
-          <motion.h1 variants={fadeUp} custom={1} className="text-5xl md:text-6xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+          <motion.h1 variants={fadeUp} custom={1} className="text-5xl md:text-6xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Real Reviews.<br />Real Results.
           </motion.h1>
-          <motion.p variants={fadeUp} custom={2} className="text-white/60 text-xl max-w-2xl" style={{ fontFamily: 'Georgia, serif' }}>
+          <motion.p variants={fadeUp} custom={2} className="text-slate-600 text-xl max-w-2xl" style={{ fontFamily: 'Georgia, serif' }}>
             Hundreds of homeowners across Lehigh Valley trust Sure-Fix Remodeling. Here's what they have to say.
           </motion.p>
         </motion.div>
@@ -106,11 +106,11 @@ export default function Reviews() {
         >
           {PLATFORM_STATS.map((p, i) => (
             <motion.div key={p.platform} variants={fadeUp} custom={i}
-              className="p-6 rounded-2xl border border-white/8 text-center"
-              style={{ background: 'rgba(255,255,255,0.03)' }}>
-              <div className="text-4xl font-black text-white mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>{p.rating}★</div>
-              <div className="text-sm font-bold text-white/70 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>{p.platform}</div>
-              <div className="text-xs text-white/30" style={{ fontFamily: 'Figtree, sans-serif' }}>{p.count} reviews</div>
+              className="p-6 rounded-2xl border border-slate-200 text-center"
+              style={{ background: '#f8fafc' }}>
+              <div className="text-4xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>{p.rating}★</div>
+              <div className="text-sm font-bold text-slate-700 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>{p.platform}</div>
+              <div className="text-xs text-slate-400" style={{ fontFamily: 'Figtree, sans-serif' }}>{p.count} reviews</div>
             </motion.div>
           ))}
         </motion.div>
@@ -124,13 +124,13 @@ export default function Reviews() {
         >
           {ALL_REVIEWS.map((review, i) => (
             <motion.div key={`${review.name}-${i}`} variants={fadeUp} custom={i}
-              className="p-6 rounded-2xl border border-white/8 hover:border-[#394696]/30 transition-colors"
-              style={{ background: 'rgba(255,255,255,0.03)' }}>
+              className="p-6 rounded-2xl border border-slate-200 hover:border-[#394696]/30 transition-colors"
+              style={{ background: '#f8fafc' }}>
               <div className="flex items-center gap-1 mb-3">
                 {[...Array(review.rating)].map((_, j) => <Star key={j} size={13} className="fill-yellow-400 text-yellow-400" />)}
-                {review.rating < 5 && [...Array(5 - review.rating)].map((_, j) => <Star key={j} size={13} className="text-white/20" />)}
+                {review.rating < 5 && [...Array(5 - review.rating)].map((_, j) => <Star key={j} size={13} className="text-slate-300" />)}
               </div>
-              <p className="text-white/70 text-sm leading-relaxed mb-5" style={{ fontFamily: 'Georgia, serif' }}>"{review.text}"</p>
+              <p className="text-slate-700 text-sm leading-relaxed mb-5" style={{ fontFamily: 'Georgia, serif' }}>"{review.text}"</p>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-black text-white"
@@ -139,7 +139,7 @@ export default function Reviews() {
                   </div>
                   <div>
                     <p className="text-sm font-bold text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>{review.name}</p>
-                    <p className="text-xs text-white/40" style={{ fontFamily: 'Figtree, sans-serif' }}>{review.source}</p>
+                    <p className="text-xs text-slate-500" style={{ fontFamily: 'Figtree, sans-serif' }}>{review.source}</p>
                   </div>
                 </div>
               </div>
@@ -155,7 +155,7 @@ export default function Reviews() {
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Ready to Be Our Next Success Story?
             </motion.h2>
-            <motion.p variants={fadeUp} custom={1} className="text-white/75 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={1} className="text-slate-700 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               Join hundreds of satisfied homeowners across Lehigh Valley. Get your free estimate today.
             </motion.p>
             <motion.div variants={fadeUp} custom={2}>
@@ -164,7 +164,7 @@ export default function Reviews() {
                 onClick={() => openStepper()}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider"
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider"
                 style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', border: 'none' }}
               >
                 Get Free Estimate <ArrowRight size={15} />

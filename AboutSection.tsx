@@ -38,16 +38,16 @@ export default function AboutSection() {
             transition={{ duration: 0.7, ease: 'easeOut' }}
           >
             <span className="section-label mb-4 block">Our Story</span>
-            <h2 className="text-4xl lg:text-5xl font-black text-white mb-6"
+            <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-6"
               style={{ fontFamily: 'Figtree, sans-serif', lineHeight: 1.05 }}>
               Built on Trust,<br />
               <span style={{ color: '#394696' }}>Delivered with Pride</span>
             </h2>
-            <p className="text-white/55 text-lg leading-relaxed mb-5"
+            <p className="text-slate-600 text-lg leading-relaxed mb-5"
               style={{ fontFamily: 'Georgia, serif' }}>
               Sure-Fix Remodeling was founded in Easton, PA with a simple mission: deliver the quality of a high-end contractor at a price that respects your budget. Over 15 years and 500+ projects later, that mission hasn't changed.
             </p>
-            <p className="text-white/55 text-lg leading-relaxed mb-8"
+            <p className="text-slate-600 text-lg leading-relaxed mb-8"
               style={{ fontFamily: 'Georgia, serif' }}>
               We serve homeowners across the Greater Lehigh Valley, Western New Jersey, and beyond. Every project gets the same level of attention and craftsmanship.
             </p>
@@ -63,13 +63,13 @@ export default function AboutSection() {
                   className="flex items-start gap-2.5"
                 >
                   <CheckCircle2 size={16} className="text-[#983631] mt-0.5 flex-shrink-0" />
-                  <span className="text-white/65 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500 }}>{item}</span>
+                  <span className="text-slate-600 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 500 }}>{item}</span>
                 </motion.div>
               ))}
             </div>
 
             {/* Service area */}
-            <div className="flex items-start gap-2 text-white/40 text-sm">
+            <div className="flex items-start gap-2 text-slate-500 text-sm">
               <MapPin size={15} className="text-[#983631] mt-0.5 flex-shrink-0" />
               <span style={{ fontFamily: 'Figtree, sans-serif' }}>Serving Easton, Bethlehem, Allentown, Phillipsburg, Hackettstown & surrounding areas</span>
             </div>
@@ -118,11 +118,11 @@ export default function AboutSection() {
               transition={{ delay: 0.85, duration: 0.5, ease: 'backOut' }}
               className="absolute top-6 -right-2 bg-[#983631] rounded-2xl p-4 shadow-2xl"
             >
-              <div className="text-xl font-black text-white leading-none mb-1"
+              <div className="text-xl font-black text-slate-900 leading-none mb-1"
                 style={{ fontFamily: 'Figtree, sans-serif' }}>★★★★★</div>
-              <div className="text-xs font-bold text-white/85 uppercase tracking-wide"
+              <div className="text-xs font-bold text-slate-800 uppercase tracking-wide"
                 style={{ fontFamily: 'Figtree, sans-serif' }}>Google Reviews</div>
-              <div className="text-xs text-white/60 mt-0.5"
+              <div className="text-xs text-slate-600 mt-0.5"
                 style={{ fontFamily: 'Georgia, serif' }}>4.9 / 5 — 120+ reviews</div>
             </motion.div>
           </motion.div>

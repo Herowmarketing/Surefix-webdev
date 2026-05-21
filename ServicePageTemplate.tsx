@@ -33,7 +33,7 @@ export default function ServicePageTemplate({
 }: ServicePageProps) {
   const { openStepper } = useLeadStepper();
   return (
-    <div className="bg-[#0d1117] min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* ─── HERO ─── */}
       <section className="relative h-[60vh] min-h-[480px] flex items-end overflow-hidden">
         <img src={heroImage} alt={title} className="absolute inset-0 w-full h-full object-cover" />
@@ -66,7 +66,7 @@ export default function ServicePageTemplate({
             <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest mb-4" style={{ fontFamily: 'Figtree, sans-serif', color: accentColor }}>
               About This Service
             </motion.p>
-            <motion.p variants={fadeUp} custom={1} className="text-white/70 text-lg leading-relaxed mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={1} className="text-slate-700 text-lg leading-relaxed mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               {description}
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-col sm:flex-row gap-3">
@@ -83,8 +83,7 @@ export default function ServicePageTemplate({
               <a href={BUSINESS.phoneHref}>
                 <motion.span
                   whileHover={{ scale: 1.04, y: -2 }}
-                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-black text-white cursor-pointer border border-white/15"
-                  style={{ fontFamily: 'Figtree, sans-serif', background: 'rgba(255,255,255,0.04)' }}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-black text-slate-700 cursor-pointer border border-slate-300 bg-white"
                 >
                   <Phone size={14} /> {BUSINESS.phone}
                 </motion.span>
@@ -94,16 +93,15 @@ export default function ServicePageTemplate({
 
           {/* Right: Features */}
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest mb-6 text-white/40" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest mb-6 text-slate-500" style={{ fontFamily: 'Figtree, sans-serif' }}>
               What's Included
             </motion.p>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {features.map((feature, i) => (
                 <motion.div key={feature} variants={fadeUp} custom={i}
-                  className="flex items-center gap-3 p-4 rounded-xl border border-white/8"
-                  style={{ background: 'rgba(255,255,255,0.03)' }}>
+                  className="flex items-center gap-3 p-4 rounded-xl border border-slate-200 bg-slate-50">
                   <CheckCircle size={16} style={{ color: accentColor, flexShrink: 0 }} />
-                  <span className="text-sm font-bold text-white/80" style={{ fontFamily: 'Figtree, sans-serif' }}>{feature}</span>
+                  <span className="text-sm font-bold text-slate-800" style={{ fontFamily: 'Figtree, sans-serif' }}>{feature}</span>
                 </motion.div>
               ))}
             </div>
@@ -113,19 +111,18 @@ export default function ServicePageTemplate({
 
       {/* ─── SUB-SERVICES (optional) ─── */}
       {subServices && subServices.length > 0 && (
-        <section className="py-16 px-5 lg:px-8 border-t border-white/5" style={{ background: 'rgba(57,70,150,0.05)' }}>
+        <section className="py-16 px-5 lg:px-8 border-t border-slate-200" style={{ background: 'rgba(57,70,150,0.04)' }}>
           <div className="max-w-7xl mx-auto">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-              <motion.h2 variants={fadeUp} custom={0} className="text-3xl font-black text-white mb-10 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+              <motion.h2 variants={fadeUp} custom={0} className="text-3xl font-black text-slate-900 mb-10 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
                 Everything We Offer
               </motion.h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
                 {subServices.map((sub, i) => (
                   <motion.div key={sub.name} variants={fadeUp} custom={i}
-                    className="p-6 rounded-2xl border border-white/8 hover:border-[#394696]/40 transition-colors"
-                    style={{ background: 'rgba(255,255,255,0.03)' }}>
-                    <h3 className="text-lg font-black text-white mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>{sub.name}</h3>
-                    <p className="text-sm text-white/50 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{sub.desc}</p>
+                    className="p-6 rounded-2xl border border-slate-200 bg-slate-50 hover:border-[#394696]/40 transition-colors">
+                    <h3 className="text-lg font-black text-slate-900 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>{sub.name}</h3>
+                    <p className="text-sm text-slate-600 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{sub.desc}</p>
                   </motion.div>
                 ))}
               </div>
@@ -138,7 +135,7 @@ export default function ServicePageTemplate({
       {galleryImages.length > 0 && (
         <section className="py-16 px-5 lg:px-8 max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.h2 variants={fadeUp} custom={0} className="text-3xl font-black text-white mb-8 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <motion.h2 variants={fadeUp} custom={0} className="text-3xl font-black text-slate-900 mb-8 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Our Work
             </motion.h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">

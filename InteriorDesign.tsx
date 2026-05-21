@@ -132,7 +132,7 @@ function ClientTicker() {
         {doubled.map((client, i) => (
           <span
             key={i}
-            className="inline-flex items-center gap-3 text-sm font-semibold text-gray-400 hover:text-white transition-colors"
+            className="inline-flex items-center gap-3 text-sm font-semibold text-gray-400 hover:text-slate-900 transition-colors"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-[#394696] flex-shrink-0" />
             {client}
@@ -148,7 +148,7 @@ export default function InteriorDesign() {
   const [activeService, setActiveService] = useState(0)
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
+    <div className="min-h-screen bg-white">
       {/* Hero */}
       <section className="relative min-h-[80vh] flex items-center overflow-hidden pt-24 pb-16">
         {/* Background */}
@@ -185,7 +185,7 @@ export default function InteriorDesign() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.1 }}
-              className="text-5xl md:text-6xl font-black text-white mb-6 leading-none tracking-tight"
+              className="text-5xl md:text-6xl font-black text-slate-900 mb-6 leading-none tracking-tight"
               style={{ fontFamily: 'Figtree, sans-serif' }}
             >
               DESIGN MEETS
@@ -200,7 +200,7 @@ export default function InteriorDesign() {
               className="text-xl text-gray-300 mb-6 leading-relaxed"
               style={{ fontFamily: 'Georgia, serif' }}
             >
-              Sure-Fix Remodeling is proud to partner with <strong className="text-white">Audra Frank Associates</strong> — bringing 50+ years of elite interior design experience directly to your renovation project.
+              Sure-Fix Remodeling is proud to partner with <strong className="text-slate-900">Audra Frank Associates</strong> — bringing 50+ years of elite interior design experience directly to your renovation project.
             </motion.p>
 
             <motion.p
@@ -240,18 +240,18 @@ export default function InteriorDesign() {
             transition={{ duration: 0.9, delay: 0.3 }}
             className="relative"
           >
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-[#394696]/20 to-[#0d1117] p-8">
+            <div className="relative rounded-3xl overflow-hidden border border-slate-200 bg-gradient-to-br from-[#394696]/20 to-[#0d1117] p-8">
               {/* Decorative corner */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#394696]/20 rounded-bl-3xl" />
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-[#983631]/10 rounded-tr-3xl" />
 
               <div className="relative z-10">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-2xl bg-[#394696] flex items-center justify-center text-2xl font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>
+                  <div className="w-16 h-16 rounded-2xl bg-[#394696] flex items-center justify-center text-2xl font-black text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>
                     AF
                   </div>
                   <div>
-                    <h3 className="text-xl font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>Audra E. Frank</h3>
+                    <h3 className="text-xl font-black text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>Audra E. Frank</h3>
                     <p className="text-[#394696] font-semibold text-sm">President, Audra Frank Associates LLC</p>
                   </div>
                 </div>
@@ -267,7 +267,7 @@ export default function InteriorDesign() {
                     { label: 'Press Features', value: '6' },
                     { label: 'Certifications', value: '10+' },
                   ].map(stat => (
-                    <div key={stat.label} className="p-3 rounded-xl bg-white/5 border border-white/10">
+                    <div key={stat.label} className="p-3 rounded-xl bg-white/5 border border-slate-200">
                       <div className="text-2xl font-black text-[#394696]" style={{ fontFamily: 'Figtree, sans-serif' }}>{stat.value}</div>
                       <div className="text-xs text-gray-400 font-medium">{stat.label}</div>
                     </div>
@@ -288,7 +288,7 @@ export default function InteriorDesign() {
       </section>
 
       {/* Services */}
-      <section className="py-24 px-4 border-t border-white/10">
+      <section className="py-24 px-4 border-t border-slate-200">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -296,7 +296,7 @@ export default function InteriorDesign() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Interior Design <span className="text-[#394696]">Services</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
@@ -313,12 +313,12 @@ export default function InteriorDesign() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
                 whileHover={{ y: -4 }}
-                className="p-6 rounded-2xl bg-white/5 border border-white/10 hover:border-[#394696]/50 hover:bg-[#394696]/5 transition-all cursor-default"
+                className="p-6 rounded-2xl bg-white/5 border border-slate-200 hover:border-[#394696]/50 hover:bg-[#394696]/5 transition-all cursor-default"
               >
                 <div className="w-10 h-10 rounded-xl bg-[#394696]/20 flex items-center justify-center mb-4">
                   <div className="w-3 h-3 rounded-full bg-[#394696]" />
                 </div>
-                <h3 className="text-lg font-black text-white mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
+                <h3 className="text-lg font-black text-slate-900 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
                   {service.title}
                 </h3>
                 <p className="text-gray-400 text-sm leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
@@ -331,7 +331,7 @@ export default function InteriorDesign() {
       </section>
 
       {/* Notable Clients Ticker */}
-      <section className="py-16 border-t border-white/10 bg-[#0a0e14]">
+      <section className="py-16 border-t border-slate-200 bg-[#0a0e14]">
         <div className="max-w-6xl mx-auto px-4 mb-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -339,7 +339,7 @@ export default function InteriorDesign() {
             viewport={{ once: true }}
             className="text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
               A Few <span className="text-[#394696]">Notable Clients</span>
             </h2>
             <p className="text-gray-500 text-sm" style={{ fontFamily: 'Georgia, serif' }}>
@@ -351,7 +351,7 @@ export default function InteriorDesign() {
       </section>
 
       {/* Press & Publications */}
-      <section className="py-24 px-4 border-t border-white/10">
+      <section className="py-24 px-4 border-t border-slate-200">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -362,7 +362,7 @@ export default function InteriorDesign() {
             <div className="flex justify-center mb-4">
               <BookOpen className="w-8 h-8 text-[#394696]" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Press & <span className="text-[#394696]">Publications</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
@@ -378,14 +378,14 @@ export default function InteriorDesign() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                className="relative p-6 rounded-2xl bg-white/5 border border-white/10 overflow-hidden group hover:border-white/20 transition-all"
+                className="relative p-6 rounded-2xl bg-white/5 border border-slate-200 overflow-hidden group hover:border-slate-300 transition-all"
               >
                 <div
                   className="absolute top-0 left-0 w-1 h-full rounded-l-2xl"
                   style={{ backgroundColor: item.color }}
                 />
                 <div className="text-3xl mb-3">{item.icon}</div>
-                <h3 className="text-lg font-black text-white mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
+                <h3 className="text-lg font-black text-slate-900 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
                   {item.publication}
                 </h3>
                 <p className="text-gray-400 text-sm leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
@@ -398,7 +398,7 @@ export default function InteriorDesign() {
       </section>
 
       {/* Certifications */}
-      <section className="py-24 px-4 bg-[#0a0e14] border-t border-white/10">
+      <section className="py-24 px-4 bg-[#0a0e14] border-t border-slate-200">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -409,7 +409,7 @@ export default function InteriorDesign() {
             <div className="flex justify-center mb-4">
               <Award className="w-8 h-8 text-[#983631]" />
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Certifications & <span className="text-[#394696]">Credentials</span>
             </h2>
             <p className="text-gray-400 text-lg max-w-2xl mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
@@ -425,11 +425,11 @@ export default function InteriorDesign() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.07 }}
-                className="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-white/10 hover:border-[#394696]/40 transition-all"
+                className="flex items-start gap-4 p-5 rounded-xl bg-white/5 border border-slate-200 hover:border-[#394696]/40 transition-all"
               >
                 <span className="text-2xl flex-shrink-0">{cert.icon}</span>
                 <div>
-                  <h3 className="font-black text-white text-sm mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+                  <h3 className="font-black text-slate-900 text-sm mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
                     {cert.title}
                   </h3>
                   <p className="text-gray-400 text-xs leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>
@@ -443,16 +443,16 @@ export default function InteriorDesign() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 px-4 border-t border-white/10">
+      <section className="py-24 px-4 border-t border-slate-200">
         <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="p-12 rounded-3xl bg-gradient-to-br from-[#394696]/20 to-[#983631]/10 border border-white/10"
+            className="p-12 rounded-3xl bg-gradient-to-br from-[#394696]/20 to-[#983631]/10 border border-slate-200"
           >
             <Quote className="w-8 h-8 text-[#394696] mx-auto mb-4" />
-            <h2 className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Start Your Design Journey
             </h2>
             <p className="text-gray-300 text-lg mb-8" style={{ fontFamily: 'Georgia, serif' }}>

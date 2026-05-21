@@ -103,13 +103,13 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
           {/* Icon badge */}
           <div className="absolute top-4 left-4 w-10 h-10 rounded-xl flex items-center justify-center"
             style={{ backgroundColor: service.color, boxShadow: `0 4px 16px ${service.color}60` }}>
-            <service.icon size={18} className="text-white" />
+            <service.icon size={18} className="text-slate-900" />
           </div>
           {/* Content overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-6">
-            <h3 className="text-xl font-black text-white mb-1.5"
+            <h3 className="text-xl font-black text-slate-900 mb-1.5"
               style={{ fontFamily: 'Figtree, sans-serif' }}>{service.title}</h3>
-            <p className="text-white/65 text-sm leading-relaxed mb-4"
+            <p className="text-slate-600 text-sm leading-relaxed mb-4"
               style={{ fontFamily: 'Georgia, serif' }}>{service.description}</p>
             <motion.div
               className="flex items-center gap-2 text-sm font-bold"
@@ -128,9 +128,9 @@ function ServiceCard({ service, index }: { service: ServiceItem; index: number }
             style={{ background: `${service.color}18`, border: `1px solid ${service.color}35` }}>
             <service.icon size={22} style={{ color: service.color }} />
           </div>
-          <h3 className="text-xl font-black text-white mb-3"
+          <h3 className="text-xl font-black text-slate-900 mb-3"
             style={{ fontFamily: 'Figtree, sans-serif' }}>{service.title}</h3>
-          <p className="text-white/55 text-sm leading-relaxed flex-1"
+          <p className="text-slate-600 text-sm leading-relaxed flex-1"
             style={{ fontFamily: 'Georgia, serif' }}>{service.description}</p>
           <motion.div
             className="flex items-center gap-2 text-sm font-bold mt-5"
@@ -151,7 +151,7 @@ export default function ServicesSection() {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <section id="services" className="py-24 bg-[#0d1117]" ref={ref}>
+    <section id="services" className="py-24 bg-white" ref={ref}>
       <div className="max-w-7xl mx-auto px-5 lg:px-8">
         {/* Header */}
         <motion.div
@@ -161,11 +161,11 @@ export default function ServicesSection() {
           className="mb-16 max-w-2xl"
         >
           <span className="section-label mb-4 block">What We Do</span>
-          <h2 className="text-4xl lg:text-5xl font-black text-white mb-5"
+          <h2 className="text-4xl lg:text-5xl font-black text-slate-900 mb-5"
             style={{ fontFamily: 'Figtree, sans-serif', lineHeight: 1.05 }}>
             Complete Home Renovation Services
           </h2>
-          <p className="text-white/55 text-lg leading-relaxed"
+          <p className="text-slate-600 text-lg leading-relaxed"
             style={{ fontFamily: 'Georgia, serif' }}>
             From a single bathroom refresh to a whole-home transformation — we handle every detail with precision and care.
           </p>
@@ -185,7 +185,7 @@ export default function ServicesSection() {
           transition={{ delay: 0.7, duration: 0.5, ease: 'easeOut' }}
           className="mt-14 text-center"
         >
-          <p className="text-white/45 mb-5 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600, letterSpacing: '0.04em' }}>
+          <p className="text-slate-500 mb-5 text-sm" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600, letterSpacing: '0.04em' }}>
             Don't see your project? We handle custom requests too.
           </p>
           <motion.button

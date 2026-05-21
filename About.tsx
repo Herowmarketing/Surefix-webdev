@@ -17,7 +17,7 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } 
 export default function About() {
   const { openStepper } = useLeadStepper();
   return (
-    <div className="bg-[#0d1117] min-h-screen">
+    <div className="bg-white min-h-screen">
       {/* ─── HERO ─── */}
       <section className="pt-36 pb-20 px-5 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -25,23 +25,23 @@ export default function About() {
             <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Our Story
             </motion.p>
-            <motion.h1 variants={fadeUp} custom={1} className="text-5xl md:text-6xl font-black text-white mb-6 leading-tight" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <motion.h1 variants={fadeUp} custom={1} className="text-5xl md:text-6xl font-black text-slate-900 mb-6 leading-tight" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Built on Family.<br />Built for the Forever Home.
             </motion.h1>
-            <motion.p variants={fadeUp} custom={2} className="text-white/65 text-lg leading-relaxed mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={2} className="text-slate-600 text-lg leading-relaxed mb-6" style={{ fontFamily: 'Georgia, serif' }}>
               Sure-Fix owner Henry Rouhana has a passion for construction that began when he was a young man working alongside his father in Lebanon. He took that passion to college, where he received his degree in Architecture.
             </motion.p>
-            <motion.p variants={fadeUp} custom={3} className="text-white/65 text-lg leading-relaxed mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={3} className="text-slate-600 text-lg leading-relaxed mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               After graduation, he moved to Lehigh Valley, became an American citizen, and started working in construction. In 2008, Henry began Sure-Fix Remodeling as a family-run business to ensure that the values he learned working alongside his father continued with his family.
             </motion.p>
             <motion.div variants={fadeUp} custom={4} className="flex flex-wrap gap-4">
-              <div className="flex items-center gap-2 text-sm text-white/60" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+              <div className="flex items-center gap-2 text-sm text-slate-600" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                 <Award size={16} className="text-[#394696]" /> Founded 2008
               </div>
-              <div className="flex items-center gap-2 text-sm text-white/60" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+              <div className="flex items-center gap-2 text-sm text-slate-600" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                 <Shield size={16} className="text-[#394696]" /> Licensed & Insured
               </div>
-              <div className="flex items-center gap-2 text-sm text-white/60" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+              <div className="flex items-center gap-2 text-sm text-slate-600" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                 <Heart size={16} className="text-[#983631]" /> Family-Run
               </div>
             </motion.div>
@@ -63,7 +63,7 @@ export default function About() {
       </section>
 
       {/* ─── STATS ─── */}
-      <section className="py-12 border-y border-white/5" style={{ background: 'rgba(57,70,150,0.07)' }}>
+      <section className="py-12 border-y border-slate-200" style={{ background: 'rgba(57,70,150,0.05)' }}>
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -73,8 +73,8 @@ export default function About() {
               { value: '100%', label: 'Licensed & Insured' },
             ].map((stat) => (
               <div key={stat.label}>
-                <div className="text-4xl font-black text-white mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>{stat.value}</div>
-                <div className="text-xs font-bold uppercase tracking-wider text-white/40" style={{ fontFamily: 'Figtree, sans-serif' }}>{stat.label}</div>
+                <div className="text-4xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>{stat.value}</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500" style={{ fontFamily: 'Figtree, sans-serif' }}>{stat.label}</div>
               </div>
             ))}
           </div>
@@ -107,7 +107,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.05 }}
-            className="mx-auto max-w-3xl text-white"
+            className="mx-auto max-w-3xl text-slate-900"
             style={{
               fontFamily: '"Cormorant Garamond", Georgia, serif',
               fontWeight: 300,
@@ -123,7 +123,7 @@ export default function About() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7, delay: 0.12 }}
-            className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/60 sm:text-lg"
+            className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg"
             style={{ fontFamily: 'Georgia, serif' }}
           >
             Sure-Fix delivers the reliability, quality, and service of a high-end firm without the inflated overhead — while far outperforming small general contractors in communication and accountability. It’s why our clients come back, and why they refer the people they love.
@@ -137,7 +137,7 @@ export default function About() {
           <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
             What We Stand For
           </motion.p>
-          <motion.h2 variants={fadeUp} custom={1} className="text-4xl font-black text-white mb-12 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+          <motion.h2 variants={fadeUp} custom={1} className="text-4xl font-black text-slate-900 mb-12 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Our Core Values
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -148,14 +148,14 @@ export default function About() {
               { icon: <Award size={24} />, title: 'Customer Satisfaction', desc: 'We don\'t consider a job done until you\'re completely satisfied. Your approval is our finish line.' },
             ].map((val, i) => (
               <motion.div key={val.title} variants={fadeUp} custom={i}
-                className="p-6 rounded-2xl border border-white/8 hover:border-[#394696]/40 transition-colors"
-                style={{ background: 'rgba(255,255,255,0.03)' }}>
+                className="p-6 rounded-2xl border border-slate-200 hover:border-[#394696]/40 transition-colors"
+                style={{ background: '#f8fafc' }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 text-[#394696]"
                   style={{ background: 'rgba(57,70,150,0.15)' }}>
                   {val.icon}
                 </div>
-                <h3 className="text-base font-black text-white mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>{val.title}</h3>
-                <p className="text-sm text-white/50 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{val.desc}</p>
+                <h3 className="text-base font-black text-slate-900 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>{val.title}</h3>
+                <p className="text-sm text-slate-500 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{val.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -163,27 +163,27 @@ export default function About() {
       </section>
 
       {/* ─── TEAM ─── */}
-      <section className="py-20 px-5 lg:px-8 border-t border-white/5" style={{ background: 'rgba(57,70,150,0.05)' }}>
+      <section className="py-20 px-5 lg:px-8 border-t border-slate-200" style={{ background: 'rgba(57,70,150,0.05)' }}>
         <div className="max-w-7xl mx-auto">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
             <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
               The People Behind the Work
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="text-4xl font-black text-white mb-12 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <motion.h2 variants={fadeUp} custom={1} className="text-4xl font-black text-slate-900 mb-12 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Meet Our Team
             </motion.h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {TEAM.map((member, i) => (
                 <motion.div key={member.name} variants={fadeUp} custom={i}
-                  className="rounded-2xl overflow-hidden border border-white/8"
-                  style={{ background: 'rgba(255,255,255,0.03)' }}>
+                  className="rounded-2xl overflow-hidden border border-slate-200"
+                  style={{ background: '#f8fafc' }}>
                   <div className="h-48 overflow-hidden">
                     <img src={member.image} alt={member.name} className="w-full h-full object-cover object-top" />
                   </div>
                   <div className="p-5">
-                    <h3 className="text-lg font-black text-white mb-0.5" style={{ fontFamily: 'Figtree, sans-serif' }}>{member.name}</h3>
+                    <h3 className="text-lg font-black text-slate-900 mb-0.5" style={{ fontFamily: 'Figtree, sans-serif' }}>{member.name}</h3>
                     <p className="text-xs font-bold text-[#394696] uppercase tracking-wider mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>{member.role}</p>
-                    <p className="text-sm text-white/50 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{member.bio}</p>
+                    <p className="text-sm text-slate-500 leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{member.bio}</p>
                   </div>
                 </motion.div>
               ))}
@@ -199,7 +199,7 @@ export default function About() {
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Ready to Work with Us?
             </motion.h2>
-            <motion.p variants={fadeUp} custom={1} className="text-white/75 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={1} className="text-slate-700 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               Contact us today at {BUSINESS.phone} to request a free consultation for your next project.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap justify-center gap-4">
@@ -208,7 +208,7 @@ export default function About() {
                 onClick={() => openStepper()}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider"
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider"
                 style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', border: 'none' }}
               >
                 Get Free Estimate <ArrowRight size={15} />

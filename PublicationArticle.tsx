@@ -14,10 +14,10 @@ export default function PublicationArticle({ params }: Props) {
   if (!post) return <NotFound />;
 
   return (
-    <div className="min-h-screen bg-[#0d1117]">
+    <div className="min-h-screen bg-white">
       <article className="mx-auto max-w-3xl px-4 pb-[max(5rem,env(safe-area-inset-bottom,0px)+3rem)] pt-[max(8rem,calc(7rem+env(safe-area-inset-top,0px)))] sm:px-6 lg:px-8">
         <Link href="/publications">
-          <span className="mb-6 inline-flex min-h-[44px] cursor-pointer items-center gap-2 py-2 text-sm font-semibold text-[#394696] transition-colors hover:text-white sm:mb-8">
+          <span className="mb-6 inline-flex min-h-[44px] cursor-pointer items-center gap-2 py-2 text-sm font-semibold text-[#394696] transition-colors hover:text-slate-900 sm:mb-8">
             <ArrowLeft size={18} aria-hidden /> Back to publications
           </span>
         </Link>
@@ -32,7 +32,7 @@ export default function PublicationArticle({ params }: Props) {
             style={{ fontFamily: 'Figtree, sans-serif' }}
           >
             <BookOpen size={14} className="inline opacity-90" /> Blog · {post.formatLabel}
-            <span className="text-white/35">· {post.dateLabel}</span>
+            <span className="text-slate-400">· {post.dateLabel}</span>
           </p>
           <h1
             className="mb-6 text-[1.5rem] font-black leading-snug text-white sm:mb-8 sm:text-3xl md:text-4xl"
@@ -43,7 +43,7 @@ export default function PublicationArticle({ params }: Props) {
         </motion.header>
 
         <div
-          className="space-y-5 text-[1.0625rem] leading-[1.65] text-white/70 sm:text-lg sm:leading-relaxed"
+          className="space-y-5 text-[1.0625rem] leading-[1.65] text-slate-700 sm:text-lg sm:leading-relaxed"
           style={{ fontFamily: 'Georgia, serif' }}
         >
           {post.paragraphs.map((p, i) => (
@@ -58,9 +58,9 @@ export default function PublicationArticle({ params }: Props) {
           ))}
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-8">
+        <div className="mt-12 border-t border-slate-200 pt-8">
           <Link href="/publications">
-            <span className="text-sm font-bold text-[#394696] hover:text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <span className="text-sm font-bold text-[#394696] hover:text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>
               ← More articles & print pieces
             </span>
           </Link>

@@ -152,13 +152,13 @@ export default function Showroom() {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 
   return (
-    <div className="bg-[#0d1117] min-h-screen">
+    <div className="bg-white min-h-screen">
 
       {/* ─── HERO ─── */}
       <section ref={heroRef} className="relative min-h-[70vh] flex items-center overflow-hidden">
         <motion.div className="absolute inset-0 pointer-events-none" style={{ y: heroY, opacity: heroOpacity }}>
           <div className="absolute inset-0" style={{
-            backgroundImage: `linear-gradient(rgba(57,70,150,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(57,70,150,0.06) 1px, transparent 1px)`,
+            backgroundImage: `linear-gradient(rgba(57,70,150,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(57,70,150,0.04) 1px, transparent 1px)`,
             backgroundSize: '60px 60px',
           }} />
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full pointer-events-none"
@@ -172,7 +172,7 @@ export default function Showroom() {
             { src: SHOWROOM_MATERIAL_IMAGES.tile, x: '82%', y: '62%', size: 140, delay: 0.3 },
             { src: SHOWROOM_MATERIAL_IMAGES.siding, x: '4%', y: '68%', size: 120, delay: 0.6 },
           ].map((orb, i) => (
-            <motion.div key={i} className="absolute rounded-2xl overflow-hidden border border-white/10"
+            <motion.div key={i} className="absolute rounded-2xl overflow-hidden border border-slate-200"
               style={{ left: orb.x, top: orb.y, width: orb.size, height: orb.size, opacity: 0.22, filter: 'blur(1px)' }}
               animate={{ y: [0, -20, 0], rotate: [0, 3, -3, 0] }}
               transition={{ duration: 6 + i * 1.5, repeat: Infinity, ease: 'easeInOut', delay: orb.delay }}>
@@ -193,7 +193,7 @@ export default function Showroom() {
             </motion.div>
 
             <motion.h1 variants={fadeUp} custom={1}
-              className="text-5xl md:text-6xl xl:text-7xl font-black text-white leading-[0.95] mb-6"
+              className="text-5xl md:text-6xl xl:text-7xl font-black text-slate-900 leading-[0.95] mb-6"
               style={{ fontFamily: 'Figtree, sans-serif' }}>
               EVERYTHING<br />
               <span style={{ color: '#394696' }}>UNDER ONE</span><br />
@@ -201,7 +201,7 @@ export default function Showroom() {
             </motion.h1>
 
             <motion.p variants={fadeUp} custom={2}
-              className="text-lg text-white/60 max-w-xl leading-relaxed mb-8"
+              className="text-lg text-slate-600 max-w-xl leading-relaxed mb-8"
               style={{ fontFamily: 'Georgia, serif' }}>
               No Home Depot runs. No Lowe's trips. No chasing down materials from three different vendors.
               Our showroom carries every material your renovation needs — all in stock and ready to touch.
@@ -209,7 +209,7 @@ export default function Showroom() {
 
             <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4 mb-10">
               {['Countertops & Surfaces', 'Flooring & Hardwood', 'Tile & Stone', 'Fixtures & Faucets', 'Siding & Roofing', 'Windows & Doors'].map(item => (
-                <span key={item} className="flex items-center gap-1.5 text-sm text-white/60" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
+                <span key={item} className="flex items-center gap-1.5 text-sm text-slate-600" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>
                   <CheckCircle size={14} className="text-[#394696]" /> {item}
                 </span>
               ))}
@@ -221,15 +221,15 @@ export default function Showroom() {
                 onClick={() => openStepper()}
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider"
+                className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider"
                 style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', boxShadow: '0 8px 32px rgba(152,54,49,0.4)', border: 'none' }}
               >
                 Visit the Showroom <ArrowRight size={16} />
               </motion.button>
               <a href={BUSINESS.phoneHref}>
                 <motion.span whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider border border-white/20"
-                  style={{ background: 'rgba(255,255,255,0.05)', fontFamily: 'Figtree, sans-serif', backdropFilter: 'blur(8px)' }}>
+                  className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider border border-slate-300"
+                  style={{ background: '#f8fafc', fontFamily: 'Figtree, sans-serif', backdropFilter: 'blur(8px)' }}>
                   {BUSINESS.phone}
                 </motion.span>
               </a>
@@ -239,7 +239,7 @@ export default function Showroom() {
       </section>
 
       {/* ─── ONE-STOP-SHOP CALLOUT ─── */}
-      <section className="py-16 border-y border-white/8" style={{ background: 'rgba(57,70,150,0.07)' }}>
+      <section className="py-16 border-y border-slate-200" style={{ background: 'rgba(57,70,150,0.05)' }}>
         <div className="max-w-7xl mx-auto px-5 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -249,12 +249,12 @@ export default function Showroom() {
             ].map((item, i) => (
               <motion.div key={i} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
                 transition={{ delay: i * 0.12, duration: 0.6 }}
-                className="flex flex-col gap-3 p-6 rounded-2xl border border-white/8" style={{ background: 'rgba(255,255,255,0.02)' }}>
+                className="flex flex-col gap-3 p-6 rounded-2xl border border-slate-200" style={{ background: '#f8fafc' }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(57,70,150,0.15)' }}>
                   {item.icon}
                 </div>
-                <h3 className="text-lg font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{item.body}</p>
+                <h3 className="text-lg font-black text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>{item.title}</h3>
+                <p className="text-slate-500 text-sm leading-relaxed" style={{ fontFamily: 'Georgia, serif' }}>{item.body}</p>
               </motion.div>
             ))}
           </div>
@@ -267,10 +267,10 @@ export default function Showroom() {
           <motion.p variants={fadeUp} custom={0} className="text-xs font-bold uppercase tracking-widest text-[#394696] mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Hover · Press · Scroll to Explore
           </motion.p>
-          <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+          <motion.h2 variants={fadeUp} custom={1} className="text-4xl md:text-5xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Materials That Move With You
           </motion.h2>
-          <motion.p variants={fadeUp} custom={2} className="text-white/50 max-w-xl mx-auto text-base" style={{ fontFamily: 'Georgia, serif' }}>
+          <motion.p variants={fadeUp} custom={2} className="text-slate-500 max-w-xl mx-auto text-base" style={{ fontFamily: 'Georgia, serif' }}>
             Every card responds to your cursor, press, and scroll. Every item is available in our showroom today.
           </motion.p>
         </motion.div>
@@ -296,7 +296,7 @@ export default function Showroom() {
       {/* ─── COMPACT 3D GRID ─── */}
       <section className="py-16 px-5 lg:px-8 max-w-7xl mx-auto">
         <motion.h3 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="text-2xl font-black text-white mb-10 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
+          className="text-2xl font-black text-slate-900 mb-10 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
           Also In Our Showroom
         </motion.h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
@@ -307,7 +307,7 @@ export default function Showroom() {
       </section>
 
       {/* ─── OUR ENDURING BRAND ALLIES BUNDLE ─── */}
-      <section className="relative overflow-hidden border-t border-white/[0.06]">
+      <section className="relative overflow-hidden border-t border-slate-200">
         <div
           aria-hidden
           className="absolute inset-0 pointer-events-none"
@@ -328,7 +328,7 @@ export default function Showroom() {
               <motion.span
                 variants={fadeUp}
                 custom={0}
-                className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[#394696]/40 px-3 py-1 text-[10px] font-black uppercase tracking-[0.32em] text-white/90"
+                className="mb-4 inline-flex items-center gap-1.5 rounded-full border border-[#394696]/40 px-3 py-1 text-[10px] font-black uppercase tracking-[0.32em] text-slate-800"
                 style={{ background: 'rgba(57,70,150,0.18)', fontFamily: 'Figtree, sans-serif' }}
               >
                 <Award size={11} /> Our Enduring Brand Allies Bundle
@@ -336,7 +336,7 @@ export default function Showroom() {
               <motion.h2
                 variants={fadeUp}
                 custom={1}
-                className="text-white"
+                className="text-slate-900"
                 style={{
                   fontFamily: '"Cormorant Garamond", Georgia, serif',
                   fontWeight: 300,
@@ -350,20 +350,20 @@ export default function Showroom() {
               <motion.p
                 variants={fadeUp}
                 custom={2}
-                className="mt-5 max-w-2xl text-base leading-relaxed text-white/65"
+                className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
-                Most contractors hand you a vendor list and a parking pass. Sure-Fix walks you through a curated material selection inside our showroom — fixtures by <strong className="text-white">Moen</strong>, toilets by <strong className="text-white">Gerber</strong>, and weather-grade envelope products by <strong className="text-white">Henry</strong>. Long-standing manufacturer relationships, applied to every project.
+                Most contractors hand you a vendor list and a parking pass. Sure-Fix walks you through a curated material selection inside our showroom — fixtures by <strong className="text-slate-900">Moen</strong>, toilets by <strong className="text-slate-900">Gerber</strong>, and weather-grade envelope products by <strong className="text-slate-900">Henry</strong>. Long-standing manufacturer relationships, applied to every project.
               </motion.p>
               <motion.div
                 variants={fadeUp}
                 custom={3}
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-white/[0.08] px-4 py-3 text-sm"
-                style={{ background: 'rgba(255,255,255,0.03)', fontFamily: 'Figtree, sans-serif' }}
+                className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-4 py-3 text-sm"
+                style={{ background: '#f8fafc', fontFamily: 'Figtree, sans-serif' }}
               >
                 <Sparkles size={14} className="text-[#983631]" />
-                <span className="font-bold text-white">Featuring Henry</span>
-                <span className="text-white/55">— bundle add-on ($200 value)</span>
+                <span className="font-bold text-slate-900">Featuring Henry</span>
+                <span className="text-slate-600">— bundle add-on ($200 value)</span>
               </motion.div>
             </div>
             <motion.ul
@@ -376,8 +376,8 @@ export default function Showroom() {
                 return (
                   <li
                     key={ally.name}
-                    className="flex items-start gap-3 rounded-2xl border border-white/[0.08] p-4"
-                    style={{ background: 'rgba(255,255,255,0.025)' }}
+                    className="flex items-start gap-3 rounded-2xl border border-slate-200 p-4"
+                    style={{ background: '#f8fafc' }}
                   >
                     <span
                       className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
@@ -387,7 +387,7 @@ export default function Showroom() {
                     </span>
                     <div className="min-w-0">
                       <p
-                        className="text-sm font-black text-white"
+                        className="text-sm font-black text-slate-900"
                         style={{ fontFamily: 'Figtree, sans-serif' }}
                       >
                         {ally.name}
@@ -419,10 +419,10 @@ export default function Showroom() {
                   key={ally.name}
                   variants={fadeUp}
                   custom={i}
-                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-white/[0.08] p-7"
+                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200 p-7"
                   style={{
                     background:
-                      'linear-gradient(155deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.012) 60%, rgba(13,17,23,0.45) 100%)',
+                      'linear-gradient(155deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%)',
                   }}
                 >
                   <div className="flex items-center justify-between">
@@ -436,14 +436,14 @@ export default function Showroom() {
                       <Icon size={20} />
                     </span>
                     <span
-                      className="text-[10px] font-bold uppercase tracking-[0.32em] text-white/40"
+                      className="text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
                       style={{ fontFamily: 'Figtree, sans-serif' }}
                     >
                       Enduring Ally
                     </span>
                   </div>
                   <h3
-                    className="text-white"
+                    className="text-slate-900"
                     style={{
                       fontFamily: '"Cormorant Garamond", Georgia, serif',
                       fontWeight: 400,
@@ -461,7 +461,7 @@ export default function Showroom() {
                     {ally.role}
                   </p>
                   <p
-                    className="text-sm leading-relaxed text-white/65"
+                    className="text-sm leading-relaxed text-slate-600"
                     style={{ fontFamily: 'Georgia, serif' }}
                   >
                     {ally.blurb}
@@ -474,14 +474,14 @@ export default function Showroom() {
       </section>
 
       {/* ─── BRAND PARTNERS MARQUEE ─── */}
-      <section className="py-16 border-t border-white/8 overflow-hidden">
+      <section className="py-16 border-t border-slate-200 overflow-hidden">
         <div className="max-w-7xl mx-auto px-5 lg:px-8 mb-10 text-center">
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="text-xs font-bold uppercase tracking-widest text-white/30 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Trusted Brands We Carry
           </motion.p>
           <motion.h3 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-            className="text-2xl font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            className="text-2xl font-black text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>
             Industry-Leading Manufacturers
           </motion.h3>
         </div>
@@ -490,10 +490,10 @@ export default function Showroom() {
           <div className="absolute right-0 top-0 bottom-0 w-24 z-10 pointer-events-none" style={{ background: 'linear-gradient(to left, #0d1117, transparent)' }} />
           <motion.div className="flex gap-4 w-max" animate={{ x: ['0%', '-50%'] }} transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}>
             {[...PARTNER_BRANDS, ...PARTNER_BRANDS].map((brand, i) => (
-              <div key={i} className="flex-shrink-0 flex flex-col items-center justify-center px-8 py-5 rounded-xl border border-white/8 min-w-[160px]"
-                style={{ background: 'rgba(255,255,255,0.02)' }}>
-                <span className="text-base font-black text-white" style={{ fontFamily: 'Figtree, sans-serif' }}>{brand.name}</span>
-                <span className="text-xs text-white/30 mt-1" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>{brand.category}</span>
+              <div key={i} className="flex-shrink-0 flex flex-col items-center justify-center px-8 py-5 rounded-xl border border-slate-200 min-w-[160px]"
+                style={{ background: '#f8fafc' }}>
+                <span className="text-base font-black text-slate-900" style={{ fontFamily: 'Figtree, sans-serif' }}>{brand.name}</span>
+                <span className="text-xs text-slate-400 mt-1" style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}>{brand.category}</span>
               </div>
             ))}
           </motion.div>
@@ -511,10 +511,10 @@ export default function Showroom() {
             <div className="flex justify-center gap-1 mb-4">
               {[...Array(5)].map((_, i) => <Star key={i} size={18} className="fill-yellow-400 text-yellow-400" />)}
             </div>
-            <h2 className="text-4xl md:text-5xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Ready to See It in Person?
             </h2>
-            <p className="text-white/60 text-lg mb-8 max-w-xl mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
+            <p className="text-slate-600 text-lg mb-8 max-w-xl mx-auto" style={{ fontFamily: 'Georgia, serif' }}>
               Visit our showroom at {BUSINESS.address}. Our team will walk you through every material option and help you design the home of your dreams — all in one visit.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -523,15 +523,15 @@ export default function Showroom() {
                 onClick={() => openStepper()}
                 whileHover={{ scale: 1.04, y: -2 }}
                 whileTap={{ scale: 0.97 }}
-                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider"
+                className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider"
                 style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', boxShadow: '0 8px 32px rgba(152,54,49,0.4)', border: 'none' }}
               >
                 Schedule a Showroom Visit <ArrowRight size={16} />
               </motion.button>
               <a href={BUSINESS.phoneHref}>
                 <motion.span whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
-                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider border border-white/20"
-                  style={{ background: 'rgba(255,255,255,0.05)', fontFamily: 'Figtree, sans-serif', backdropFilter: 'blur(8px)' }}>
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider border border-slate-300"
+                  style={{ background: '#f8fafc', fontFamily: 'Figtree, sans-serif', backdropFilter: 'blur(8px)' }}>
                   {BUSINESS.phone}
                 </motion.span>
               </a>

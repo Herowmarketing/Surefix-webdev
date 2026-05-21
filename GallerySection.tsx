@@ -46,7 +46,7 @@ export default function GallerySection() {
         >
           <div>
             <span className="section-label mb-3 block">Our Work</span>
-            <h2 className="text-4xl lg:text-5xl font-black text-white"
+            <h2 className="text-4xl lg:text-5xl font-black text-slate-900"
               style={{ fontFamily: 'Figtree, sans-serif', lineHeight: 1.05 }}>
               Project Gallery
             </h2>
@@ -99,12 +99,12 @@ export default function GallerySection() {
                     style={{ fontFamily: 'Figtree, sans-serif' }}>{item.category}</span>
                   <h3 className="text-white font-black text-lg mt-1"
                     style={{ fontFamily: 'Figtree, sans-serif' }}>{item.title}</h3>
-                  <p className="text-white/55 text-sm"
+                  <p className="text-slate-600 text-sm"
                     style={{ fontFamily: 'Georgia, serif' }}>{item.location}</p>
                 </div>
                 {/* Zoom icon */}
-                <div className="absolute top-4 right-4 w-9 h-9 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-white/20">
-                  <ZoomIn size={15} className="text-white" />
+                <div className="absolute top-4 right-4 w-9 h-9 bg-white/15 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 border border-slate-300">
+                  <ZoomIn size={15} className="text-slate-900" />
                 </div>
               </motion.div>
             ))}

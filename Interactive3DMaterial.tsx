@@ -305,7 +305,7 @@ export function Interactive3DMaterial({
               }}
             >
               <span
-                className="px-3 py-1.5 text-xs font-black tracking-wider text-white rounded-full backdrop-blur-md border border-white/20 uppercase"
+                className="px-3 py-1.5 text-xs font-black tracking-wider text-white rounded-full backdrop-blur-md border border-slate-300 uppercase"
                 style={{ background: `${accentColor}cc`, fontFamily: 'Figtree, sans-serif' }}
               >
                 {badge}
@@ -321,7 +321,7 @@ export function Interactive3DMaterial({
               }}
             >
               <h3
-                className="text-xl font-black text-white leading-tight"
+                className="text-xl font-black text-slate-900 leading-tight"
                 style={{ fontFamily: 'Figtree, sans-serif', textShadow: '0 2px 12px rgba(0,0,0,0.8)' }}
               >
                 {title}
@@ -438,7 +438,7 @@ export function Interactive3DMaterialFeatured({
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.9, delay: index * 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
       style={{ y: parallaxY }}
-      className={`flex flex-col ${flipped ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-0 overflow-hidden rounded-2xl border border-white/10 bg-[#0d1117]`}
+      className={`flex flex-col ${flipped ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white`}
     >
       {/* 3D Image side */}
       <div className="lg:w-1/2 relative" style={{ perspective: '800px' }}>
@@ -488,7 +488,7 @@ export function Interactive3DMaterialFeatured({
             style={{ translateZ: hovered ? 35 : 0, transition: 'all 0.3s ease' }}
           >
             <span
-              className="px-3 py-1.5 text-xs font-black tracking-wider text-white rounded-full backdrop-blur-md border border-white/20 uppercase"
+              className="px-3 py-1.5 text-xs font-black tracking-wider text-white rounded-full backdrop-blur-md border border-slate-300 uppercase"
               style={{ background: `${accentColor}dd`, fontFamily: 'Figtree, sans-serif' }}
             >
               {badge}
@@ -501,7 +501,7 @@ export function Interactive3DMaterialFeatured({
               <motion.span
                 key={brand}
                 style={{ translateZ: hovered ? 20 : 0, transition: 'all 0.3s ease' }}
-                className="px-2 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm text-white rounded-full border border-white/20"
+                className="px-2 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm text-white rounded-full border border-slate-300"
               >
                 {brand}
               </motion.span>
@@ -539,7 +539,7 @@ export function Interactive3DMaterialFeatured({
           ))}
         </div>
         <h3
-          className="text-2xl lg:text-3xl font-black text-white mb-4"
+          className="text-2xl lg:text-3xl font-black text-slate-900 mb-4"
           style={{ fontFamily: 'Figtree, sans-serif' }}
         >
           {title}
@@ -550,7 +550,7 @@ export function Interactive3DMaterialFeatured({
         <motion.a
           href="/contact"
           whileHover={{ x: 6 }}
-          className="inline-flex items-center gap-2 font-bold hover:text-white transition-colors text-sm"
+          className="inline-flex items-center gap-2 font-bold hover:text-slate-900 transition-colors text-sm"
           style={{ color: '#983631', fontFamily: 'Figtree, sans-serif' }}
         >
           Request This Material
