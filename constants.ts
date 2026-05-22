@@ -117,25 +117,25 @@ export const TEAM = [
     name: 'Henry Rouhana',
     role: 'Owner & Founder',
     bio: 'Henry\'s passion for construction began working alongside his father in Lebanon. After earning his Architecture degree and becoming an American citizen, he founded Sure-Fix Remodeling in 2008 — bringing 25+ years of expertise to every project.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+    image: '/manus-storage/sf-team-henry.png',
   },
   {
     name: 'Tony',
     role: 'Lead Project Manager',
     bio: 'Tony is your main point of contact throughout your project — from initial planning through final walkthrough. He keeps every job on schedule, on budget, and to the highest standard.',
-    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80',
+    image: '/manus-storage/sf-team-tony.png',
   },
   {
     name: 'Chris',
     role: 'Showroom Manager',
     bio: 'Chris guides you through our showroom experience — helping you select materials, finishes, and designs that match your vision and budget. He makes the selection process easy and enjoyable.',
-    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80',
+    image: '/manus-storage/sf-team-chris.png',
   },
   {
     name: 'James',
     role: 'Project Coordinator',
     bio: 'James is a new but mighty member of the Sure-Fix team. As Project Coordinator, he ensures every detail is tracked, every subcontractor is aligned, and every client is kept in the loop.',
-    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80',
+    image: '/manus-storage/sf-team-james.png',
   },
 ];
 
