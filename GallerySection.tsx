@@ -11,7 +11,7 @@ import { GALLERY_STILLS } from '@/lib/site-images';
 const categories = ['All', 'Kitchen', 'Bathroom', 'Basement', 'Exterior'];
 
 const galleryItems = [
-  { id: 1, image: GALLERY_STILLS.kitchen, category: 'Kitchen', title: 'Kitchen Cabinet Refresh', location: 'Easton, PA' },
+  { id: 1, image: GALLERY_STILLS.kitchen, category: 'Kitchen', title: 'Kitchen Remodel', location: 'Easton, PA' },
   { id: 2, image: GALLERY_STILLS.bathroom, category: 'Bathroom', title: 'Updated Master Bath', location: 'Bethlehem, PA' },
   { id: 3, image: GALLERY_STILLS.exterior, category: 'Exterior', title: 'Colonial Exterior Refresh', location: 'Phillipsburg, NJ' },
   { id: 4, image: GALLERY_STILLS.basement, category: 'Basement', title: 'Finished Basement', location: 'Allentown, PA' },
