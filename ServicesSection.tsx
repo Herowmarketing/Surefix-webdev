@@ -35,7 +35,7 @@ const services: ServiceItem[] = [
   {
     icon: Bath,
     title: 'Bathroom Renovation',
-    description: 'Spa-worthy bathrooms with premium tile, fixtures, and finishes.',
+    description: 'Updated bathrooms with durable tile, fixtures, and finishes built for daily use.',
     image: BATHROOM_IMG,
     color: '#983631',
     large: false,

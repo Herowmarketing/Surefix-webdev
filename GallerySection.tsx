@@ -6,23 +6,17 @@
 import { useRef, useState } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
 import { ZoomIn } from 'lucide-react';
-import { SITE_IMAGES } from '@/lib/site-images';
-
-const KITCHEN_IMG = SITE_IMAGES.kitchen;
-const BATHROOM_IMG = SITE_IMAGES.bathroom;
-const EXTERIOR_IMG = SITE_IMAGES.exterior;
-const BASEMENT_IMG = SITE_IMAGES.basement;
-const HERO_IMG = SITE_IMAGES.galleryHero;
+import { GALLERY_STILLS } from '@/lib/site-images';
 
 const categories = ['All', 'Kitchen', 'Bathroom', 'Basement', 'Exterior'];
 
 const galleryItems = [
-  { id: 1, image: KITCHEN_IMG, category: 'Kitchen', title: 'Modern Kitchen Transformation', location: 'Easton, PA' },
-  { id: 2, image: BATHROOM_IMG, category: 'Bathroom', title: 'Spa Master Bathroom', location: 'Bethlehem, PA' },
-  { id: 3, image: EXTERIOR_IMG, category: 'Exterior', title: 'Colonial Exterior Refresh', location: 'Phillipsburg, NJ' },
-  { id: 4, image: BASEMENT_IMG, category: 'Basement', title: 'Entertainment Basement', location: 'Allentown, PA' },
-  { id: 5, image: HERO_IMG, category: 'Kitchen', title: 'Open-Plan Renovation', location: 'Hackettstown, NJ' },
-  { id: 6, image: BATHROOM_IMG, category: 'Bathroom', title: 'Guest Bath Remodel', location: 'Easton, PA' },
+  { id: 1, image: GALLERY_STILLS.kitchen, category: 'Kitchen', title: 'Kitchen Cabinet Refresh', location: 'Easton, PA' },
+  { id: 2, image: GALLERY_STILLS.bathroom, category: 'Bathroom', title: 'Updated Master Bath', location: 'Bethlehem, PA' },
+  { id: 3, image: GALLERY_STILLS.exterior, category: 'Exterior', title: 'Colonial Exterior Refresh', location: 'Phillipsburg, NJ' },
+  { id: 4, image: GALLERY_STILLS.basement, category: 'Basement', title: 'Finished Basement', location: 'Allentown, PA' },
+  { id: 5, image: GALLERY_STILLS.living, category: 'Kitchen', title: 'Living Space Update', location: 'Hackettstown, NJ' },
+  { id: 6, image: GALLERY_STILLS.guestBath, category: 'Bathroom', title: 'Guest Bath Remodel', location: 'Easton, PA' },
 ];
 
 export default function GallerySection() {
