@@ -45,7 +45,7 @@ export const PAGE_SEO = {
     imageAlt: 'Sure-Fix Remodeling interior design — comfortable suburban home',
   },
   promotions: {
-    title: 'Remodeling Promotions & Financing — Sure-Fix Remodeling',
+    title: 'Remodeling Promotions, Bundles & Financing',
     description:
       'Current Sure-Fix Remodeling offers: year-round value pillars, seasonal bundles, gift card terms, and financing options for Lehigh Valley homeowners.',
     path: '/promotions',
@@ -53,7 +53,7 @@ export const PAGE_SEO = {
     imageAlt: 'Sure-Fix Remodeling promotions and financing options',
   },
   about: {
-    title: 'About Sure-Fix Remodeling — Henry Rouhana, Family-Run Since 2008',
+    title: 'About — Henry Rouhana, Family-Run Design-Build Since 2008',
     description:
       'Henry Rouhana founded Sure-Fix Remodeling in Easton, PA in 2008. Meet the family-run team modernizing forever homes across the Lehigh Valley and Western New Jersey.',
     path: '/about',
@@ -61,7 +61,7 @@ export const PAGE_SEO = {
     imageAlt: 'Sure-Fix Remodeling team — Henry Rouhana, owner',
   },
   reviews: {
-    title: 'Reviews — Lehigh Valley Homeowners on Sure-Fix Remodeling',
+    title: 'Reviews — 400+ Lehigh Valley Homeowners',
     description:
       'Read 400+ verified reviews of Sure-Fix Remodeling from Google, Angi, Houzz and Facebook. Family-run design-build contractor based in Easton, PA.',
     path: '/reviews',
@@ -69,7 +69,7 @@ export const PAGE_SEO = {
     imageAlt: 'Sure-Fix Remodeling reviews and testimonials',
   },
   contact: {
-    title: 'Contact Sure-Fix Remodeling — Easton, PA (610) 392-0990',
+    title: 'Contact — Easton, PA (610) 392-0990',
     description:
       'Schedule a free in-home consultation with Sure-Fix Remodeling. Call (610) 392-0990 or visit our Easton, PA showroom at 2015 Freemansburg Ave.',
     path: '/contact',
@@ -77,7 +77,7 @@ export const PAGE_SEO = {
     imageAlt: 'Contact Sure-Fix Remodeling in Easton, Pennsylvania',
   },
   publications: {
-    title: 'Press & Publications — Sure-Fix Remodeling',
+    title: 'Press & Publications — Lehigh Valley Remodeling Coverage',
     description:
       'Featured in Forbes, Home Builder Digest, Expertise, and Houzz. Read press coverage and editorial features about Sure-Fix Remodeling.',
     path: '/publications',
