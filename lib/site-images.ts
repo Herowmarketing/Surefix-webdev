@@ -10,6 +10,9 @@ const U = (slug: string) =>
 /** Client project — Chris kitchen remodel (suburban white/grey kitchen) */
 const KITCHEN_STILL = `${M}sf-kitchen-remodel.png`;
 
+/** Client project — hardwood flooring through kitchen & dining */
+const FLOORING_STILL = `${M}sf-flooring-remodel.png`;
+
 /** Suburban-friendly stills for gallery hero tiles and walkthrough mood */
 export const HERO_STILLS = {
   /** Typical suburban front elevation */
@@ -30,8 +33,6 @@ const SERVICE_CARD_STILLS = {
   exterior: U('photo-1570129477492-45c003edd2be'),
   additions: U('photo-1600585154340-be6161a56a0c'),
 } as const;
-
-const FLOORING_STILL = U('photo-1600607687939-ce8a6c25118c');
 
 /** Home page “In-House Design Partner” block — comfortable suburban interior */
 export const INTERIOR_DESIGN_HOME_IMAGE = U('photo-1600210492486-724fe5c67fb0');
