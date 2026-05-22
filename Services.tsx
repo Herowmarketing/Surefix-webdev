@@ -115,7 +115,7 @@ export default function Services() {
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Not Sure Where to Start?
             </motion.h2>
-            <motion.p variants={fadeUp} custom={1} className="text-slate-700 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={1} className="text-white/85 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               Call us or request a free estimate — we'll visit your home, assess your needs, and recommend the best path forward.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap justify-center gap-4">

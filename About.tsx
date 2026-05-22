@@ -225,7 +225,7 @@ export default function About() {
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Ready to Work with Us?
             </motion.h2>
-            <motion.p variants={fadeUp} custom={1} className="text-slate-700 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={1} className="text-white/85 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               Contact us today at {BUSINESS.phone} to request a free consultation for your next project.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap justify-center gap-4">

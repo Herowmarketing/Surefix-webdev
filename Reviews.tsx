@@ -195,7 +195,7 @@ export default function Reviews() {
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Ready to Be Our Next Success Story?
             </motion.h2>
-            <motion.p variants={fadeUp} custom={1} className="text-slate-700 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <motion.p variants={fadeUp} custom={1} className="text-white/85 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               Join hundreds of satisfied homeowners across Lehigh Valley. Get your free estimate today.
             </motion.p>
             <motion.div variants={fadeUp} custom={2}>
