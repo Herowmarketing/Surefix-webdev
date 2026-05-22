@@ -13,6 +13,12 @@ const KITCHEN_STILL = `${M}sf-kitchen-remodel.png`;
 /** Client project — hardwood flooring through kitchen & dining */
 const FLOORING_STILL = `${M}sf-flooring-remodel.png`;
 
+/** Client project — finished basement (entertainment, fireplace, bar seating) */
+const BASEMENT_STILL = `${M}sf-basement-remodel.png`;
+
+/** Client project — master bathroom remodel (double vanity, glass shower, soaking tub) */
+const BATHROOM_STILL = `${M}sf-bathroom-remodel.png`;
+
 /** Suburban-friendly stills for gallery hero tiles and walkthrough mood */
 export const HERO_STILLS = {
   /** Typical suburban front elevation */
@@ -23,12 +29,10 @@ export const HERO_STILLS = {
   walkthrough: U('photo-1600607687644-c7171b42498f'),
 } as const;
 
-const BASEMENT_STILL = U('photo-1778731660267-3dad0ce72315');
-
 /** Service cards, page heroes, and gallery thumbnails */
 const SERVICE_CARD_STILLS = {
   kitchen: KITCHEN_STILL,
-  bathroom: U('photo-1583847268964-b28dc8f51f92'),
+  bathroom: BATHROOM_STILL,
   basement: BASEMENT_STILL,
   exterior: U('photo-1570129477492-45c003edd2be'),
   additions: U('photo-1600585154340-be6161a56a0c'),
@@ -71,7 +75,7 @@ export const SHOWROOM_MATERIAL_IMAGES = {
   flooring: FLOORING_STILL,
   tile: U('photo-1600566752355-35792bedcfea'),
   faucet: U('photo-1604709177225-055f99402ea3'),
-  shower: U('photo-1600047509358-9dc75507daeb'),
+  shower: BATHROOM_STILL,
   siding: U('photo-1570129477492-45c003edd2be'),
   roofing: U('photo-1513584684374-8bab748fbf90'),
   lvp: FLOORING_STILL,
