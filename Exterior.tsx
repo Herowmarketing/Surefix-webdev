@@ -4,6 +4,8 @@ import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
 export default function Exterior() {
   return (
     <ServicePageTemplate
+      serviceId="exterior"
+      slug="/services/exterior"
       title="Exterior Remodeling"
       tagline="Stunning curb appeal, built to last through every season."
       description="Your home's exterior is its first impression — and it's your first line of defense against the elements. Sure-Fix Remodeling offers complete exterior transformation services including roofing, siding, windows, doors, decks, patios, gazebos, and hardscaping. We use premium materials rated for the Lehigh Valley climate and back every project with a comprehensive warranty. From a new roof to a full outdoor living space, we do it all."

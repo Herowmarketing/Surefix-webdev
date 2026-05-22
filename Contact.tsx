@@ -7,6 +7,8 @@ import { Phone, MapPin, Clock, Mail, ArrowRight, Star } from 'lucide-react';
 import { BUSINESS, MASCOT_URL } from '@/lib/constants';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -19,6 +21,21 @@ const SERVICES_LIST = ['Kitchen Remodeling', 'Bathroom Remodeling', 'Basement Fi
 export default function Contact() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+
+  useSeo({
+    ...PAGE_SEO.contact,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Contact', path: '/contact' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ContactPage',
+        mainEntity: { '@id': LOCAL_BUSINESS_ID },
+      },
+    ],
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

@@ -4,6 +4,8 @@ import { FLOORING_SERVICE_GALLERY, SERVICE_HERO } from '@/lib/site-images';
 export default function Flooring() {
   return (
     <ServicePageTemplate
+      serviceId="flooring"
+      slug="/services/flooring"
       title="Flooring"
       tagline="The foundation of every beautiful room — installed with precision."
       description="Flooring sets the tone for your entire home. Sure-Fix Remodeling installs hardwood, luxury vinyl plank, ceramic and porcelain tile, carpet, and laminate throughout your home. We also handle subfloor repair and leveling to ensure a perfect, long-lasting installation. Our team works with premium brands including Adura Luxury Vinyl — a product we proudly stand behind for its durability, beauty, and value."

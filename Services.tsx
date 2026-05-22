@@ -6,6 +6,8 @@ import { Link } from 'wouter';
 import { ArrowRight, Phone } from 'lucide-react';
 import { SERVICES, BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { useSeo, breadcrumbList, SITE_URL } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -15,6 +17,26 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } 
 
 export default function Services() {
   const { openStepper } = useLeadStepper();
+  useSeo({
+    ...PAGE_SEO.services,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Services', path: '/services' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Sure-Fix Remodeling Services',
+        itemListElement: SERVICES.map((s, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `${SITE_URL}${s.slug}`,
+          name: s.title,
+        })),
+      },
+    ],
+  });
   return (
     <div className="bg-white min-h-screen">
       {/* Hero */}

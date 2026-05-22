@@ -12,6 +12,8 @@ import { Interactive3DMaterial, Interactive3DMaterialFeatured } from '@/componen
 import { BUSINESS } from '@/lib/constants'
 import { SHOWROOM_MATERIAL_IMAGES } from '@/lib/site-images'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
+import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo'
+import { PAGE_SEO } from '@/lib/seo-config'
 
 const FEATURED_MATERIALS = [
   {
@@ -148,6 +150,31 @@ export default function Showroom() {
   const { openStepper } = useLeadStepper()
   const heroRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+
+  useSeo({
+    ...PAGE_SEO.showroom,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Showroom', path: '/showroom' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Place',
+        name: 'Sure-Fix Remodeling Showroom',
+        url: 'https://surefixremodelinglv.com/showroom',
+        containedInPlace: { '@id': LOCAL_BUSINESS_ID },
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: '2015 Freemansburg Ave',
+          addressLocality: 'Easton',
+          addressRegion: 'PA',
+          postalCode: '18042',
+          addressCountry: 'US',
+        },
+      },
+    ],
+  })
   const heroY = useTransform(scrollYProgress, [0, 1], ['0%', '30%'])
   const heroOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0])
 

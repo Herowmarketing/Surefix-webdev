@@ -5,7 +5,6 @@
  * featured services, logistics, and CTAs. Sets <title> + meta tags
  * via a small useEffect for clean local SEO.
  */
-import { useEffect } from 'react';
 import { useRoute, Link } from 'wouter';
 import { motion } from 'framer-motion';
 import {
@@ -21,6 +20,8 @@ import {
 import { getLocation, LOCATIONS, type LocationKey } from '@/lib/locations-data';
 import { BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID, SITE_URL } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS = '"Figtree", system-ui, sans-serif';
@@ -37,18 +38,14 @@ const fadeUp = {
 };
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.05 } } };
 
-function setMeta(name: string, value: string) {
-  if (typeof document === 'undefined') return;
-  let tag = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
-  if (!tag) {
-    tag = document.createElement('meta');
-    tag.name = name;
-    document.head.appendChild(tag);
-  }
-  tag.content = value;
-}
-
 function NotFoundPanel() {
+  useSeo({
+    title: 'Location Not Found',
+    description:
+      'That city isn’t on our service map yet. Browse Sure-Fix Remodeling’s Lehigh Valley and Western NJ service areas, or call (610) 392-0990 to confirm coverage.',
+    path: '/locations',
+    robots: 'noindex, follow',
+  });
   return (
     <div className="min-h-screen bg-white">
       <section className="mx-auto max-w-3xl px-5 py-32 text-center lg:px-8">
@@ -97,14 +94,41 @@ function NotFoundPanel() {
 function LocationView({ loc }: { loc: LocationKey }) {
   const { openStepper } = useLeadStepper();
 
-  useEffect(() => {
-    const prev = document.title;
-    document.title = `${loc.displayName} Remodeling | Sure-Fix Remodeling`;
-    setMeta('description', loc.meta);
-    return () => {
-      document.title = prev;
-    };
-  }, [loc]);
+  useSeo({
+    title: `${loc.displayName} Remodeling — Kitchens, Baths & Additions`,
+    description: loc.meta,
+    path: `/locations/${loc.slug}`,
+    imageAlt: `Sure-Fix Remodeling — ${loc.displayName} home remodeling`,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Locations', path: '/locations' },
+        { name: loc.displayName, path: `/locations/${loc.slug}` },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: `Home Remodeling in ${loc.displayName}`,
+        description: loc.meta,
+        provider: { '@id': LOCAL_BUSINESS_ID },
+        url: `${SITE_URL}/locations/${loc.slug}`,
+        areaServed: {
+          '@type': 'City',
+          name: `${loc.city}, ${loc.state}`,
+          containedInPlace: { '@type': 'AdministrativeArea', name: `${loc.county} County` },
+        },
+        hasOfferCatalog: {
+          '@type': 'OfferCatalog',
+          name: `Sure-Fix services in ${loc.city}`,
+          itemListElement: loc.featuredServices.map((svc, i) => ({
+            '@type': 'Offer',
+            position: i + 1,
+            itemOffered: { '@type': 'Service', name: svc },
+          })),
+        },
+      },
+    ],
+  });
 
   const otherLocations = LOCATIONS.filter((l) => l.slug !== loc.slug).slice(0, 5);
 

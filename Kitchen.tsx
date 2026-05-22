@@ -4,6 +4,8 @@ import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
 export default function Kitchen() {
   return (
     <ServicePageTemplate
+      serviceId="kitchen"
+      slug="/services/kitchen"
       title="Kitchen Remodeling"
       tagline="Transform your kitchen into the heart of your home — custom, functional, and stunning."
       description="Your kitchen is the most-used room in your home, and it deserves to reflect your style and support the way you live. At Sure-Fix Remodeling, we handle everything from full gut renovations to cabinet refacing and countertop upgrades. Our team works with you from the first design consultation through final installation, ensuring every detail is exactly right. We use premium materials, precision craftsmanship, and a process built around your timeline and budget."

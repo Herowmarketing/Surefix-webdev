@@ -8,6 +8,8 @@ import { Link } from 'wouter';
 import { motion } from 'framer-motion';
 import { BookOpen, ChevronRight, AlertTriangle } from 'lucide-react';
 import { fetchPosts, formatPostDate, urlFor, type PostListItem } from '@/lib/sanity';
+import { useSeo, breadcrumbList, SITE_URL } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -21,6 +23,36 @@ const fadeUp = {
 export default function BlogList() {
   const [posts, setPosts] = useState<PostListItem[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  useSeo({
+    ...PAGE_SEO.blog,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Blog', path: '/blog' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'Blog',
+        '@id': `${SITE_URL}/blog`,
+        name: 'Sure-Fix Remodeling Blog',
+        description:
+          'Practical remodeling guidance from Sure-Fix Remodeling — kitchen, bathroom, basement, exterior and aging-in-place projects.',
+        publisher: { '@id': 'https://surefixremodelinglv.com/#organization' },
+      },
+      ...(posts ?? []).slice(0, 10).map((p) => ({
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: p.title ?? 'Untitled',
+        description: p.excerpt ?? '',
+        datePublished: p.publishedAt ?? undefined,
+        author: p.author ? { '@type': 'Person', name: p.author } : undefined,
+        url: p.slug ? `${SITE_URL}/blog/${p.slug}` : undefined,
+        image: urlFor(p.mainImage)?.width(1200).height(630).url(),
+        mainEntityOfPage: p.slug ? `${SITE_URL}/blog/${p.slug}` : undefined,
+      })),
+    ],
+  });
 
   useEffect(() => {
     let cancelled = false;

@@ -28,6 +28,8 @@ import {
   type PromoBundle,
 } from '@/lib/promotions-data';
 import { BUSINESS } from '@/lib/constants';
+import { useSeo, breadcrumbList } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 
 const SERIF = '"Cormorant Garamond", Georgia, serif';
@@ -237,6 +239,37 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
 
 export default function Promotions() {
   const { openStepper } = useLeadStepper();
+
+  useSeo({
+    ...PAGE_SEO.promotions,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Promotions', path: '/promotions' },
+      ]),
+      ...YEAR_ROUND_PROMOS.map((p) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Offer',
+        name: p.title,
+        description: p.positioning,
+        availability: 'https://schema.org/InStock',
+        eligibleCustomerType: p.tag,
+        offeredBy: { '@id': 'https://surefixremodelinglv.com/#localbusiness' },
+        url: 'https://surefixremodelinglv.com/promotions',
+      })),
+      ...SEASONAL_BUNDLES.map((p) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Offer',
+        name: p.title,
+        description: p.positioning,
+        availability: 'https://schema.org/InStock',
+        eligibleCustomerType: p.tag,
+        validThrough: p.window,
+        offeredBy: { '@id': 'https://surefixremodelinglv.com/#localbusiness' },
+        url: 'https://surefixremodelinglv.com/promotions',
+      })),
+    ],
+  });
 
   return (
     <div className="min-h-screen bg-white">

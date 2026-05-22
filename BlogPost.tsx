@@ -20,6 +20,7 @@ import {
   type PostDetail,
   type SanityImageRef,
 } from '@/lib/sanity';
+import { useSeo, breadcrumbList, blogPostingSchema, SITE_URL } from '@/lib/seo';
 
 type Props = { params: { slug: string } };
 
@@ -58,6 +59,77 @@ export default function BlogPost({ params }: Props) {
   const { post } = state;
   const dateLabel = formatPostDate(post.publishedAt);
   const heroUrl = urlFor(post.mainImage)?.width(1600).height(900).fit('crop').auto('format').url();
+  const ogUrl = urlFor(post.mainImage)?.width(1200).height(630).fit('crop').auto('format').url();
+  const plainExcerpt =
+    post.body
+      ?.flatMap((b) => {
+        if (b && typeof b === 'object' && '_type' in b && (b as { _type?: string })._type === 'block') {
+          const children = (b as { children?: { text?: string }[] }).children ?? [];
+          return children.map((c) => c.text ?? '');
+        }
+        return [];
+      })
+      .join(' ')
+      .slice(0, 158)
+      .trim() ?? '';
+
+  return (
+    <BlogPostContent
+      post={post}
+      params={params}
+      heroUrl={heroUrl}
+      ogUrl={ogUrl}
+      dateLabel={dateLabel}
+      plainExcerpt={plainExcerpt}
+    />
+  );
+}
+
+function BlogPostContent({
+  post,
+  params,
+  heroUrl,
+  ogUrl,
+  dateLabel,
+  plainExcerpt,
+}: {
+  post: PostDetail;
+  params: Props['params'];
+  heroUrl: string | undefined;
+  ogUrl: string | undefined;
+  dateLabel: string | null;
+  plainExcerpt: string;
+}) {
+  useSeo({
+    title: post.title ?? 'Untitled',
+    description: plainExcerpt || `Read “${post.title ?? ''}” on the Sure-Fix Remodeling blog.`,
+    path: `/blog/${params.slug}`,
+    image: ogUrl,
+    imageAlt: post.title ?? 'Sure-Fix Remodeling blog post',
+    ogType: 'article',
+    article: {
+      publishedTime: post.publishedAt ?? undefined,
+      author: post.author ?? undefined,
+      section: post.categories?.[0],
+      tags: post.categories ?? undefined,
+    },
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Blog', path: '/blog' },
+        { name: post.title ?? 'Article', path: `/blog/${params.slug}` },
+      ]),
+      blogPostingSchema({
+        headline: post.title ?? 'Untitled',
+        slug: `/blog/${params.slug}`,
+        description: plainExcerpt,
+        image: ogUrl,
+        datePublished: post.publishedAt ?? undefined,
+        author: post.author ?? undefined,
+        categories: post.categories ?? undefined,
+      }),
+    ],
+  });
 
   return (
     <div className="min-h-screen bg-white">

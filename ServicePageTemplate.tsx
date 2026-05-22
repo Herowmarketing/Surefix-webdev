@@ -8,6 +8,8 @@ import { Link } from 'wouter';
 import { ArrowRight, CheckCircle, Phone } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { useSeo, breadcrumbList, serviceSchema, SITE_URL } from '@/lib/seo';
+import { SERVICE_SEO } from '@/lib/seo-config';
 
 interface ServicePageProps {
   title: string;
@@ -19,6 +21,10 @@ interface ServicePageProps {
   galleryImages: string[];
   subServices?: { name: string; desc: string }[];
   accentColor?: string;
+  /** Service id matching SERVICES[].id in constants.ts (kitchen, bathroom, basement, exterior, flooring, additions). */
+  serviceId: 'kitchen' | 'bathroom' | 'basement' | 'exterior' | 'flooring' | 'additions';
+  /** URL path for the page, used for canonical + breadcrumbs (e.g. "/services/kitchen"). */
+  slug: string;
 }
 
 const fadeUp = {
@@ -29,9 +35,53 @@ const fadeUp = {
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } };
 
 export default function ServicePageTemplate({
-  title, tagline, description, icon, heroImage, features, galleryImages, subServices, accentColor = '#394696'
+  title, tagline, description, icon, heroImage, features, galleryImages, subServices, accentColor = '#394696',
+  serviceId, slug,
 }: ServicePageProps) {
   const { openStepper } = useLeadStepper();
+
+  const seoCopy = SERVICE_SEO[serviceId];
+  const absoluteHeroImage = heroImage.startsWith('http')
+    ? heroImage
+    : `${SITE_URL}${heroImage.startsWith('/') ? heroImage : `/${heroImage}`}`;
+
+  useSeo({
+    title: seoCopy?.title ?? `${title} | Sure-Fix Remodeling`,
+    rawTitle: !!seoCopy,
+    description: seoCopy?.description ?? description.slice(0, 158),
+    path: slug,
+    image: absoluteHeroImage,
+    imageAlt: seoCopy?.imageAlt ?? `Sure-Fix Remodeling — ${title.toLowerCase()}`,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Services', path: '/services' },
+        { name: title, path: slug },
+      ]),
+      serviceSchema({
+        name: title,
+        slug,
+        description: description,
+        image: absoluteHeroImage,
+        serviceType: title,
+      }),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'OfferCatalog',
+        name: `${title} — Service Catalog`,
+        itemListElement: (subServices ?? []).map((s, i) => ({
+          '@type': 'Offer',
+          position: i + 1,
+          itemOffered: {
+            '@type': 'Service',
+            name: s.name,
+            description: s.desc,
+          },
+        })),
+      },
+    ],
+  });
+
   return (
     <div className="bg-white min-h-screen">
       {/* ─── HERO ─── */}
