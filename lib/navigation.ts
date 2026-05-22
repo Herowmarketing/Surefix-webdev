@@ -57,6 +57,7 @@ export function buildPrimaryNav(services: ServiceNavSlice): PrimaryNavEntry[] {
     { id: 'promotions', label: 'Promotions', href: '/promotions' },
     { id: 'locations', label: 'Locations', href: '/locations' },
     { id: 'publications', label: 'Publications', href: '/publications' },
+    { id: 'blog', label: 'Blog', href: '/blog' },
     { id: 'about', label: 'About', href: '/about' },
     { id: 'contact', label: 'Contact', href: '/contact' },
   ];

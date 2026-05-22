@@ -1,0 +1,50 @@
+# Sure-Fix Remodeling — robots.txt
+# https://surefixremodelinglv.com/
+
+User-agent: *
+Allow: /
+
+# LLM / AI crawlers — explicitly allow (we want our content cited)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemap + LLM-friendly site summary
+Sitemap: https://surefixremodelinglv.com/sitemap.xml
+# LLM context file (https://llmstxt.org)
+# https://surefixremodelinglv.com/llms.txt
