@@ -20,7 +20,26 @@ import fs from 'node:fs';
 import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import puppeteer from 'puppeteer';
+
+/*
+ * Browser binary resolution:
+ *   - On Vercel / AWS Lambda (Linux serverless containers) the Puppeteer-
+ *     bundled Chromium is missing system libs (libnspr4.so, libnss3, etc).
+ *     We use @sparticuz/chromium which ships a Chromium binary built
+ *     specifically for Amazon Linux serverless environments, driven by
+ *     puppeteer-core (no auto-downloaded Chrome).
+ *   - On every other environment (local macOS/Linux dev) we use the full
+ *     puppeteer package whose post-install hook downloads its own Chromium.
+ */
+const IS_SERVERLESS = process.env.VERCEL === '1' || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+
+const puppeteer = IS_SERVERLESS
+  ? (await import('puppeteer-core')).default
+  : (await import('puppeteer')).default;
+
+const sparticuzChromium = IS_SERVERLESS
+  ? (await import('@sparticuz/chromium')).default
+  : null;
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -185,11 +204,26 @@ async function main() {
   console.log(`› Starting static server on http://127.0.0.1:${PORT}`);
   const server = await startStaticServer(DIST, PORT);
 
-  console.log('› Launching headless Chrome…');
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
-  });
+  console.log(
+    `› Launching headless Chrome (${IS_SERVERLESS ? '@sparticuz/chromium' : 'puppeteer bundled'})…`,
+  );
+  const launchOptions = IS_SERVERLESS
+    ? {
+        args: [
+          ...sparticuzChromium.args,
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+        ],
+        defaultViewport: { width: 1280, height: 800 },
+        executablePath: await sparticuzChromium.executablePath(),
+        headless: sparticuzChromium.headless,
+      }
+    : {
+        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        headless: true,
+      };
+  const browser = await puppeteer.launch(launchOptions);
 
   const failures = [];
   try {
