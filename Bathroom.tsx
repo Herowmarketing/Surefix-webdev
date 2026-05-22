@@ -4,6 +4,8 @@ import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
 export default function Bathroom() {
   return (
     <ServicePageTemplate
+      serviceId="bathroom"
+      slug="/services/bathroom"
       title="Bathroom Remodeling"
       tagline="Spa-quality bathrooms crafted for everyday luxury."
       description="A beautifully remodeled bathroom adds real value to your home and transforms your daily routine. Whether you're dreaming of a spa-like master bath with a walk-in shower and soaking tub, or a crisp, functional guest bath, Sure-Fix Remodeling delivers. We handle all trades in-house — tile, plumbing, electrical, and carpentry — so your project stays on schedule and under one roof."

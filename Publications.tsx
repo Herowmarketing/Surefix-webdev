@@ -14,6 +14,8 @@ import {
 import { Link } from 'wouter';
 import { ALL_PUBLICATIONS, type PublicationItem, type PublicationKind } from '@/lib/publications-data';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { useSeo, breadcrumbList } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 type FilterKey = 'all' | PublicationKind;
 
@@ -121,6 +123,16 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
 export default function Publications() {
   const { openStepper } = useLeadStepper();
   const [filter, setFilter] = useState<FilterKey>('all');
+
+  useSeo({
+    ...PAGE_SEO.publications,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Publications', path: '/publications' },
+      ]),
+    ],
+  });
 
   const filtered = useMemo(() => {
     if (filter === 'all') return ALL_PUBLICATIONS;

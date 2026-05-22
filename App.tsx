@@ -32,6 +32,8 @@ import PublicationArticle from "./PublicationArticle";
 import Promotions from "./Promotions";
 import Locations from "./Locations";
 import LocationDetail from "./LocationDetail";
+import BlogList from "./BlogList";
+import BlogPost from "./BlogPost";
 
 // Scroll to top on route change — layout effect runs before paint so the hero scrubber
 // never reads a stale scroll position from the previous page on client-side navigations.
@@ -65,6 +67,8 @@ function Router() {
           <Route path="/interior-design" component={InteriorDesign} />
           <Route path="/publications/blog/:slug" component={PublicationArticle} />
           <Route path="/publications" component={Publications} />
+          <Route path="/blog/:slug" component={BlogPost} />
+          <Route path="/blog" component={BlogList} />
           <Route path="/promotions" component={Promotions} />
           <Route path="/locations/:slug" component={LocationDetail} />
           <Route path="/locations" component={Locations} />

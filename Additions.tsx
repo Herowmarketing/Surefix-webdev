@@ -4,6 +4,8 @@ import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
 export default function Additions() {
   return (
     <ServicePageTemplate
+      serviceId="additions"
+      slug="/services/additions"
       title="Home Additions"
       tagline="More space. More life. More home — seamlessly integrated."
       description="When you've outgrown your current space but love where you live, a home addition is the perfect solution. Sure-Fix Remodeling designs and builds room additions, sunrooms, garage conversions, second-story additions, and more — all engineered to blend seamlessly with your existing home's architecture. We handle everything from permits and foundation work through framing, insulation, drywall, and finish work."

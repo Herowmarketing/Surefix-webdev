@@ -10,6 +10,8 @@ import { ArrowRight, MapPin, Phone, Compass } from 'lucide-react';
 import { LOCATIONS } from '@/lib/locations-data';
 import { BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { useSeo, breadcrumbList, SITE_URL } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS = '"Figtree", system-ui, sans-serif';
@@ -28,6 +30,26 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.05 } }
 
 export default function Locations() {
   const { openStepper } = useLeadStepper();
+  useSeo({
+    ...PAGE_SEO.locations,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Locations', path: '/locations' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: 'Sure-Fix Remodeling Service Areas',
+        itemListElement: LOCATIONS.map((l, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          name: l.displayName,
+          url: `${SITE_URL}/locations/${l.slug}`,
+        })),
+      },
+    ],
+  });
 
   const grouped = LOCATIONS.reduce<Record<string, typeof LOCATIONS[number][]>>(
     (acc, loc) => {

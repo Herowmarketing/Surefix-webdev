@@ -4,6 +4,8 @@ import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
 export default function Basement() {
   return (
     <ServicePageTemplate
+      serviceId="basement"
+      slug="/services/basement"
       title="Basement Finishing"
       tagline="Unlock the full potential of your home — below the surface."
       description="Your unfinished basement is your home's greatest untapped asset. Sure-Fix Remodeling transforms raw concrete and exposed joists into beautiful, functional living spaces. Whether you want a home theater, a kids' playroom, a home gym, a wet bar, or a full in-law suite, we design and build it to match the quality of the rest of your home — with proper egress, insulation, and code-compliant electrical and plumbing."

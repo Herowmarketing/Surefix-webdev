@@ -1,9 +1,16 @@
 import { Home, ArrowLeft } from "lucide-react";
 import { useLocation } from "wouter";
 import { LOGO_URL } from '@/lib/constants';
+import { useSeo } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 export default function NotFound() {
   const [, setLocation] = useLocation();
+
+  useSeo({
+    ...PAGE_SEO.notFound,
+    robots: 'noindex, follow',
+  });
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-white px-6"

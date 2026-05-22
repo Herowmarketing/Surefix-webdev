@@ -11,6 +11,8 @@ import { useRef, useState } from 'react'
 import { Link } from 'wouter'
 import { ArrowRight, Award, BookOpen, Phone, Quote, Star } from 'lucide-react'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
+import { useSeo, breadcrumbList, serviceSchema, SITE_URL } from '@/lib/seo'
+import { PAGE_SEO } from '@/lib/seo-config'
 
 // Audra Frank client list (from audrafrankassociates.com)
 const NOTABLE_CLIENTS = [
@@ -146,6 +148,24 @@ function ClientTicker() {
 export default function InteriorDesign() {
   const { openStepper } = useLeadStepper()
   const [activeService, setActiveService] = useState(0)
+
+  useSeo({
+    ...PAGE_SEO.interiorDesign,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Interior Design', path: '/interior-design' },
+      ]),
+      serviceSchema({
+        name: 'Interior Design',
+        slug: '/interior-design',
+        description:
+          'In-house interior design from Sure-Fix Remodeling — pairing design intent with construction reality across the Lehigh Valley and Western NJ.',
+        image: `${SITE_URL}/manus-storage/sf-flooring-remodel.png`,
+        serviceType: 'Interior Design',
+      }),
+    ],
+  })
 
   return (
     <div className="min-h-screen bg-white">

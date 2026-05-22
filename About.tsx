@@ -7,6 +7,8 @@ import { Link } from 'wouter';
 import { ArrowRight, Award, Shield, CheckCircle, Heart } from 'lucide-react';
 import { BUSINESS, TEAM, MASCOT_URL } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { useSeo, breadcrumbList, ORGANIZATION_ID, SITE_URL } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -16,6 +18,30 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } 
 
 export default function About() {
   const { openStepper } = useLeadStepper();
+  useSeo({
+    ...PAGE_SEO.about,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'About', path: '/about' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'AboutPage',
+        mainEntity: { '@id': ORGANIZATION_ID },
+        url: `${SITE_URL}/about`,
+      },
+      ...TEAM.map((t) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: t.name,
+        jobTitle: t.role,
+        worksFor: { '@id': ORGANIZATION_ID },
+        description: t.bio,
+        image: t.image,
+      })),
+    ],
+  });
   return (
     <div className="bg-white min-h-screen">
       {/* ─── HERO ─── */}

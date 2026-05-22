@@ -11,6 +11,8 @@ import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { INTERIOR_DESIGN_HOME_IMAGE } from '@/lib/site-images';
 import ShowroomHomeVideo from '@/components/ShowroomHomeVideo';
 import CinematicHero from './CinematicHero';
+import { useSeo, breadcrumbList, faqSchema } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -22,8 +24,38 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.1 } },
 };
 
+const HOME_FAQ = [
+  {
+    q: 'What areas does Sure-Fix Remodeling serve?',
+    a: 'Sure-Fix Remodeling serves the entire Greater Lehigh Valley and Western New Jersey, including Easton, Bethlehem, Allentown, Coopersburg, Center Valley, Phillipsburg, Hackettstown and Washington.',
+  },
+  {
+    q: 'How long has Sure-Fix Remodeling been in business?',
+    a: 'Sure-Fix Remodeling was founded by Henry Rouhana in 2008 and has been family-run since day one. Henry brings 25+ years of construction experience starting from his work in Lebanon to every project.',
+  },
+  {
+    q: 'Do you offer in-home consultations?',
+    a: 'Yes. Every project starts with a free in-home consultation where we walk the space with you, talk through scope and budget, and put together a written plan before any work begins.',
+  },
+  {
+    q: 'Are you licensed and insured?',
+    a: 'Yes. Sure-Fix Remodeling is fully licensed, bonded and insured in Pennsylvania and New Jersey, and has been since 2008.',
+  },
+  {
+    q: 'Do you have a showroom?',
+    a: 'Yes — our in-house material showroom is located at 2015 Freemansburg Ave in Easton, PA, where you can touch and compare countertops, tile, flooring, faucets and finishes in one place.',
+  },
+] as const;
+
 export default function Home() {
   const { openStepper } = useLeadStepper();
+  useSeo({
+    ...PAGE_SEO.home,
+    structuredData: [
+      breadcrumbList([{ name: 'Home', path: '/' }]),
+      faqSchema(HOME_FAQ),
+    ],
+  });
   return (
     <div className="bg-white">
       {/* ─── HERO: Cinematic scroll-scrubbed video ─── */}

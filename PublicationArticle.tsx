@@ -6,12 +6,38 @@ import { motion } from 'framer-motion';
 import { ArrowLeft, BookOpen } from 'lucide-react';
 import NotFound from './NotFound';
 import { getBlogPost } from '@/lib/blog-content';
+import { useSeo, breadcrumbList, blogPostingSchema } from '@/lib/seo';
 
 type Props = { params: { slug: string } };
 
 export default function PublicationArticle({ params }: Props) {
   const post = getBlogPost(params.slug);
   if (!post) return <NotFound />;
+
+  const excerpt = (post.paragraphs?.[0] ?? '').slice(0, 158);
+
+  useSeo({
+    title: post.title,
+    description: excerpt,
+    path: `/publications/blog/${params.slug}`,
+    imageAlt: post.title,
+    ogType: 'article',
+    article: {
+      section: post.formatLabel,
+    },
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Publications', path: '/publications' },
+        { name: post.title, path: `/publications/blog/${params.slug}` },
+      ]),
+      blogPostingSchema({
+        headline: post.title,
+        slug: `/publications/blog/${params.slug}`,
+        description: excerpt,
+      }),
+    ],
+  });
 
   return (
     <div className="min-h-screen bg-white">

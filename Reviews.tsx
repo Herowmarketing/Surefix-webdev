@@ -5,8 +5,10 @@
 import { motion } from 'framer-motion';
 import { Star, ArrowRight } from 'lucide-react';
 import { Link } from 'wouter';
-import { REVIEWS } from '@/lib/constants';
+import { BUSINESS, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo';
+import { PAGE_SEO } from '@/lib/seo-config';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -81,6 +83,44 @@ const PLATFORM_STATS = [
 
 export default function Reviews() {
   const { openStepper } = useLeadStepper();
+  const totalReviewCount =
+    BUSINESS.reviews.google.count +
+    BUSINESS.reviews.angiesList.count +
+    BUSINESS.reviews.houzz.count +
+    BUSINESS.reviews.facebook.count;
+  const weightedRating =
+    (BUSINESS.reviews.google.rating * BUSINESS.reviews.google.count +
+      BUSINESS.reviews.angiesList.rating * BUSINESS.reviews.angiesList.count +
+      BUSINESS.reviews.houzz.rating * BUSINESS.reviews.houzz.count +
+      BUSINESS.reviews.facebook.rating * BUSINESS.reviews.facebook.count) /
+    totalReviewCount;
+  useSeo({
+    ...PAGE_SEO.reviews,
+    structuredData: [
+      breadcrumbList([
+        { name: 'Home', path: '/' },
+        { name: 'Reviews', path: '/reviews' },
+      ]),
+      {
+        '@context': 'https://schema.org',
+        '@type': 'AggregateRating',
+        itemReviewed: { '@id': LOCAL_BUSINESS_ID },
+        ratingValue: Number(weightedRating.toFixed(2)),
+        reviewCount: totalReviewCount,
+        bestRating: 5,
+        worstRating: 1,
+      },
+      ...REVIEWS.map((r) => ({
+        '@context': 'https://schema.org',
+        '@type': 'Review',
+        itemReviewed: { '@id': LOCAL_BUSINESS_ID },
+        author: { '@type': 'Person', name: r.name },
+        reviewRating: { '@type': 'Rating', ratingValue: r.rating, bestRating: 5 },
+        reviewBody: r.text,
+        publisher: { '@type': 'Organization', name: r.source },
+      })),
+    ],
+  });
   return (
     <div className="bg-white min-h-screen">
       {/* Hero */}
