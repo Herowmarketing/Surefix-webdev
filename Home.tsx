@@ -383,7 +383,7 @@ export default function Home() {
             <div className="relative h-72 lg:h-auto min-h-[320px] overflow-hidden order-1 lg:order-2">
               <img
                 src={INTERIOR_DESIGN_HOME_IMAGE}
-                alt="Luxury open-plan interior design layout"
+                alt="Comfortable suburban living room interior design"
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0" style={{ background: 'linear-gradient(to left, rgba(13,17,23,0.2), rgba(13,17,23,0.5))' }} />
