@@ -111,6 +111,7 @@ export const KITCHEN_SERVICE_GALLERY: string[] = [
   `${M}sf-kitchen-portfolio-03.png`,
   `${M}sf-kitchen-portfolio-04.png`,
   `${M}sf-kitchen-portfolio-05.png`,
+  KITCHEN_STILL,
 ];
 
 /** Flooring page: lead with product still, then typical home interiors */
