@@ -114,6 +114,9 @@ export default function CinematicHero() {
   /** Last *requested* scrub time — avoids repeat seeks before currentTime catches up */
   const lastSeekSecRef = useRef<number>(NaN);
   const finaleOnRef = useRef(false);
+  const isMobileViewportRef = useRef(
+    typeof window !== 'undefined' && window.matchMedia(VIDEO_MOBILE_MEDIA).matches,
+  );
 
   const [reducedMotion, setReducedMotion] = useState(false);
   const [heroVideoSrc, setHeroVideoSrc] = useState(() =>
@@ -131,6 +134,27 @@ export default function CinematicHero() {
     setVideoRevealed(true);
   }, []);
 
+  /** Mobile/touch decoders often skip seeked — reveal once we have decodable frames */
+  const syncVideoFrame = useCallback(async (progress: number) => {
+    const video = videoRef.current;
+    if (!video || !Number.isFinite(video.duration) || video.duration <= 0) return false;
+
+    if (isMobileViewportRef.current || isTouchSafariLike()) {
+      if (!video.dataset.primed) {
+        video.dataset.primed = '1';
+        await primeVideoDecoder(video);
+      }
+    }
+
+    const snapped = Math.min(
+      video.duration,
+      Math.max(0, Math.round(progress * video.duration * HERO_VIDEO_FPS) / HERO_VIDEO_FPS),
+    );
+    const didSeek = seekSnappedTime(video, snapped, lastSeekSecRef);
+    if (didSeek || isMobileViewportRef.current) revealVideo();
+    return didSeek;
+  }, [revealVideo]);
+
   const { openStepper } = useLeadStepper();
 
   useEffect(() => {
@@ -143,7 +167,10 @@ export default function CinematicHero() {
 
   useEffect(() => {
     const mq = window.matchMedia(VIDEO_MOBILE_MEDIA);
-    const pick = () => setHeroVideoSrc(mq.matches ? VIDEO_SRC_MOBILE : VIDEO_SRC);
+    const pick = () => {
+      isMobileViewportRef.current = mq.matches;
+      setHeroVideoSrc(mq.matches ? VIDEO_SRC_MOBILE : VIDEO_SRC);
+    };
     pick();
     mq.addEventListener('change', pick);
     return () => mq.removeEventListener('change', pick);
@@ -223,14 +250,10 @@ export default function CinematicHero() {
     else showFinale(false);
 
     const dur = video.duration;
-    let didSeek = false;
     if (Number.isFinite(dur) && dur > 0) {
-      const snapped = Math.min(dur, Math.max(0, Math.round(progress * dur * HERO_VIDEO_FPS) / HERO_VIDEO_FPS));
-      didSeek = seekSnappedTime(video, snapped, lastSeekSecRef);
+      void syncVideoFrame(progress);
     }
-
-    if (didSeek) revealVideo();
-  }, [showFinale, revealVideo]);
+  }, [showFinale, syncVideoFrame]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
@@ -249,21 +272,27 @@ export default function CinematicHero() {
     videoReadyRef.current = false;
     setVideoRevealed(false);
     lastSeekSecRef.current = NaN;
+    if (videoRef.current) delete videoRef.current.dataset.primed;
 
     let primed = false;
     const onMeta = async () => {
       refreshSectionMetrics();
       const video = videoRef.current;
-      if (video && !primed && isTouchSafariLike()) {
+      if (video && !primed && (isTouchSafariLike() || isMobileViewportRef.current)) {
         primed = true;
         await primeVideoDecoder(video);
+        video.dataset.primed = '1';
       }
+      await syncVideoFrame(0);
       handleScroll();
     };
     const onSeeked = () => {
       if (Number.isFinite(videoRef.current?.duration) && (videoRef.current?.duration ?? 0) > 0) {
         revealVideo();
       }
+    };
+    const onCanPlay = () => {
+      void syncVideoFrame(0);
     };
     const onScroll = () => {
       if (scrollRafRef.current != null) return;
@@ -297,6 +326,7 @@ export default function CinematicHero() {
     const v = videoRef.current;
     v?.addEventListener('loadedmetadata', onMeta);
     v?.addEventListener('loadeddata', onMeta);
+    v?.addEventListener('canplay', onCanPlay);
     v?.addEventListener('durationchange', onMeta);
     v?.addEventListener('seeked', onSeeked);
     onScroll();
@@ -309,10 +339,11 @@ export default function CinematicHero() {
       window.removeEventListener('resize', onResize);
       v?.removeEventListener('loadedmetadata', onMeta);
       v?.removeEventListener('loadeddata', onMeta);
+      v?.removeEventListener('canplay', onCanPlay);
       v?.removeEventListener('durationchange', onMeta);
       v?.removeEventListener('seeked', onSeeked);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -402,7 +433,7 @@ export default function CinematicHero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1, duration: 0.7 }}
-              className="absolute right-4 flex items-center gap-2 text-[10px] uppercase leading-normal tracking-[0.18em] text-white/28 min-[400px]:right-8 min-[400px]:text-[11px] sm:right-14"
+              className="absolute right-4 hidden items-center gap-2 text-[10px] uppercase leading-normal tracking-[0.18em] text-white/28 min-[400px]:right-8 min-[400px]:text-[11px] sm:right-14 lg:flex"
               style={{
                 fontFamily: SANS,
                 letterSpacing: '0.18em',
@@ -420,39 +451,41 @@ export default function CinematicHero() {
               />
             </motion.div>
 
-            <div className="absolute inset-x-0 bottom-[max(13%,env(safe-area-inset-bottom,0px))] flex flex-col items-center px-4 min-[400px]:bottom-[15%] min-[400px]:px-8 sm:bottom-[15%]">
-              <motion.h1
-                {...fadeUp(0.5)}
-                className="text-center text-white tracking-tight"
-                style={{
-                  fontFamily: SERIF,
-                  fontWeight: 300,
-                  fontSize: 'clamp(1.85rem, 4.9vw, 3.25rem)',
-                  lineHeight: 1.06,
-                  letterSpacing: '-0.02em',
-                }}
-              >
-                <span className="block font-light not-italic">Step</span>
-                <span className="block font-normal mt-1.5 italic">inside.</span>
-              </motion.h1>
-              <motion.p
-                {...fadeUp(0.72)}
-                className="mt-6 text-center max-w-[20rem] text-white/38 leading-relaxed font-light"
-                style={{ fontFamily: SANS, fontSize: 'clamp(0.78rem, 1vw, 0.8125rem)', letterSpacing: '0.06em', lineHeight: 1.65 }}
-              >
-                The life you imagine isn&apos;t hypothetical—it&apos;s one step away.
-              </motion.p>
-            </div>
+            <motion.div className="absolute inset-x-0 bottom-0 z-[1] flex flex-col items-center px-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] min-[400px]:px-8 min-[400px]:pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] sm:pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]">
+              <div className="flex w-full max-w-lg flex-col items-center text-center">
+                <motion.h1
+                  {...fadeUp(0.5)}
+                  className="text-center text-white tracking-tight"
+                  style={{
+                    fontFamily: SERIF,
+                    fontWeight: 300,
+                    fontSize: 'clamp(1.65rem, 4.9vw, 3.25rem)',
+                    lineHeight: 1.06,
+                    letterSpacing: '-0.02em',
+                  }}
+                >
+                  <span className="block font-light not-italic">Step</span>
+                  <span className="block font-normal mt-1.5 italic">inside.</span>
+                </motion.h1>
+                <motion.p
+                  {...fadeUp(0.72)}
+                  className="mt-4 max-w-[18rem] text-center text-white/38 leading-relaxed font-light min-[400px]:mt-5 min-[400px]:max-w-[20rem] sm:mt-6"
+                  style={{ fontFamily: SANS, fontSize: 'clamp(0.78rem, 1vw, 0.8125rem)', letterSpacing: '0.06em', lineHeight: 1.65 }}
+                >
+                  The life you imagine isn&apos;t hypothetical—it&apos;s one step away.
+                </motion.p>
+              </div>
 
-            <motion.div {...fadeUp(0.95)} className="absolute bottom-[max(3.25rem,env(safe-area-inset-bottom,0px))] left-1/2 -translate-x-1/2 pointer-events-auto min-[400px]:bottom-14">
-              <button
-                type="button"
-                onClick={() => openStepper()}
-                className="min-h-[48px] rounded-full px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-lg shadow-black/25 transition-[filter] duration-300 hover:brightness-[1.06] min-[400px]:px-9 [-webkit-tap-highlight-color:transparent]"
-                style={{ fontFamily: SANS, background: CTA_BLUE, border: 'none' }}
-              >
-                Begin your remodel
-              </button>
+              <motion.div {...fadeUp(0.95)} className="pointer-events-auto mt-5 flex w-full justify-center min-[400px]:mt-6 sm:mt-7">
+                <button
+                  type="button"
+                  onClick={() => openStepper()}
+                  className="min-h-[48px] rounded-full px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.18em] text-white shadow-lg shadow-black/25 transition-[filter] duration-300 hover:brightness-[1.06] min-[400px]:px-9 [-webkit-tap-highlight-color:transparent]"
+                  style={{ fontFamily: SANS, background: CTA_BLUE, border: 'none' }}
+                >
+                  Begin your remodel
+                </button>
+              </motion.div>
             </motion.div>
           </div>
 
