@@ -21,3 +21,7 @@ __pycache__/
 /Sure Fix Hero Video/
 /Hero video Upscaled.mp4
 blender_mcp_addon.py
+
+# Internal / proprietary deliverables — never deploy
+public/herow-deliverables/
+_private/
