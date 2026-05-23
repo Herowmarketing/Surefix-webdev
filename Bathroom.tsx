@@ -1,5 +1,5 @@
 import ServicePageTemplate from '@/components/ServicePageTemplate';
-import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
+import { BATHROOM_SERVICE_GALLERY, SERVICE_HERO } from '@/lib/site-images';
 
 export default function Bathroom() {
   return (
@@ -12,7 +12,7 @@ export default function Bathroom() {
       icon="🚿"
       heroImage={SERVICE_HERO.bathroom}
       features={['Walk-In Showers', 'Soaking Tubs', 'Custom Vanities', 'Tile & Flooring', 'Plumbing Fixtures', 'Heated Floors', 'Frameless Glass', 'Lighting & Mirrors']}
-      galleryImages={SERVICE_GALLERY_STILLS}
+      galleryImages={BATHROOM_SERVICE_GALLERY}
       subServices={[
         { name: 'Master Bath Renovation', desc: 'Full transformation — walk-in shower, soaking tub, double vanity, and luxury tile work.' },
         { name: 'Walk-In Shower Conversion', desc: 'Replace your tub with a custom tiled walk-in shower with frameless glass enclosure.' },
