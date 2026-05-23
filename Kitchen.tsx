@@ -1,5 +1,5 @@
 import ServicePageTemplate from '@/components/ServicePageTemplate';
-import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
+import { KITCHEN_SERVICE_GALLERY, SERVICE_HERO } from '@/lib/site-images';
 
 export default function Kitchen() {
   return (
@@ -12,7 +12,7 @@ export default function Kitchen() {
       icon="🍳"
       heroImage={SERVICE_HERO.kitchen}
       features={['Custom Cabinetry', 'Countertop Installation', 'Kitchen Islands', 'Backsplash Tile', 'Appliance Integration', 'Lighting Design', 'Plumbing Rough-In', 'Flooring']}
-      galleryImages={SERVICE_GALLERY_STILLS}
+      galleryImages={KITCHEN_SERVICE_GALLERY}
       subServices={[
         { name: 'Full Kitchen Renovation', desc: 'Complete gut and rebuild — new layout, cabinets, counters, flooring, and fixtures.' },
         { name: 'Cabinet Refacing', desc: 'New doors, drawer fronts, and hardware on existing cabinet boxes for a fraction of the cost.' },
