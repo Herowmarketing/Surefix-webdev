@@ -104,6 +104,15 @@ export const SERVICE_GALLERY_STILLS: string[] = [
   SERVICE_CARD_STILLS.additions,
 ];
 
+/** Kitchen Remodeling page — Our Work gallery */
+export const KITCHEN_SERVICE_GALLERY: string[] = [
+  `${M}sf-kitchen-portfolio-01.png`,
+  `${M}sf-kitchen-portfolio-02.png`,
+  `${M}sf-kitchen-portfolio-03.png`,
+  `${M}sf-kitchen-portfolio-04.png`,
+  `${M}sf-kitchen-portfolio-05.png`,
+];
+
 /** Flooring page: lead with product still, then typical home interiors */
 export const FLOORING_SERVICE_GALLERY: string[] = [
   FLOORING_STILL,
