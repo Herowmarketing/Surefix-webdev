@@ -19,6 +19,9 @@ const BASEMENT_STILL = `${M}sf-basement-remodel.png`;
 /** Client project — master bathroom remodel (double vanity, glass shower, soaking tub) */
 const BATHROOM_STILL = `${M}sf-bathroom-remodel.png`;
 
+/** Client-style sunroom / home addition at dusk */
+const ADDITIONS_STILL = `${M}sf-home-additions.png`;
+
 /** Suburban-friendly stills for gallery hero tiles and walkthrough mood */
 export const HERO_STILLS = {
   /** Typical suburban front elevation */
@@ -35,7 +38,7 @@ const SERVICE_CARD_STILLS = {
   bathroom: BATHROOM_STILL,
   basement: BASEMENT_STILL,
   exterior: U('photo-1570129477492-45c003edd2be'),
-  additions: U('photo-1600585154340-be6161a56a0c'),
+  additions: ADDITIONS_STILL,
 } as const;
 
 /** Home page “In-House Design Partner” block — comfortable suburban interior */

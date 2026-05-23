@@ -149,6 +149,6 @@ export const SERVICE_SEO: Record<
     title: 'Home Additions Lehigh Valley — Sunrooms, Mudrooms & 2nd Story',
     description:
       'Design-build home additions in the Lehigh Valley and Western NJ. Room additions, sunrooms, second story additions, garage conversions, mudrooms and laundry rooms.',
-    imageAlt: 'Sure-Fix Remodeling — home addition in the Lehigh Valley',
+    imageAlt: 'Sunroom home addition with large windows, warm interior lighting, and landscaped stone steps at dusk',
   },
 };
