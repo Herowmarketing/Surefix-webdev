@@ -1,4 +1,4 @@
-import { Clock, Phone } from 'lucide-react';
+import { ArrowUpRight, Clock, Phone } from 'lucide-react';
 import { BUSINESS, LOGO_URL } from '@/lib/constants';
 
 export default function Maintenance() {
@@ -43,11 +43,28 @@ export default function Maintenance() {
         </h1>
 
         <p
-          className="mb-10 max-w-md text-base leading-relaxed text-white/55"
+          className="mb-6 max-w-md text-base leading-relaxed text-white/55"
           style={{ fontFamily: 'Georgia, serif' }}
         >
           We&apos;re making a few updates behind the scenes. Thank you for your patience — your forever-home
           remodeling team will be online again shortly.
+        </p>
+
+        <p
+          className="mb-10 max-w-md text-base leading-relaxed text-white/55"
+          style={{ fontFamily: 'Georgia, serif' }}
+        >
+          In the meantime, please visit our previous site for any inquiries:{' '}
+          <a
+            href="https://surefixremodeling.net"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 font-semibold text-white underline underline-offset-4 transition-opacity hover:opacity-75"
+            style={{ fontFamily: 'Figtree, sans-serif' }}
+          >
+            surefixremodeling.net
+            <ArrowUpRight size={14} strokeWidth={2.5} aria-hidden />
+          </a>
         </p>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
