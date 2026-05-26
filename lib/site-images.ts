@@ -114,6 +114,15 @@ export const KITCHEN_SERVICE_GALLERY: string[] = [
   KITCHEN_STILL,
 ];
 
+/** Bathroom Remodeling page — Our Work gallery */
+export const BATHROOM_SERVICE_GALLERY: string[] = [
+  `${M}sf-bathroom-portfolio-01.jpg`,
+  `${M}sf-bathroom-portfolio-02.jpg`,
+  `${M}sf-bathroom-portfolio-03.jpg`,
+  `${M}sf-bathroom-portfolio-04.jpg`,
+  `${M}sf-bathroom-portfolio-05.jpg`,
+];
+
 /** Flooring page: lead with product still, then typical home interiors */
 export const FLOORING_SERVICE_GALLERY: string[] = [
   FLOORING_STILL,

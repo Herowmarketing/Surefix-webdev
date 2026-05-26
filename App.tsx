@@ -34,6 +34,9 @@ import Locations from "./Locations";
 import LocationDetail from "./LocationDetail";
 import BlogList from "./BlogList";
 import BlogPost from "./BlogPost";
+import Maintenance from "@/src/pages/Maintenance";
+
+const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
 
 // Scroll to top on route change — layout effect runs before paint so the hero scrubber
 // never reads a stale scroll position from the previous page on client-side navigations.
@@ -81,6 +84,14 @@ function Router() {
 }
 
 function App() {
+  if (MAINTENANCE_MODE) {
+    return (
+      <ErrorBoundary>
+        <Maintenance />
+      </ErrorBoundary>
+    );
+  }
+
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
