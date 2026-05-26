@@ -103,6 +103,10 @@ export default function CinematicHero() {
   const scrollRafRef = useRef<number | null>(null);
   /** Separate RAF for video seeks — decouples decoder work from overlay DOM writes */
   const seekRafRef = useRef<number | null>(null);
+  /** True while Chrome is decoding a seek — gate so we never queue more seeks than the decoder can handle */
+  const seekInFlightRef = useRef(false);
+  /** Cleared by the seeked-event handler so a stalled decoder never permanently blocks scrubbing */
+  const seekTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   /** Buffered seek target written by the overlay RAF, consumed by the seek RAF */
   const pendingSeekTimeRef = useRef<number>(NaN);
   /** Last *requested* scrub time — avoids repeat seeks before currentTime catches up */
@@ -150,23 +154,56 @@ export default function CinematicHero() {
   }, [revealVideo]);
 
   /**
-   * Schedule a video seek in a dedicated RAF frame, decoupled from the overlay-update RAF.
-   * Coalesces rapid seek requests — only the latest target time is applied.
-   * This prevents Chrome from having to decode a new video frame in the same RAF slot
-   * as all the overlay opacity/transform writes, which is the primary Chrome jitter source.
+   * Commit the buffered seek target to video.currentTime and mark the decoder as in-flight.
+   * Must only be called when seekInFlightRef is false.
+   * The seeked event (or the safety timeout) will clear seekInFlightRef and drain any
+   * pending target that arrived while Chrome was decoding.
+   */
+  const commitVideoSeek = useCallback(() => {
+    const video = videoRef.current;
+    const t = pendingSeekTimeRef.current;
+    if (!video || !Number.isFinite(t) || seekInFlightRef.current) return;
+    pendingSeekTimeRef.current = NaN;
+
+    const didSeek = seekSnappedTime(video, t, lastSeekSecRef);
+    if (!didSeek) return;
+
+    seekInFlightRef.current = true;
+    // Safety valve — releases the in-flight lock if the seeked event never fires
+    // (stalled or buggy decoder). 80 ms ≈ 5 frames @ 60 fps, enough time for any realistic decode.
+    if (seekTimeoutRef.current) clearTimeout(seekTimeoutRef.current);
+    seekTimeoutRef.current = setTimeout(() => {
+      seekTimeoutRef.current = null;
+      seekInFlightRef.current = false;
+    }, 80);
+
+    if (isMobileViewportRef.current) revealVideo();
+  }, [revealVideo]);
+
+  /**
+   * Stable ref to commitVideoSeek — lets the seeked event handler inside useLayoutEffect
+   * always call the current version without adding it to the effect's dependency array.
+   */
+  const commitVideoSeekRef = useRef(commitVideoSeek);
+  commitVideoSeekRef.current = commitVideoSeek;
+
+  /**
+   * Enqueue a seek target.
+   * - If Chrome is still decoding the previous seek, the target is buffered and will be
+   *   consumed by the seeked event handler — preventing decoder queue buildup (the root
+   *   cause of Chrome scroll-scrub jitter).
+   * - If idle, the seek is issued in the next RAF frame so overlay DOM writes can be
+   *   composited by the browser before the decoder wakes up.
    */
   const scheduleVideoSeek = useCallback((targetSec: number) => {
     pendingSeekTimeRef.current = targetSec;
-    if (seekRafRef.current != null) return; // already queued — latest target will be used
+    if (seekInFlightRef.current) return; // decoding in progress — pending will be drained by seeked
+    if (seekRafRef.current != null) return; // RAF already queued — latest pending will be used
     seekRafRef.current = requestAnimationFrame(() => {
       seekRafRef.current = null;
-      const video = videoRef.current;
-      const t = pendingSeekTimeRef.current;
-      if (!video || !Number.isFinite(t)) return;
-      const didSeek = seekSnappedTime(video, t, lastSeekSecRef);
-      if (didSeek || isMobileViewportRef.current) revealVideo();
+      commitVideoSeek();
     });
-  }, [revealVideo]);
+  }, [commitVideoSeek]);
 
   const { openStepper } = useLeadStepper();
 
@@ -289,6 +326,9 @@ export default function CinematicHero() {
     videoReadyRef.current = false;
     setVideoRevealed(false);
     lastSeekSecRef.current = NaN;
+    pendingSeekTimeRef.current = NaN;
+    seekInFlightRef.current = false;
+    if (seekTimeoutRef.current) { clearTimeout(seekTimeoutRef.current); seekTimeoutRef.current = null; }
     if (videoRef.current) delete videoRef.current.dataset.primed;
 
     let primed = false;
@@ -304,8 +344,18 @@ export default function CinematicHero() {
       handleScroll();
     };
     const onSeeked = () => {
+      // Clear the in-flight lock — Chrome has finished decoding and the new frame is ready
+      if (seekTimeoutRef.current) { clearTimeout(seekTimeoutRef.current); seekTimeoutRef.current = null; }
+      seekInFlightRef.current = false;
+
       if (Number.isFinite(videoRef.current?.duration) && (videoRef.current?.duration ?? 0) > 0) {
         revealVideo();
+      }
+
+      // Drain the most recent seek target that arrived while Chrome was decoding.
+      // Using the ref (not the closure) avoids a stale-callback issue.
+      if (Number.isFinite(pendingSeekTimeRef.current)) {
+        commitVideoSeekRef.current();
       }
     };
     const onCanPlay = () => {
@@ -352,6 +402,8 @@ export default function CinematicHero() {
       ro?.disconnect();
       if (scrollRafRef.current != null) { cancelAnimationFrame(scrollRafRef.current); scrollRafRef.current = null; }
       if (seekRafRef.current != null) { cancelAnimationFrame(seekRafRef.current); seekRafRef.current = null; }
+      if (seekTimeoutRef.current != null) { clearTimeout(seekTimeoutRef.current); seekTimeoutRef.current = null; }
+      seekInFlightRef.current = false;
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('touchmove', onScroll);
       window.removeEventListener('resize', onResize);
@@ -361,7 +413,7 @@ export default function CinematicHero() {
       v?.removeEventListener('durationchange', onMeta);
       v?.removeEventListener('seeked', onSeeked);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame, scheduleVideoSeek]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame, scheduleVideoSeek, commitVideoSeek]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
