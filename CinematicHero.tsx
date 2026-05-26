@@ -34,9 +34,7 @@ const HERO_VIDEO_FPS = 24;
 /** Ignore seeks smaller than half a frame — avoids decoder thrash from micro-updates */
 const SEEK_MIN_DELTA_SEC = 1 / (HERO_VIDEO_FPS * 2);
 
-type VideoWithFastSeek = HTMLVideoElement & { fastSeek?: (time: number) => void };
-
-/** iOS Safari often fails to paint scrubbed frames via fastSeek until the decoder is primed */
+/** iOS Safari often fails to paint scrubbed frames until the decoder is primed */
 function isTouchSafariLike(): boolean {
   if (typeof navigator === 'undefined') return false;
   const ua = navigator.userAgent;
@@ -50,16 +48,8 @@ function seekSnappedTime(video: HTMLVideoElement, snappedSec: number, lastSeekSe
   const t = Math.min(dur, Math.max(0, snappedSec));
   if (Math.abs(t - lastSeekSecRef.current) < SEEK_MIN_DELTA_SEC) return true;
   lastSeekSecRef.current = t;
-  const v = video as VideoWithFastSeek;
-  // fastSeek is unreliable on iOS for scroll-scrubbed MP4 — use currentTime there
-  if (!isTouchSafariLike() && typeof v.fastSeek === 'function') {
-    try {
-      v.fastSeek(t);
-      return true;
-    } catch {
-      /* fall through */
-    }
-  }
+  // Always use currentTime — fastSeek snaps to keyframe boundaries which causes
+  // visible frame jumps on Chromium during scroll scrubbing
   video.currentTime = t;
   return true;
 }
@@ -111,6 +101,10 @@ export default function CinematicHero() {
   const sectionMetricsRef = useRef({ top: 0, scrollable: 1 });
 
   const scrollRafRef = useRef<number | null>(null);
+  /** Separate RAF for video seeks — decouples decoder work from overlay DOM writes */
+  const seekRafRef = useRef<number | null>(null);
+  /** Buffered seek target written by the overlay RAF, consumed by the seek RAF */
+  const pendingSeekTimeRef = useRef<number>(NaN);
   /** Last *requested* scrub time — avoids repeat seeks before currentTime catches up */
   const lastSeekSecRef = useRef<number>(NaN);
   const finaleOnRef = useRef(false);
@@ -153,6 +147,25 @@ export default function CinematicHero() {
     const didSeek = seekSnappedTime(video, snapped, lastSeekSecRef);
     if (didSeek || isMobileViewportRef.current) revealVideo();
     return didSeek;
+  }, [revealVideo]);
+
+  /**
+   * Schedule a video seek in a dedicated RAF frame, decoupled from the overlay-update RAF.
+   * Coalesces rapid seek requests — only the latest target time is applied.
+   * This prevents Chrome from having to decode a new video frame in the same RAF slot
+   * as all the overlay opacity/transform writes, which is the primary Chrome jitter source.
+   */
+  const scheduleVideoSeek = useCallback((targetSec: number) => {
+    pendingSeekTimeRef.current = targetSec;
+    if (seekRafRef.current != null) return; // already queued — latest target will be used
+    seekRafRef.current = requestAnimationFrame(() => {
+      seekRafRef.current = null;
+      const video = videoRef.current;
+      const t = pendingSeekTimeRef.current;
+      if (!video || !Number.isFinite(t)) return;
+      const didSeek = seekSnappedTime(video, t, lastSeekSecRef);
+      if (didSeek || isMobileViewportRef.current) revealVideo();
+    });
   }, [revealVideo]);
 
   const { openStepper } = useLeadStepper();
@@ -251,9 +264,13 @@ export default function CinematicHero() {
 
     const dur = video.duration;
     if (Number.isFinite(dur) && dur > 0) {
-      void syncVideoFrame(progress);
+      const snapped = Math.min(
+        dur,
+        Math.max(0, Math.round(progress * dur * HERO_VIDEO_FPS) / HERO_VIDEO_FPS),
+      );
+      scheduleVideoSeek(snapped);
     }
-  }, [showFinale, syncVideoFrame]);
+  }, [showFinale, scheduleVideoSeek]);
 
   useLayoutEffect(() => {
     if (reducedMotion) return;
@@ -334,6 +351,7 @@ export default function CinematicHero() {
     return () => {
       ro?.disconnect();
       if (scrollRafRef.current != null) { cancelAnimationFrame(scrollRafRef.current); scrollRafRef.current = null; }
+      if (seekRafRef.current != null) { cancelAnimationFrame(seekRafRef.current); seekRafRef.current = null; }
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('touchmove', onScroll);
       window.removeEventListener('resize', onResize);
@@ -343,7 +361,7 @@ export default function CinematicHero() {
       v?.removeEventListener('durationchange', onMeta);
       v?.removeEventListener('seeked', onSeeked);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame, scheduleVideoSeek]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -376,21 +394,28 @@ export default function CinematicHero() {
 
         {/* ── Video ────────────────────────────────────────────────── */}
         {!reducedMotion ? (
-          <video
-            key={heroVideoSrc}
-            ref={videoRef}
-            src={heroVideoSrc}
-            muted
-            playsInline
-            preload="auto"
-            className="absolute inset-0 h-full w-full object-cover object-center"
-            style={{
-              opacity: videoRevealed ? 1 : 0,
-              transition: videoRevealed ? 'opacity 0.4s ease' : 'none',
-              WebkitTransform: 'translateZ(0)',
-              transform: 'translateZ(0)',
-            }}
-          />
+          // Isolated compositor layer: keeps video decode on its own GPU tile so
+          // currentTime seeks never trigger a repaint of the overlay stack above it
+          <div
+            className="absolute inset-0"
+            style={{ willChange: 'transform', transform: 'translate3d(0,0,0)' }}
+          >
+            <video
+              key={heroVideoSrc}
+              ref={videoRef}
+              src={heroVideoSrc}
+              muted
+              playsInline
+              preload="auto"
+              className="h-full w-full object-cover object-center"
+              style={{
+                opacity: videoRevealed ? 1 : 0,
+                transition: videoRevealed ? 'opacity 0.4s ease' : 'none',
+                willChange: 'transform',
+                transform: 'translate3d(0,0,0)',
+              }}
+            />
+          </div>
         ) : (
           <div
             className="absolute inset-0 bg-[#0d1117]"
