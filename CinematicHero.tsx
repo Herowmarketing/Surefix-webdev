@@ -283,7 +283,9 @@ export default function CinematicHero() {
         await primeVideoDecoder(video);
         video.dataset.primed = '1';
       }
-      await syncVideoFrame(0);
+      // Seek to the CURRENT scroll position (0 at the top), never a hardcoded frame 0.
+      // These media events can re-fire after the user has scrolled, and seeking to 0
+      // here is what makes the first frame flash back in mid-scroll.
       handleScroll();
     };
     const onSeeked = () => {
@@ -291,8 +293,10 @@ export default function CinematicHero() {
         revealVideo();
       }
     };
+    // canplay re-fires whenever Chrome's decoder readyState recovers during heavy
+    // scrubbing. Re-sync to the live scroll position instead of yanking back to frame 0.
     const onCanPlay = () => {
-      void syncVideoFrame(0);
+      handleScroll();
     };
     const onScroll = () => {
       if (scrollRafRef.current != null) return;
