@@ -34,13 +34,6 @@ const TIMELINES = [
   { id: 'flexible',label: 'Flexible',          sub: 'No fixed timeline yet' },
 ]
 
-const BUDGETS = [
-  { id: 'under-15k',  label: 'Under $15K',     sub: 'Focused refresh or single room' },
-  { id: '15-35k',     label: '$15K – $35K',    sub: 'Mid-size renovation' },
-  { id: '35-75k',     label: '$35K – $75K',    sub: 'Full room or multi-room project' },
-  { id: '75k-plus',   label: '$75K+',          sub: 'Major renovation or addition' },
-  { id: 'unsure',     label: 'Not Sure Yet',   sub: 'I\'d like guidance on budget' },
-]
 
 // ─── Sub-components ───────────────────────────────────────────────────────────
 
@@ -166,45 +159,6 @@ function Step2({
   )
 }
 
-function Step3({
-  budget,
-  onBudget,
-}: {
-  budget: string
-  onBudget: (v: string) => void
-}) {
-  return (
-    <div>
-      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
-        What's your approximate budget?
-      </h2>
-      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-        No commitment — this helps us tailor the right solution for you.
-      </p>
-      <div className="flex flex-col gap-3">
-        {BUDGETS.map(b => (
-          <OptionCard key={b.id} selected={budget === b.id} onClick={() => onBudget(b.id)}>
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="text-sm font-bold text-slate-900">{b.label}</div>
-                <div className="text-xs text-slate-500">{b.sub}</div>
-              </div>
-              {budget === b.id && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                >
-                  <CheckCircle2 size={18} className="text-[#394696]" />
-                </motion.div>
-              )}
-            </div>
-          </OptionCard>
-        ))}
-      </div>
-    </div>
-  )
-}
 
 function Step4({
   name, phone, email, zip,
@@ -314,7 +268,7 @@ function StepSuccess({ name }: { name: string }) {
 
 // ─── Main Modal ───────────────────────────────────────────────────────────────
 
-const TOTAL_STEPS = 4
+const TOTAL_STEPS = 3
 
 const slideVariants = {
   enter: (dir: number) => ({
@@ -345,8 +299,6 @@ export default function LeadStepper() {
   // Step 2
   const [timeline, setTimeline] = useState('')
   // Step 3
-  const [budget, setBudget] = useState('')
-  // Step 4
   const [contact, setContact] = useState({ name: '', phone: '', email: '', zip: '' })
 
   // Pre-select service when opened from a service-specific CTA
@@ -358,7 +310,6 @@ export default function LeadStepper() {
       if (preselectedService) setService(preselectedService)
       else setService('')
       setTimeline('')
-      setBudget('')
       setContact({ name: '', phone: '', email: '', zip: '' })
     }
   }, [isOpen, preselectedService])
@@ -376,8 +327,7 @@ export default function LeadStepper() {
   const canAdvance = () => {
     if (step === 1) return !!service
     if (step === 2) return !!timeline
-    if (step === 3) return !!budget
-    if (step === 4) return !!(contact.name && contact.phone && contact.email)
+    if (step === 3) return !!(contact.name && contact.phone && contact.email)
     return false
   }
 
@@ -399,11 +349,11 @@ export default function LeadStepper() {
 
   const handleSubmit = () => {
     // In a static site, log to console; in a full-stack upgrade this would POST to an API
-    console.log('Lead captured:', { service, timeline, budget, contact })
+    console.log('Lead captured:', { service, timeline, contact })
     setSubmitted(true)
   }
 
-  const stepLabel = ['Project Type', 'Timeline', 'Budget', 'Your Info'][step - 1]
+  const stepLabel = ['Project Type', 'Timeline', 'Your Info'][step - 1]
 
   return (
     <AnimatePresence>
@@ -493,9 +443,6 @@ export default function LeadStepper() {
                         <Step2 timeline={timeline} onTimeline={setTimeline} />
                       )}
                       {step === 3 && (
-                        <Step3 budget={budget} onBudget={setBudget} />
-                      )}
-                      {step === 4 && (
                         <Step4
                           name={contact.name}
                           phone={contact.phone}

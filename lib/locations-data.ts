@@ -160,6 +160,25 @@ export const LOCATIONS: readonly LocationKey[] = [
       'Sure-Fix Remodeling — Hackettstown, NJ design-build remodeler. Kitchens, baths, additions, and forever-home modernization in Warren & Morris counties.',
   },
   {
+    slug: 'milford-nj',
+    city: 'Milford',
+    state: 'NJ',
+    county: 'Hunterdon',
+    displayName: 'Milford, New Jersey',
+    tagline: 'Delaware River charm, down-to-earth renovation.',
+    intro:
+      'Milford Borough sits along the Delaware River in Hunterdon County — just across the PA border and well within Sure-Fix\'s Western New Jersey service area. We bring the same showroom-backed design-build process to Milford\'s historic streetscapes and surrounding township homes that we apply across the Lehigh Valley.',
+    highlights: ['Milford Borough downtown', 'Holland Township border', 'Delaware River corridor', 'Route 519 corridor'],
+    featuredServices: ['Kitchen & bath remodels', 'Historic-home preservation', 'Decks & outdoor living', 'Window & door energy upgrades'],
+    logistics: [
+      'Hunterdon County permits handled in-house',
+      'NJ-licensed & insured',
+      'Brand-allied materials in stock at our PA showroom',
+    ],
+    meta:
+      'Sure-Fix Remodeling — Milford, NJ home remodeling firm. Kitchens, baths, additions, and historic-home renovations in Hunterdon County.',
+  },
+  {
     slug: 'washington-nj',
     city: 'Washington',
     state: 'NJ',

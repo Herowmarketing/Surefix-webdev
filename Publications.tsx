@@ -34,12 +34,11 @@ const FILTERS: { id: FilterKey; label: string }[] = [
   { id: 'blog', label: 'Blog' },
 ];
 
-function PublicationCard({ item, index }: { item: PublicationItem; index: number }) {
+function PublicationCard({ item, index, onRequestCopy }: { item: PublicationItem; index: number; onRequestCopy: () => void }) {
   const isPrint = item.kind === 'print';
-  const canLink = Boolean(item.href && item.published !== false);
+  const canLink = Boolean(item.published !== false);
   const href = item.href ?? '';
   const isInternal = href.startsWith('/');
-  const isMailto = href.startsWith('mailto:');
 
   return (
     <motion.article
@@ -75,40 +74,44 @@ function PublicationCard({ item, index }: { item: PublicationItem; index: number
         <span className="ml-auto text-[10px] text-slate-400">{item.dateLabel}</span>
       </div>
 
-      <h2 className="mb-2 text-lg font-black leading-snug text-white">{item.title}</h2>
+      <h2 className="mb-2 text-lg font-black leading-snug text-slate-900">{item.title}</h2>
       <p className="mb-5 flex-1 text-sm leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
         {item.excerpt}
       </p>
 
-      <div className="mt-auto flex items-center gap-2">
-        {canLink ? (
-          isInternal ? (
-            <Link href={href}>
-              <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
-                Read post <ChevronRight size={14} aria-hidden />
-              </span>
-            </Link>
-          ) : (
-            <a
-              href={href}
-              {...(isMailto ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
-              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
-            >
-              {isPrint ? (
-                <>
-                  <Mail size={14} /> Request copy
-                </>
-              ) : (
-                <>
-                  Read post <ExternalLink size={13} />
-                </>
-              )}
-            </a>
-          )
-        ) : (
+      <div className="mt-auto flex flex-col gap-2">
+        {!canLink ? (
           <span className="inline-flex items-center gap-2 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-xs font-semibold text-slate-500">
             Coming soon
           </span>
+        ) : isPrint ? (
+          <>
+            <button
+              type="button"
+              onClick={onRequestCopy}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
+            >
+              <Mail size={14} /> Request a Copy
+            </button>
+            <p className="text-[10px] leading-snug text-slate-400" style={{ fontFamily: 'Georgia, serif' }}>
+              Start a conversation — we&apos;ll mail or email this piece directly to you.
+            </p>
+          </>
+        ) : isInternal ? (
+          <Link href={href}>
+            <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
+              Read post <ChevronRight size={14} aria-hidden />
+            </span>
+          </Link>
+        ) : (
+          <a
+            href={href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
+          >
+            Read post <ExternalLink size={13} />
+          </a>
         )}
       </div>
 
@@ -204,7 +207,7 @@ export default function Publications() {
             className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
           >
             {filtered.map((item, i) => (
-              <PublicationCard key={item.id} item={item} index={i} />
+              <PublicationCard key={item.id} item={item} index={i} onRequestCopy={openStepper} />
             ))}
           </motion.div>
         </AnimatePresence>
