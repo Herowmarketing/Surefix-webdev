@@ -117,6 +117,7 @@ export default function Navbar() {
         >
           <span>📍 {BUSINESS.address}</span>
           <span>⏰ {BUSINESS.hours.weekdays}</span>
+          <span>⏰ {BUSINESS.hours.saturday}</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-xs font-bold text-[#394696]" style={{ fontFamily: 'Figtree, sans-serif' }}>
@@ -133,7 +134,7 @@ export default function Navbar() {
       </div>
 
       <LayoutGroup>
-        <nav className="relative flex h-16 items-center justify-between gap-1.5 px-3 min-[400px]:gap-2 min-[400px]:px-5 lg:gap-3 lg:px-8">
+        <nav className="relative flex h-16 min-w-0 items-center justify-between gap-1 px-3 min-[400px]:gap-1.5 min-[400px]:px-4 lg:gap-2 lg:px-6 xl:gap-3 xl:px-8">
           <Link href="/" className="-m-1 shrink-0 p-1 min-[400px]:m-0 min-[400px]:p-0">
             <img
               src={LOGO_URL}
@@ -143,7 +144,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <div className="hidden flex-1 items-center justify-end gap-0.5 lg:flex">
+          <div className="hidden min-w-0 flex-1 items-center justify-end gap-0 lg:flex xl:gap-0.5">
             {PRIMARY_NAV_ENTRIES.map((entry) =>
               hasNavChildren(entry) ? (
                 <div
@@ -154,7 +155,7 @@ export default function Navbar() {
                 >
                   <button
                     type="button"
-                    className={`flex items-center gap-1 rounded-md px-3 py-2 text-xs font-bold uppercase tracking-widest transition-colors ${
+                    className={`flex items-center gap-1 rounded-md px-2 py-2 text-[10px] font-bold uppercase tracking-[0.14em] transition-colors xl:px-3 xl:text-xs xl:tracking-widest ${
                       location.startsWith('/services')
                         ? navTextActive
                         : navTextMuted
@@ -225,14 +226,14 @@ export default function Navbar() {
           </div>
 
           {/* Right cluster: desktop */}
-          <div className="hidden items-center gap-3 lg:flex">
+          <div className="hidden shrink-0 items-center gap-2 lg:flex xl:gap-3">
             <a
               href={BUSINESS.phoneHref}
-              className={`hidden items-center gap-2 text-sm font-bold transition-colors md:flex ${phoneText}`}
+              className={`inline-flex shrink-0 items-center gap-1.5 text-xs font-bold transition-colors xl:gap-2 xl:text-sm ${phoneText}`}
               style={{ fontFamily: 'Figtree, sans-serif' }}
             >
-              <Phone size={14} className="text-[#394696]" />
-              {BUSINESS.phone}
+              <Phone size={14} className="shrink-0 text-[#394696]" />
+              <span className="whitespace-nowrap">{BUSINESS.phone}</span>
             </a>
             <motion.button
               layout
@@ -240,7 +241,7 @@ export default function Navbar() {
               onClick={() => openStepper()}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
-              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold uppercase tracking-wider text-white"
+              className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-lg px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-white xl:px-4 xl:text-xs"
               style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', border: 'none' }}
             >
               Free Estimate

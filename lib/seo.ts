@@ -17,7 +17,7 @@ import { useEffect } from 'react';
 
 export const SITE_URL = 'https://surefixremodelinglv.com';
 export const SITE_NAME = 'Sure-Fix Remodeling';
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/manus-storage/sf-hero-main-poster.jpg`;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/manus-storage/sf-og-share.jpg`;
 export const DEFAULT_OG_IMAGE_ALT =
   'Sure-Fix Remodeling — design-build home remodeling in Easton, PA and the Lehigh Valley';
 

@@ -18,7 +18,7 @@
 
 import { useRef, useEffect, useLayoutEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Phone } from 'lucide-react';
+import { ArrowRight, ChevronDown, Phone } from 'lucide-react';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { BUSINESS } from '@/lib/constants';
 
@@ -283,7 +283,9 @@ export default function CinematicHero() {
         await primeVideoDecoder(video);
         video.dataset.primed = '1';
       }
-      await syncVideoFrame(0);
+      // Seek to the CURRENT scroll position (0 at the top), never a hardcoded frame 0.
+      // These media events can re-fire after the user has scrolled, and seeking to 0
+      // here is what makes the first frame flash back in mid-scroll.
       handleScroll();
     };
     const onSeeked = () => {
@@ -291,8 +293,10 @@ export default function CinematicHero() {
         revealVideo();
       }
     };
+    // canplay re-fires whenever Chrome's decoder readyState recovers during heavy
+    // scrubbing. Re-sync to the live scroll position instead of yanking back to frame 0.
     const onCanPlay = () => {
-      void syncVideoFrame(0);
+      handleScroll();
     };
     const onScroll = () => {
       if (scrollRafRef.current != null) return;
@@ -416,42 +420,30 @@ export default function CinematicHero() {
             className="absolute inset-0"
             style={{ willChange: 'opacity, transform', ['--p' as string]: '1' }}
           >
-            <motion.p
-              {...fadeUp(0.3)}
-              className="absolute left-4 text-[11px] leading-normal text-white/38 min-[400px]:left-8 min-[400px]:text-[12px] sm:left-14"
-              style={{
-                fontFamily: SANS,
-                letterSpacing: '0.12em',
-                fontWeight: 400,
-                top: 'max(5.25rem, calc(3.25rem + env(safe-area-inset-top, 0px)))',
-              }}
-            >
-              Sure Fix
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.1, duration: 0.7 }}
-              className="absolute right-4 hidden items-center gap-2 text-[10px] uppercase leading-normal tracking-[0.18em] text-white/28 min-[400px]:right-8 min-[400px]:text-[11px] sm:right-14 lg:flex"
-              style={{
-                fontFamily: SANS,
-                letterSpacing: '0.18em',
-                textTransform: 'uppercase',
-                fontWeight: 400,
-                top: 'max(5.25rem, calc(3.25rem + env(safe-area-inset-top, 0px)))',
-              }}
-            >
-              Scroll
-              <motion.span
-                className="inline-block w-px h-5 bg-white/28"
-                style={{ transformOrigin: 'top' }}
-                animate={{ scaleY: [0.35, 1, 0.35] }}
-                transition={{ repeat: Infinity, duration: 2.4, ease: 'easeInOut' }}
-              />
-            </motion.div>
-
             <motion.div className="absolute inset-x-0 bottom-0 z-[1] flex flex-col items-center px-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] min-[400px]:px-8 min-[400px]:pb-[max(1.25rem,env(safe-area-inset-bottom,0px))] sm:pb-[max(1.5rem,env(safe-area-inset-bottom,0px))]">
+              {/* Scroll cue — high-contrast, readable for older visitors */}
+              <motion.div
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2, duration: 0.8 }}
+                className="mb-5 flex flex-col items-center gap-2.5 sm:mb-6"
+                aria-hidden
+              >
+                <span
+                  className="rounded-full border border-white/35 bg-black/45 px-5 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-white shadow-lg backdrop-blur-sm min-[400px]:text-[13px]"
+                  style={{ fontFamily: SANS }}
+                >
+                  Scroll to explore
+                </span>
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.8, ease: 'easeInOut' }}
+                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/40 bg-black/45 text-white shadow-md backdrop-blur-sm"
+                >
+                  <ChevronDown size={22} strokeWidth={2.5} />
+                </motion.div>
+              </motion.div>
+
               <div className="flex w-full max-w-lg flex-col items-center text-center">
                 <motion.h1
                   {...fadeUp(0.5)}
