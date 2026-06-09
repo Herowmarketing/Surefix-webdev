@@ -11,14 +11,12 @@
  * without touching the layout.
  */
 import { motion } from 'framer-motion';
-import { Link } from 'wouter';
+
 import {
   ArrowRight,
-  CheckCircle2,
   Gift,
   Sparkles,
   Phone,
-  Wallet,
   Calendar,
 } from 'lucide-react';
 import {
@@ -27,6 +25,7 @@ import {
   YEAR_ROUND_PROMOS,
   type PromoBundle,
 } from '@/lib/promotions-data';
+
 import { BUSINESS } from '@/lib/constants';
 import { useSeo, breadcrumbList } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
@@ -151,7 +150,7 @@ function SeasonalCard({ promo, index }: { promo: PromoBundle; index: number }) {
         <div className="flex items-center justify-between gap-2">
           <PromoBadge accent={promo.accent}>
             <Calendar size={11} />
-            {promo.cadence === 'financing' ? '0% Financing' : 'Seasonal'}
+            Seasonal
           </PromoBadge>
           {promo.spotlight && (
             <span
@@ -323,7 +322,7 @@ export default function Promotions() {
               className="mb-8 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg"
               style={{ fontFamily: 'Georgia, serif' }}
             >
-              Honest savings, season-aware bundles, and 0% financing for the homeowners who treat their home like a forever home. Every promotion below is built around the same belief: the right project should never feel like a financial detour.
+              Honest savings and season-aware bundles for the homeowners who treat their home like a forever home. Every promotion below is built around the same belief: the right project at the right time of year should never feel like a financial detour.
             </motion.p>
             <motion.div variants={fadeUp} custom={3} className="flex flex-wrap items-center gap-3">
               <motion.button
@@ -437,32 +436,32 @@ export default function Promotions() {
               style={{ perspective: 1200 }}
             >
               <div
-                className="overflow-hidden rounded-2xl border border-slate-300 p-6 sm:p-7"
+                className="overflow-hidden rounded-2xl border border-white/20 p-6 sm:p-7"
                 style={{
                   background:
-                    'linear-gradient(135deg, #0d1117 0%, #1a2440 50%, #983631 100%)',
+                    'linear-gradient(135deg, #394696 0%, #1a2440 50%, #983631 100%)',
                   boxShadow:
-                    '0 24px 70px -25px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.06) inset',
+                    '0 24px 70px -25px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.10) inset',
                 }}
               >
                 <div className="flex items-center justify-between">
                   <span
-                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-slate-600"
+                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-white/60"
                     style={{ fontFamily: SANS }}
                   >
                     Sure-Fix · Friends & Family
                   </span>
-                  <Gift size={18} className="text-slate-700" />
+                  <Gift size={18} className="text-white/60" />
                 </div>
                 <div className="mt-8 mb-2">
                   <p
-                    className="text-[10px] font-semibold uppercase tracking-[0.32em] text-slate-500"
+                    className="text-[10px] font-semibold uppercase tracking-[0.32em] text-white/55"
                     style={{ fontFamily: SANS }}
                   >
                     Gift Card Value
                   </p>
                   <p
-                    className="mt-1 leading-none text-slate-900"
+                    className="mt-1 leading-none text-white"
                     style={{
                       fontFamily: SERIF,
                       fontWeight: 400,
@@ -475,13 +474,13 @@ export default function Promotions() {
                 </div>
                 <div className="mt-6 flex items-end justify-between">
                   <p
-                    className="text-xs italic text-slate-600"
+                    className="text-xs italic text-white/70"
                     style={{ fontFamily: 'Georgia, serif' }}
                   >
                     Toward any future Sure-Fix project.
                   </p>
                   <p
-                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
+                    className="text-[10px] font-bold uppercase tracking-[0.32em] text-white/45"
                     style={{ fontFamily: SANS }}
                   >
                     Est. 2008
@@ -542,7 +541,7 @@ export default function Promotions() {
               className="mb-3 text-[10px] font-bold uppercase tracking-[0.4em] text-[#983631]"
               style={{ fontFamily: SANS }}
             >
-              Monthly + Seasonal Bundles
+              Seasonal Bundles
             </motion.p>
             <motion.h2
               variants={fadeUp}
@@ -573,7 +572,7 @@ export default function Promotions() {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
             variants={stagger}
-            className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
+            className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4"
           >
             {SEASONAL_BUNDLES.map((promo, i) => (
               <SeasonalCard key={promo.id} promo={promo} index={i} />
@@ -582,87 +581,6 @@ export default function Promotions() {
         </div>
       </section>
 
-      {/* ── FINANCING CLOSER ─────────────────────────────── */}
-      <section className="mx-auto max-w-7xl px-5 py-16 sm:py-20 lg:px-8 lg:py-24">
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="relative overflow-hidden rounded-3xl border border-[#394696]/30 p-8 sm:p-12 lg:p-16"
-          style={{
-            background:
-              'linear-gradient(140deg, rgba(57,70,150,0.18) 0%, rgba(13,17,23,0.85) 75%)',
-          }}
-        >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full opacity-50 blur-3xl"
-            style={{ background: 'rgba(57,70,150,0.35)' }}
-          />
-          <div className="relative grid grid-cols-1 items-end gap-10 lg:grid-cols-[1.2fr_1fr]">
-            <div>
-              <PromoBadge accent="blue">
-                <Wallet size={11} /> 0% Financing · Year-round
-              </PromoBadge>
-              <h3
-                className="mt-5 text-slate-900"
-                style={{
-                  fontFamily: SERIF,
-                  fontWeight: 300,
-                  fontSize: 'clamp(2rem, 4.6vw, 3.2rem)',
-                  letterSpacing: '-0.022em',
-                  lineHeight: 1.04,
-                }}
-              >
-                <span className="italic">Finance smarter.</span> Build better.
-              </h3>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
-                Twelve months of zero-interest financing with flexible payment plans. We build the timeline around your life — not around the calendar of an outside lender — so the right project never has to wait for the right month.
-              </p>
-              <ul className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                {[
-                  '0% interest for 12 months',
-                  'Custom monthly plans',
-                  'Quick approval pathway',
-                  'No prepayment penalty',
-                ].map((line) => (
-                  <li
-                    key={line}
-                    className="flex items-center gap-2 text-sm text-slate-700"
-                    style={{ fontFamily: SANS, fontWeight: 600 }}
-                  >
-                    <CheckCircle2 size={15} className="text-[#394696]" />
-                    {line}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex flex-col gap-3">
-              <motion.button
-                type="button"
-                onClick={() => openStepper()}
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
-                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-2xl px-8 py-4 text-[12px] font-bold uppercase tracking-[0.22em] text-white shadow-xl shadow-black/40"
-                style={{ background: CTA_RED, fontFamily: SANS, border: 'none' }}
-              >
-                Apply through Sure-Fix
-                <ArrowRight size={15} />
-              </motion.button>
-              <Link href="/contact">
-                <span
-                  className="inline-flex min-h-[52px] cursor-pointer items-center justify-center gap-2 rounded-2xl border border-slate-300 px-7 py-4 text-[12px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
-                  style={{ fontFamily: SANS }}
-                >
-                  Talk to our team
-                </span>
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-      </section>
     </div>
   );
 }
