@@ -123,6 +123,26 @@ export const BATHROOM_SERVICE_GALLERY: string[] = [
   `${M}sf-bathroom-portfolio-05.jpg`,
 ];
 
+/** Basement Finishing page — Our Work gallery */
+export const BASEMENT_SERVICE_GALLERY: string[] = [
+  `${M}sf-basement-gallery-01.jpg`,
+  `${M}sf-basement-gallery-02.jpg`,
+  `${M}sf-basement-gallery-03.jpg`,
+  `${M}sf-basement-gallery-04.jpg`,
+  `${M}sf-basement-gallery-05.jpg`,
+  BASEMENT_STILL,
+];
+
+/** Home Additions page — Our Work gallery */
+export const ADDITIONS_SERVICE_GALLERY: string[] = [
+  `${M}sf-additions-gallery-01.jpg`,
+  `${M}sf-additions-gallery-02.jpg`,
+  `${M}sf-additions-gallery-03.jpg`,
+  `${M}sf-additions-gallery-04.jpg`,
+  `${M}sf-additions-gallery-05.jpg`,
+  ADDITIONS_STILL,
+];
+
 /** Flooring page: lead with product still, then typical home interiors */
 export const FLOORING_SERVICE_GALLERY: string[] = [
   FLOORING_STILL,
