@@ -45,6 +45,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 const PORT = Number.parseInt(process.env.PRERENDER_PORT ?? '4180', 10);
+/** Public origin baked into OG/Twitter asset URLs — must never be 127.0.0.1 (link unfurlers cannot fetch it). */
+const CANONICAL_ORIGIN =
+  process.env.PRERENDER_ORIGIN ??
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ??
+  process.env.SITE_URL ??
+  'https://surefixremodelinglv.com';
 
 const SANITY_PROJECT_ID = 'kqp67u17';
 const SANITY_DATASET = 'production';
@@ -180,6 +186,15 @@ function ensureDir(dir) {
   fs.mkdirSync(dir, { recursive: true });
 }
 
+/** Replace localhost URLs from the prerender server with the deployment's public HTTPS origin. */
+function canonicalizePrerenderHtml(html) {
+  const localPattern = new RegExp(
+    `https?://(?:127\\.0\\.0\\.1|localhost):${PORT}`,
+    'g',
+  );
+  return html.replace(localPattern, CANONICAL_ORIGIN);
+}
+
 /* ─────────────────────────────────── MAIN ─────────────────────────────────── */
 
 async function main() {
@@ -200,6 +215,7 @@ async function main() {
     ...sanityBlogRoutes,
   ];
   console.log(`  ↳ ${routes.length} routes (${blogSlugs.length} Sanity blog posts)`);
+  console.log(`  ↳ OG asset origin: ${CANONICAL_ORIGIN}`);
 
   console.log(`› Starting static server on http://127.0.0.1:${PORT}`);
   const server = await startStaticServer(DIST, PORT);
@@ -228,6 +244,9 @@ async function main() {
   const failures = [];
   try {
     const page = await browser.newPage();
+    await page.evaluateOnNewDocument((origin) => {
+      window.__PRERENDER_ORIGIN__ = origin;
+    }, CANONICAL_ORIGIN);
     await page.setViewport({ width: 1280, height: 800 });
     // Skip heavy assets — they slow prerender and we only need DOM/head
     await page.setRequestInterception(true);
@@ -245,7 +264,8 @@ async function main() {
         // Wait for the useSeo hook to inject its structured data so the snapshot
         // includes per-route JSON-LD, not just the static index.html graph.
         await page.waitForSelector('script[data-seo="page"]', { timeout: 10000 }).catch(() => {});
-        const html = await page.evaluate(() => '<!doctype html>\n' + document.documentElement.outerHTML);
+        const rawHtml = await page.evaluate(() => '<!doctype html>\n' + document.documentElement.outerHTML);
+        const html = canonicalizePrerenderHtml(rawHtml);
         ensureDir(path.dirname(outPath));
         fs.writeFileSync(outPath, html, 'utf8');
         console.log(`  ✓ ${route}`);

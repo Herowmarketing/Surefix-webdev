@@ -17,9 +17,11 @@ import { useEffect } from 'react';
 
 export const SITE_URL = 'https://surefixremodelinglv.com';
 export const SITE_NAME = 'Sure-Fix Remodeling';
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/manus-storage/sf-og-share.jpg`;
+export const DEFAULT_OG_IMAGE = '/manus-storage/sf-og-share.jpg';
 export const DEFAULT_OG_IMAGE_ALT =
-  'Sure-Fix Remodeling — design-build home remodeling in Easton, PA and the Lehigh Valley';
+  'Sure-Fix Remodeling mascot — design-build home remodeling in Easton, PA and the Lehigh Valley';
+/** Showroom loop (from Hero Video Upscaled) — compressed for iMessage link previews */
+export const DEFAULT_OG_VIDEO = '/manus-storage/sf-og-showroom.mp4';
 
 export type SeoStructuredData = Record<string, unknown> | readonly Record<string, unknown>[];
 
@@ -32,10 +34,18 @@ export interface SeoData {
   description: string;
   /** Path relative to root for canonical/og:url (e.g. "/services/kitchen"). Defaults to current path. */
   path?: string;
-  /** Absolute URL of the OG/Twitter image. */
+  /** OG/Twitter image — absolute URL or site-relative path (e.g. /manus-storage/…). */
   image?: string;
   /** Alt text for the OG/Twitter image. */
   imageAlt?: string;
+  /**
+   * Direct MP4 for rich link previews (iMessage autoplays muted + looped).
+   * Must be downloadable over HTTPS; keep icon + image + video under ~10 MB total.
+   */
+  video?: string;
+  videoType?: string;
+  videoWidth?: number;
+  videoHeight?: number;
   /** OG type — "website", "article", etc. */
   ogType?: 'website' | 'article' | 'profile';
   /** Robots directive override. Defaults to the index/follow allowlist already in index.html. */
@@ -95,6 +105,31 @@ function injectStructuredData(blocks: readonly SeoStructuredData[]) {
   }
 }
 
+function isLocalDevOrigin(origin: string): boolean {
+  return /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/i.test(origin);
+}
+
+declare global {
+  interface Window {
+    /** Set by scripts/prerender.mjs so OG video/image URLs are public HTTPS, not 127.0.0.1 */
+    __PRERENDER_ORIGIN__?: string;
+  }
+}
+
+/** Relative OG paths resolve to a public HTTPS origin (never localhost from prerender). */
+export function resolveImageUrl(image: string): string {
+  if (/^https?:\/\//i.test(image)) return image;
+  const assetPath = image.startsWith('/') ? image : `/${image}`;
+  if (typeof window !== 'undefined') {
+    const injected = window.__PRERENDER_ORIGIN__;
+    if (injected) return `${injected.replace(/\/$/, '')}${assetPath}`;
+    if (!isLocalDevOrigin(window.location.origin)) {
+      return `${window.location.origin}${assetPath}`;
+    }
+  }
+  return `${SITE_URL}${assetPath}`;
+}
+
 function resolvePath(path: string | undefined): string {
   if (path) return path.startsWith('/') ? path : `/${path}`;
   if (typeof window === 'undefined') return '/';
@@ -109,6 +144,10 @@ export function useSeo(data: SeoData) {
     path,
     image = DEFAULT_OG_IMAGE,
     imageAlt = DEFAULT_OG_IMAGE_ALT,
+    video,
+    videoType = 'video/mp4',
+    videoWidth = 1280,
+    videoHeight = 720,
     ogType = 'website',
     robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
     article,
@@ -133,14 +172,34 @@ export function useSeo(data: SeoData) {
     upsertMeta('property', 'og:url', url);
     upsertMeta('property', 'og:title', resolvedTitle);
     upsertMeta('property', 'og:description', description);
-    upsertMeta('property', 'og:image', image);
+    const imageUrl = resolveImageUrl(image);
+    upsertMeta('property', 'og:image', imageUrl);
     upsertMeta('property', 'og:image:alt', imageAlt);
 
     upsertMeta('name', 'twitter:card', 'summary_large_image');
     upsertMeta('name', 'twitter:title', resolvedTitle);
     upsertMeta('name', 'twitter:description', description);
-    upsertMeta('name', 'twitter:image', image);
+    upsertMeta('name', 'twitter:image', imageUrl);
     upsertMeta('name', 'twitter:image:alt', imageAlt);
+
+    if (video) {
+      const videoUrl = resolveImageUrl(video);
+      upsertMeta('property', 'og:video', videoUrl);
+      upsertMeta('property', 'og:video:secure_url', videoUrl);
+      upsertMeta('property', 'og:video:type', videoType);
+      upsertMeta('property', 'og:video:width', String(videoWidth));
+      upsertMeta('property', 'og:video:height', String(videoHeight));
+    } else {
+      for (const prop of [
+        'og:video',
+        'og:video:secure_url',
+        'og:video:type',
+        'og:video:width',
+        'og:video:height',
+      ]) {
+        document.head.querySelector(`meta[property="${prop}"]`)?.remove();
+      }
+    }
 
     // Article-specific
     if (ogType === 'article' && article) {
