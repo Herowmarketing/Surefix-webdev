@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { motion } from 'framer-motion';
-import { BookOpen, ChevronRight, AlertTriangle } from 'lucide-react';
+import { BookOpen, ChevronRight } from 'lucide-react';
 import { fetchPosts, formatPostDate, urlFor, type PostListItem } from '@/lib/sanity';
 import { useSeo, breadcrumbList, SITE_URL } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
@@ -236,23 +236,20 @@ function EmptyState() {
   );
 }
 
-function ErrorState({ message }: { message: string }) {
+function ErrorState({ message: _message }: { message: string }) {
   return (
-    <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-800">
-      <div className="mb-2 flex items-center gap-2 font-bold">
-        <AlertTriangle size={16} aria-hidden /> Couldn’t load posts from Sanity.
-      </div>
-      <p className="leading-relaxed">
-        {message} — confirm the dataset is public and that{' '}
-        <code className="rounded bg-red-100 px-1 py-0.5">http://localhost:5173</code> is on the
-        CORS allowlist at{' '}
-        <a
-          href="https://www.sanity.io/manage/project/kqp67u17/api"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline"
-        >
-          sanity.io/manage
+    <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 p-10 text-center">
+      <BookOpen size={28} className="mx-auto mb-3 text-slate-400" aria-hidden />
+      <p
+        className="text-base font-semibold text-slate-700"
+        style={{ fontFamily: 'Figtree, sans-serif' }}
+      >
+        Blog posts coming soon.
+      </p>
+      <p className="mt-1 text-sm text-slate-500" style={{ fontFamily: 'Georgia, serif' }}>
+        We&apos;re finishing up our first articles — check back shortly or{' '}
+        <a href="/contact" className="underline underline-offset-2 hover:text-slate-700">
+          reach out directly
         </a>
         .
       </p>
