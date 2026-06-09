@@ -7,7 +7,7 @@
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'wouter'
 import { useRef } from 'react'
-import { ArrowRight, CheckCircle, Star, Layers, Wrench, Home, Award, Sparkles, ShieldCheck, Droplets } from 'lucide-react'
+import { ArrowRight, CheckCircle, Star, Layers, Wrench, Home, Award, ShieldCheck, Droplets } from 'lucide-react'
 import { Interactive3DMaterial, Interactive3DMaterialFeatured } from '@/components/Interactive3DMaterial'
 import { BUSINESS } from '@/lib/constants'
 import { SHOWROOM_MATERIAL_IMAGES } from '@/lib/site-images'
@@ -93,11 +93,12 @@ const GRID_MATERIALS = [
 const PARTNER_BRANDS = [
   { name: 'Moen', category: 'Plumbing · Enduring Ally' },
   { name: 'Gerber', category: 'Toilets · Enduring Ally' },
-  { name: 'Henry', category: 'Building Envelope · Enduring Ally' },
+  { name: 'Forevermark Cabinetry', category: 'Cabinetry · Enduring Ally' },
+  { name: 'GAF', category: 'Roofing · Certified Installer' },
+  { name: 'BCI Acrylic', category: 'Bath · Certified Installer' },
   { name: 'Woodura', category: 'Flooring' },
   { name: 'Kohler', category: 'Plumbing' },
   { name: 'James Hardie', category: 'Exterior' },
-  { name: 'GAF', category: 'Roofing' },
   { name: 'CertainTeed', category: 'Roofing' },
   { name: 'Cambria', category: 'Countertops' },
   { name: 'Silestone', category: 'Countertops' },
@@ -118,6 +119,7 @@ const ENDURING_ALLIES = [
     name: 'Moen',
     role: 'Plumbing fixtures',
     icon: Droplets,
+    certified: false,
     blurb:
       'Lifetime-rated finishes, spec-matched valves, and faucet families our crews install every week. Moen sits inside our standard kitchen and bath packages so what you choose on the showroom floor is what shows up at install.',
   },
@@ -125,17 +127,35 @@ const ENDURING_ALLIES = [
     name: 'Gerber',
     role: 'High-efficiency toilets',
     icon: ShieldCheck,
+    certified: false,
     blurb:
       'Performance-grade toilets that solve real renovation problems — quiet flush, rough-in flexibility, and water-saving ratings that satisfy modern code without sacrificing comfort.',
   },
   {
-    name: 'Henry',
-    role: 'Building envelope',
-    icon: Sparkles,
+    name: 'Forevermark Cabinetry',
+    role: 'Kitchen & bath cabinetry',
+    icon: Layers,
+    certified: false,
     blurb:
-      'Weather-resistive barriers, sealants, and roofing adhesives engineered for Pennsylvania weather swings. Henry products quietly do the work that keeps a finish-grade renovation watertight for decades.',
+      'Dovetail-box construction, soft-close hardware, and dozens of door styles — Forevermark delivers real-wood cabinetry at attainable price points that hold up in everyday family kitchens and bathrooms.',
   },
-] as const
+  {
+    name: 'GAF',
+    role: 'GAF Certified Installer',
+    icon: Award,
+    certified: true,
+    blurb:
+      'As GAF Certified installers, we apply GAF roofing systems to manufacturer specification and back them with the full warranty that certified installation provides — the kind of coverage a standard referral contractor cannot offer.',
+  },
+  {
+    name: 'BCI Acrylic',
+    role: 'BCI Certified Installer',
+    icon: Star,
+    certified: true,
+    blurb:
+      'BCI Acrylic bath systems are purpose-built for lasting durability and a clean, finished look. As BCI Certified installers, we handle precise measurement, factory ordering, and professional installation as one seamless process.',
+  },
+]
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -380,31 +400,44 @@ export default function Showroom() {
                 className="mt-5 max-w-2xl text-base leading-relaxed text-slate-600"
                 style={{ fontFamily: 'Georgia, serif' }}
               >
-                Most contractors hand you a vendor list and a parking pass. Sure-Fix walks you through a curated material selection inside our showroom — fixtures by <strong className="text-slate-900">Moen</strong>, toilets by <strong className="text-slate-900">Gerber</strong>, and weather-grade envelope products by <strong className="text-slate-900">Henry</strong>. Long-standing manufacturer relationships, applied to every project.
+                Most contractors hand you a vendor list and a parking pass. Sure-Fix walks you through a curated material selection inside our showroom — fixtures by <strong className="text-slate-900">Moen</strong>, toilets by <strong className="text-slate-900">Gerber</strong>, and cabinetry by <strong className="text-slate-900">Forevermark</strong>. We're also proud <strong className="text-slate-900">GAF Certified</strong> and <strong className="text-slate-900">BCI Certified</strong> installers — manufacturer-verified credentials that back every roofing and bath system we install.
               </motion.p>
               <motion.div
                 variants={fadeUp}
                 custom={3}
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl border border-slate-200 px-4 py-3 text-sm"
-                style={{ background: '#f8fafc', fontFamily: 'Figtree, sans-serif' }}
+                className="mt-6 flex flex-wrap gap-3"
               >
-                <Sparkles size={14} className="text-[#983631]" />
-                <span className="font-bold text-slate-900">Featuring Henry</span>
-                <span className="text-slate-600">— bundle add-on ($200 value)</span>
+                <span
+                  className="inline-flex items-center gap-2 rounded-2xl border border-[#394696]/30 px-4 py-2.5 text-sm"
+                  style={{ background: 'rgba(57,70,150,0.08)', fontFamily: 'Figtree, sans-serif' }}
+                >
+                  <Award size={14} className="text-[#394696]" />
+                  <span className="font-bold text-slate-900">GAF Certified Installer</span>
+                </span>
+                <span
+                  className="inline-flex items-center gap-2 rounded-2xl border border-[#983631]/30 px-4 py-2.5 text-sm"
+                  style={{ background: 'rgba(152,54,49,0.08)', fontFamily: 'Figtree, sans-serif' }}
+                >
+                  <Award size={14} className="text-[#983631]" />
+                  <span className="font-bold text-slate-900">BCI Certified Installer</span>
+                </span>
               </motion.div>
             </div>
             <motion.ul
               variants={fadeUp}
               custom={1}
-              className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1"
+              className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-1"
             >
               {ENDURING_ALLIES.map((ally) => {
                 const Icon = ally.icon
                 return (
                   <li
                     key={ally.name}
-                    className="flex items-start gap-3 rounded-2xl border border-slate-200 p-4"
-                    style={{ background: '#f8fafc' }}
+                    className="flex items-start gap-3 rounded-2xl border p-4"
+                    style={{
+                      background: ally.certified ? 'rgba(57,70,150,0.06)' : '#f8fafc',
+                      borderColor: ally.certified ? 'rgba(57,70,150,0.25)' : '#e2e8f0',
+                    }}
                   >
                     <span
                       className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
@@ -420,8 +453,8 @@ export default function Showroom() {
                         {ally.name}
                       </p>
                       <p
-                        className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#394696]"
-                        style={{ fontFamily: 'Figtree, sans-serif' }}
+                        className="text-[10px] font-bold uppercase tracking-[0.28em]"
+                        style={{ fontFamily: 'Figtree, sans-serif', color: ally.certified ? '#983631' : '#394696' }}
                       >
                         {ally.role}
                       </p>
@@ -437,7 +470,7 @@ export default function Showroom() {
             whileInView="visible"
             viewport={{ once: true, margin: '-80px' }}
             variants={stagger}
-            className="grid grid-cols-1 gap-5 md:grid-cols-3"
+            className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3"
           >
             {ENDURING_ALLIES.map((ally, i) => {
               const Icon = ally.icon
@@ -446,28 +479,41 @@ export default function Showroom() {
                   key={ally.name}
                   variants={fadeUp}
                   custom={i}
-                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border border-slate-200 p-7"
+                  className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-3xl border p-7"
                   style={{
-                    background:
-                      'linear-gradient(155deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%)',
+                    background: ally.certified
+                      ? 'linear-gradient(155deg, #fdf8f7 0%, #faf5f4 60%, #f5eeec 100%)'
+                      : 'linear-gradient(155deg, #ffffff 0%, #f8fafc 60%, #f1f5f9 100%)',
+                    borderColor: ally.certified ? 'rgba(152,54,49,0.25)' : '#e2e8f0',
                   }}
                 >
                   <div className="flex items-center justify-between">
                     <span
                       className="inline-flex h-12 w-12 items-center justify-center rounded-2xl"
                       style={{
-                        background: 'linear-gradient(135deg, rgba(57,70,150,0.35), rgba(152,54,49,0.25))',
+                        background: ally.certified
+                          ? 'linear-gradient(135deg, rgba(152,54,49,0.35), rgba(57,70,150,0.20))'
+                          : 'linear-gradient(135deg, rgba(57,70,150,0.35), rgba(152,54,49,0.25))',
                         color: '#fff',
                       }}
                     >
                       <Icon size={20} />
                     </span>
-                    <span
-                      className="text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
-                      style={{ fontFamily: 'Figtree, sans-serif' }}
-                    >
-                      Enduring Ally
-                    </span>
+                    {ally.certified ? (
+                      <span
+                        className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.28em]"
+                        style={{ background: 'rgba(152,54,49,0.12)', color: '#983631', fontFamily: 'Figtree, sans-serif' }}
+                      >
+                        <Award size={9} /> Certified Installer
+                      </span>
+                    ) : (
+                      <span
+                        className="text-[10px] font-bold uppercase tracking-[0.32em] text-slate-500"
+                        style={{ fontFamily: 'Figtree, sans-serif' }}
+                      >
+                        Enduring Ally
+                      </span>
+                    )}
                   </div>
                   <h3
                     className="text-slate-900"
@@ -482,8 +528,8 @@ export default function Showroom() {
                     {ally.name}
                   </h3>
                   <p
-                    className="text-[11px] font-bold uppercase tracking-[0.32em] text-[#394696]"
-                    style={{ fontFamily: 'Figtree, sans-serif' }}
+                    className="text-[11px] font-bold uppercase tracking-[0.32em]"
+                    style={{ fontFamily: 'Figtree, sans-serif', color: ally.certified ? '#983631' : '#394696' }}
                   >
                     {ally.role}
                   </p>
