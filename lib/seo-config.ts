@@ -16,10 +16,10 @@ export const PAGE_SEO = {
     description:
       'Sure-Fix Remodeling is a family-run design-build contractor in Easton, PA. Kitchens, bathrooms, basements, additions, exteriors & flooring across the Lehigh Valley. Licensed since 2008.',
     path: '/',
-    image: `${M}sf-og-showroom-share.jpg`,
+    image: `${M}sf-og-showroom-poster.jpg`,
     imageAlt:
       'Sure-Fix Remodeling showroom — materials and finishes in Easton, PA',
-    video: `${M}sf-showroom-hero-web.mp4`,
+    video: `${M}sf-og-showroom.mp4`,
     videoType: 'video/mp4',
     videoWidth: 1280,
     videoHeight: 720,
@@ -37,9 +37,9 @@ export const PAGE_SEO = {
     description:
       'Visit the Sure-Fix Remodeling showroom in Easton, PA to compare countertops, tile, flooring, faucets and finishes in person. Featuring Cambria, Kohler, James Hardie and more.',
     path: '/showroom',
-    image: `${M}sf-og-showroom-share.jpg`,
+    image: `${M}sf-og-showroom-poster.jpg`,
     imageAlt: 'Sure-Fix Remodeling showroom — materials, fixtures, countertops, tile, and flooring in Easton, PA',
-    video: `${M}sf-showroom-hero-web.mp4`,
+    video: `${M}sf-og-showroom.mp4`,
     videoType: 'video/mp4',
     videoWidth: 1280,
     videoHeight: 720,

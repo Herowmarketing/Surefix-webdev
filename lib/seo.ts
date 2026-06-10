@@ -20,7 +20,7 @@ export const SITE_NAME = 'Sure-Fix Remodeling';
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/manus-storage/sf-og-showroom-share.jpg`;
 export const DEFAULT_OG_IMAGE_ALT =
   'Sure-Fix Remodeling showroom — materials, fixtures, countertops, tile, and flooring in Easton, PA';
-export const DEFAULT_OG_VIDEO = `${SITE_URL}/manus-storage/sf-showroom-hero-web.mp4`;
+export const DEFAULT_OG_VIDEO = `${SITE_URL}/manus-storage/sf-og-showroom.mp4`;
 
 export type SeoStructuredData = Record<string, unknown> | readonly Record<string, unknown>[];
 
