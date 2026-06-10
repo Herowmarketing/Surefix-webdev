@@ -25,6 +25,7 @@ const AREAS: { label: string; href: string }[] = [
   { label: 'Phillipsburg, NJ', href: '/locations/phillipsburg-nj' },
   { label: 'Hackettstown, NJ', href: '/locations/hackettstown-nj' },
   { label: 'Washington, NJ', href: '/locations/washington-nj' },
+  { label: 'Milford, NJ', href: '/locations/milford-nj' },
 ];
 
 export default function Footer() {
