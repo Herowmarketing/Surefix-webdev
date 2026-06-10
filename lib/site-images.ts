@@ -121,6 +121,7 @@ export const BATHROOM_SERVICE_GALLERY: string[] = [
   `${M}sf-bathroom-portfolio-03.jpg`,
   `${M}sf-bathroom-portfolio-04.jpg`,
   `${M}sf-bathroom-portfolio-05.jpg`,
+  `${M}sf-bathroom-portfolio-06.jpg`,
 ];
 
 /** Basement Finishing page — Our Work gallery */
