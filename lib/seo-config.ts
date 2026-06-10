@@ -16,9 +16,13 @@ export const PAGE_SEO = {
     description:
       'Sure-Fix Remodeling is a family-run design-build contractor in Easton, PA. Kitchens, bathrooms, basements, additions, exteriors & flooring across the Lehigh Valley. Licensed since 2008.',
     path: '/',
-    image: `${M}sf-hero-main-poster.jpg`,
+    image: `${M}sf-og-showroom-share.jpg`,
     imageAlt:
-      'Sure-Fix Remodeling — modernized suburban home in the Lehigh Valley',
+      'Sure-Fix Remodeling showroom — materials and finishes in Easton, PA',
+    video: `${M}sf-showroom-hero-web.mp4`,
+    videoType: 'video/mp4',
+    videoWidth: 1280,
+    videoHeight: 720,
   },
   services: {
     title: 'Remodeling Services — Kitchens, Baths, Basements & Additions',
@@ -73,7 +77,7 @@ export const PAGE_SEO = {
     description:
       'Schedule a free in-home consultation with Sure-Fix Remodeling. Call (610) 392-0990 or visit our Easton, PA showroom at 2015 Freemansburg Ave.',
     path: '/contact',
-    image: `${M}sf-hero-main-poster.jpg`,
+    image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Contact Sure-Fix Remodeling in Easton, Pennsylvania',
   },
   publications: {
@@ -81,7 +85,7 @@ export const PAGE_SEO = {
     description:
       'Featured in Forbes, Home Builder Digest, Expertise, and Houzz. Read press coverage and editorial features about Sure-Fix Remodeling.',
     path: '/publications',
-    image: `${M}sf-hero-main-poster.jpg`,
+    image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Sure-Fix Remodeling in the press',
   },
   blog: {
@@ -89,7 +93,7 @@ export const PAGE_SEO = {
     description:
       'Practical remodeling guidance from Sure-Fix Remodeling — kitchen, bathroom, basement, exterior and aging-in-place projects from a Lehigh Valley design-build contractor.',
     path: '/blog',
-    image: `${M}sf-hero-main-poster.jpg`,
+    image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Sure-Fix Remodeling blog — Lehigh Valley remodeling insights',
   },
   locations: {
@@ -97,7 +101,7 @@ export const PAGE_SEO = {
     description:
       'Sure-Fix Remodeling serves Easton, Bethlehem, Allentown, Coopersburg, Center Valley, Phillipsburg, Hackettstown and Washington with full design-build remodeling.',
     path: '/locations',
-    image: `${M}sf-hero-main-poster.jpg`,
+    image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Sure-Fix Remodeling service areas across the Lehigh Valley',
   },
   careers: {
@@ -105,7 +109,7 @@ export const PAGE_SEO = {
     description:
       'Sure-Fix Remodeling is hiring carpenters, tile installers, flooring specialists, project managers, and showroom consultants in Easton, PA. Family-run since 2008.',
     path: '/careers',
-    image: `${M}sf-hero-main-poster.jpg`,
+    image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Careers at Sure-Fix Remodeling — Lehigh Valley design-build contractor',
   },
   notFound: {
@@ -113,7 +117,7 @@ export const PAGE_SEO = {
     description:
       'The page you’re looking for is no longer here. Browse Sure-Fix Remodeling services, locations or get in touch with our Easton, PA office.',
     path: '/404',
-    image: `${M}sf-hero-main-poster.jpg`,
+    image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Sure-Fix Remodeling',
   },
 } as const;

@@ -17,9 +17,10 @@ import { useEffect } from 'react';
 
 export const SITE_URL = 'https://surefixremodelinglv.com';
 export const SITE_NAME = 'Sure-Fix Remodeling';
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/manus-storage/sf-og-share.jpg`;
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/manus-storage/sf-og-showroom-share.jpg`;
 export const DEFAULT_OG_IMAGE_ALT =
-  'Sure-Fix Remodeling — design-build home remodeling in Easton, PA and the Lehigh Valley';
+  'Sure-Fix Remodeling showroom — materials, fixtures, countertops, tile, and flooring in Easton, PA';
+export const DEFAULT_OG_VIDEO = `${SITE_URL}/manus-storage/sf-showroom-hero-web.mp4`;
 
 export type SeoStructuredData = Record<string, unknown> | readonly Record<string, unknown>[];
 
@@ -36,6 +37,11 @@ export interface SeoData {
   image?: string;
   /** Alt text for the OG/Twitter image. */
   imageAlt?: string;
+  /** Absolute URL of an MP4 preview video for platforms that support og:video. */
+  video?: string;
+  videoType?: string;
+  videoWidth?: number;
+  videoHeight?: number;
   /** OG type — "website", "article", etc. */
   ogType?: 'website' | 'article' | 'profile';
   /** Robots directive override. Defaults to the index/follow allowlist already in index.html. */
@@ -109,6 +115,10 @@ export function useSeo(data: SeoData) {
     path,
     image = DEFAULT_OG_IMAGE,
     imageAlt = DEFAULT_OG_IMAGE_ALT,
+    video = DEFAULT_OG_VIDEO,
+    videoType = 'video/mp4',
+    videoWidth = 1280,
+    videoHeight = 720,
     ogType = 'website',
     robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
     article,
@@ -134,7 +144,18 @@ export function useSeo(data: SeoData) {
     upsertMeta('property', 'og:title', resolvedTitle);
     upsertMeta('property', 'og:description', description);
     upsertMeta('property', 'og:image', image);
+    upsertMeta('property', 'og:image:secure_url', image);
     upsertMeta('property', 'og:image:alt', imageAlt);
+    upsertMeta('property', 'og:image:width', '1200');
+    upsertMeta('property', 'og:image:height', '630');
+
+    if (video) {
+      upsertMeta('property', 'og:video', video);
+      upsertMeta('property', 'og:video:secure_url', video);
+      upsertMeta('property', 'og:video:type', videoType);
+      upsertMeta('property', 'og:video:width', String(videoWidth));
+      upsertMeta('property', 'og:video:height', String(videoHeight));
+    }
 
     upsertMeta('name', 'twitter:card', 'summary_large_image');
     upsertMeta('name', 'twitter:title', resolvedTitle);
@@ -180,6 +201,10 @@ export function useSeo(data: SeoData) {
     path,
     image,
     imageAlt,
+    video,
+    videoType,
+    videoWidth,
+    videoHeight,
     ogType,
     robots,
     article,
