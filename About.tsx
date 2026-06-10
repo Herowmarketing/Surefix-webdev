@@ -94,7 +94,7 @@ export default function About() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
               { value: '25+', label: 'Years Experience' },
-              { value: '500+', label: 'Projects Completed' },
+              { value: '1,000+', label: 'Projects Completed' },
               { value: '4.9★', label: "Angie's List Rating" },
               { value: '100%', label: 'Licensed & Insured' },
             ].map((stat) => (
