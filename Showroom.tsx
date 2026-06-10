@@ -6,7 +6,7 @@
  */
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { Link } from 'wouter'
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { ArrowRight, CheckCircle, Star, Layers, Wrench, Home, Award, ShieldCheck, Droplets } from 'lucide-react'
 import { Interactive3DMaterial, Interactive3DMaterialFeatured } from '@/components/Interactive3DMaterial'
 import { BUSINESS } from '@/lib/constants'
@@ -169,7 +169,19 @@ const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.08 } }
 export default function Showroom() {
   const { openStepper } = useLeadStepper()
   const heroRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] })
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) video.play().catch(() => {}) },
+      { threshold: 0.25 },
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
 
   useSeo({
     ...PAGE_SEO.showroom,
@@ -215,7 +227,7 @@ export default function Showroom() {
         {/* Floating brand product images */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none hidden lg:block">
           {[
-            { src: '/manus-storage/sf-showroom-cambria.jpg', brand: 'Cambria', category: 'Countertops', x: '63%', y: '8%', w: 260, h: 200, delay: 0 },
+            { src: '/manus-storage/sf-showroom-cambria.jpg', brand: 'Cambria', category: 'Countertops', x: '63%', y: '22%', w: 260, h: 200, delay: 0 },
             { src: '/manus-storage/sf-showroom-kohler.jpg', brand: 'Kohler', category: 'Plumbing', x: '78%', y: '52%', w: 220, h: 175, delay: 0.3 },
             { src: '/manus-storage/sf-showroom-hardie.jpg', brand: 'James Hardie', category: 'Siding', x: '2%', y: '60%', w: 200, h: 155, delay: 0.6 },
           ].map((orb, i) => (
@@ -389,6 +401,7 @@ export default function Showroom() {
             />
 
             <video
+              ref={videoRef}
               src={SHOWROOM_HOME_VIDEO_SRC}
               autoPlay
               muted

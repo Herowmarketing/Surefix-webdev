@@ -496,12 +496,12 @@ export function Interactive3DMaterialFeatured({
           </motion.div>
 
           {/* Brand pills */}
-          <div className="absolute bottom-5 left-5 right-5 flex flex-wrap gap-2">
+          <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-1.5">
             {brands.map(brand => (
               <motion.span
                 key={brand}
                 style={{ translateZ: hovered ? 20 : 0, transition: 'all 0.3s ease' }}
-                className="px-2 py-1 text-xs font-semibold bg-black/60 backdrop-blur-sm text-white rounded-full border border-slate-300"
+                className="px-2.5 py-1 text-xs font-bold bg-white/92 backdrop-blur-sm text-slate-800 rounded-full border border-white/60 shadow-sm"
               >
                 {brand}
               </motion.span>
