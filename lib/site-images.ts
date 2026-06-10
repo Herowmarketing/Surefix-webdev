@@ -153,12 +153,12 @@ export const ADDITIONS_SERVICE_GALLERY: string[] = [
   ADDITIONS_STILL,
 ];
 
-/** Flooring page: lead with product still, then typical home interiors */
+/** Flooring page — Our Work gallery */
 export const FLOORING_SERVICE_GALLERY: string[] = [
   FLOORING_STILL,
-  HERO_STILLS.walkthrough,
-  SERVICE_CARD_STILLS.kitchen,
-  HERO_STILLS.main,
-  FLOORING_STILL,
-  BASEMENT_STILL,
+  `${M}sf-flooring-gallery-02.jpg`,
+  `${M}sf-flooring-gallery-03.jpg`,
+  `${M}sf-flooring-gallery-04.jpg`,
+  `${M}sf-flooring-gallery-05.jpg`,
+  `${M}sf-flooring-gallery-06.jpg`,
 ];
