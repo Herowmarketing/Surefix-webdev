@@ -133,6 +133,14 @@ export const BASEMENT_SERVICE_GALLERY: string[] = [
   BASEMENT_STILL,
 ];
 
+/** Exterior Remodeling page — Our Work gallery */
+export const EXTERIOR_SERVICE_GALLERY: string[] = [
+  `${M}sf-exterior-gallery-01.jpg`,
+  `${M}sf-exterior-gallery-02.jpg`,
+  `${M}sf-exterior-gallery-03.jpg`,
+  `${M}sf-exterior-gallery-04.jpg`,
+];
+
 /** Home Additions page — Our Work gallery */
 export const ADDITIONS_SERVICE_GALLERY: string[] = [
   `${M}sf-additions-gallery-01.jpg`,

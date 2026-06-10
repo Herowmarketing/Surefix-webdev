@@ -1,5 +1,5 @@
 import ServicePageTemplate from '@/components/ServicePageTemplate';
-import { SERVICE_GALLERY_STILLS, SERVICE_HERO } from '@/lib/site-images';
+import { EXTERIOR_SERVICE_GALLERY, SERVICE_HERO } from '@/lib/site-images';
 
 export default function Exterior() {
   return (
@@ -12,7 +12,7 @@ export default function Exterior() {
       icon="🏡"
       heroImage={SERVICE_HERO.exterior}
       features={['Roofing', 'Siding', 'Windows & Doors', 'Decks & Patios', 'Gazebos & Pavilions', 'Hardscaping', 'Gutters & Fascia', 'Exterior Painting']}
-      galleryImages={SERVICE_GALLERY_STILLS}
+      galleryImages={EXTERIOR_SERVICE_GALLERY}
       subServices={[
         { name: 'Roofing', desc: 'Asphalt shingle, metal, and flat roof installation, repair, and full replacement with warranty.' },
         { name: 'Siding', desc: 'Vinyl, fiber cement, and wood siding that protects your home and elevates its appearance.' },
