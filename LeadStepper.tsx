@@ -253,8 +253,9 @@ function StepSuccess({ name }: { name: string }) {
       <h2 className="text-2xl font-black text-slate-900 mb-3" style={{ fontFamily: 'Figtree, sans-serif' }}>
         {name ? `Thanks, ${name.split(' ')[0]}!` : 'Request Received!'}
       </h2>
-      <p className="text-slate-600 leading-relaxed max-w-xs" style={{ fontFamily: 'Georgia, serif' }}>
-        We'll be in touch within <strong className="text-slate-900">24 hours</strong> to schedule your free, no-obligation estimate.
+      <p className="text-slate-600 leading-relaxed max-w-sm" style={{ fontFamily: 'Georgia, serif' }}>
+        Your project inquiry has been received. A member of our team will review your information and
+        reach out within <strong className="text-slate-900">24 hours</strong> to discuss next steps.
       </p>
       <div
         className="mt-6 px-5 py-3 rounded-xl text-sm font-bold text-slate-500"
@@ -293,6 +294,8 @@ export default function LeadStepper() {
   const [step, setStep] = useState(1)
   const [direction, setDirection] = useState(1)
   const [submitted, setSubmitted] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState('')
 
   // Step 1
   const [service, setService] = useState('')
@@ -300,6 +303,8 @@ export default function LeadStepper() {
   const [timeline, setTimeline] = useState('')
   // Step 3
   const [contact, setContact] = useState({ name: '', phone: '', email: '', zip: '' })
+  // Spam honeypot — hidden from real users; only bots fill it.
+  const [honeypot, setHoneypot] = useState('')
 
   // Pre-select service when opened from a service-specific CTA
   useEffect(() => {
@@ -307,6 +312,9 @@ export default function LeadStepper() {
       setStep(1)
       setDirection(1)
       setSubmitted(false)
+      setSubmitting(false)
+      setError('')
+      setHoneypot('')
       if (preselectedService) setService(preselectedService)
       else setService('')
       setTimeline('')
@@ -347,10 +355,45 @@ export default function LeadStepper() {
     }
   }
 
-  const handleSubmit = () => {
-    // In a static site, log to console; in a full-stack upgrade this would POST to an API
-    console.log('Lead captured:', { service, timeline, contact })
-    setSubmitted(true)
+  const handleSubmit = async () => {
+    if (submitting) return // prevent duplicate submissions
+    setSubmitting(true)
+    setError('')
+
+    const serviceLabel = SERVICES.find(s => s.id === service)?.label || service
+    const timelineLabel = TIMELINES.find(t => t.id === timeline)?.label || timeline
+
+    try {
+      const res = await fetch('/api/project-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: contact.name,
+          email: contact.email,
+          phone: contact.phone,
+          projectAddress: contact.zip,
+          projectType: serviceLabel,
+          timeline: timelineLabel,
+          sourcePage: 'purchase-inquiry-stepper',
+          company: honeypot,
+          rawServiceId: service,
+          rawTimelineId: timeline,
+        }),
+      })
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string }
+      if (!res.ok || !data.ok) {
+        throw new Error(data?.error || 'Something went wrong. Please try again.')
+      }
+      setSubmitted(true)
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'We could not submit your request. Please call us at (610) 392-0990.',
+      )
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   const stepLabel = ['Project Type', 'Timeline', 'Your Info'][step - 1]
@@ -456,6 +499,29 @@ export default function LeadStepper() {
                     </motion.div>
                   )}
                 </AnimatePresence>
+
+                {/* Honeypot — visually hidden, off-screen; ignored by humans */}
+                <input
+                  type="text"
+                  name="company"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={honeypot}
+                  onChange={e => setHoneypot(e.target.value)}
+                  style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+                />
+
+                {/* Error message — only on submit failure */}
+                {!submitted && error && (
+                  <p
+                    role="alert"
+                    className="mt-4 text-sm font-semibold"
+                    style={{ color: '#983631', fontFamily: 'Figtree, sans-serif' }}
+                  >
+                    {error}
+                  </p>
+                )}
               </div>
 
               {/* Footer nav */}
@@ -474,18 +540,22 @@ export default function LeadStepper() {
 
                   <motion.button
                     onClick={goNext}
-                    disabled={!canAdvance()}
-                    whileHover={canAdvance() ? { scale: 1.03 } : {}}
-                    whileTap={canAdvance() ? { scale: 0.97 } : {}}
+                    disabled={!canAdvance() || submitting}
+                    whileHover={canAdvance() && !submitting ? { scale: 1.03 } : {}}
+                    whileTap={canAdvance() && !submitting ? { scale: 0.97 } : {}}
                     className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-slate-900 uppercase tracking-wider transition-all duration-200"
                     style={{
-                      background: canAdvance() ? '#983631' : 'rgba(255,255,255,0.08)',
-                      color: canAdvance() ? '#fff' : 'rgba(255,255,255,0.3)',
-                      cursor: canAdvance() ? 'pointer' : 'not-allowed',
+                      background: canAdvance() && !submitting ? '#983631' : 'rgba(255,255,255,0.08)',
+                      color: canAdvance() && !submitting ? '#fff' : 'rgba(255,255,255,0.3)',
+                      cursor: canAdvance() && !submitting ? 'pointer' : 'not-allowed',
                       fontFamily: 'Figtree, sans-serif',
                     }}
                   >
-                    {step === TOTAL_STEPS ? 'Submit Request' : 'Continue'}
+                    {step === TOTAL_STEPS
+                      ? submitting
+                        ? 'Submitting…'
+                        : 'Submit Request'
+                      : 'Continue'}
                     <ArrowRight size={15} />
                   </motion.button>
                 </div>

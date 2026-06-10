@@ -10,7 +10,46 @@ export default defineConfig({
   projectId: 'kqp67u17',
   dataset: 'production',
 
-  plugins: [structureTool(), visionTool()],
+  plugins: [
+    structureTool({
+      // Custom desk so the operations manager sees intake first, newest submissions on top.
+      structure: (S) =>
+        S.list()
+          .title('Sure-Fix Remodeling')
+          .items([
+            S.listItem()
+              .title('Project Inquiries')
+              .schemaType('projectInquiry')
+              .child(
+                S.documentTypeList('projectInquiry')
+                  .title('Project Inquiries')
+                  .defaultOrdering([{field: 'submittedAt', direction: 'desc'}]),
+              ),
+            S.listItem()
+              .title('Candidate Applications')
+              .schemaType('candidateApplication')
+              .child(
+                S.documentTypeList('candidateApplication')
+                  .title('Candidate Applications')
+                  .defaultOrdering([{field: 'submittedAt', direction: 'desc'}]),
+              ),
+            S.divider(),
+            S.listItem()
+              .title('Blog Posts')
+              .schemaType('post')
+              .child(S.documentTypeList('post').title('Blog Posts')),
+            S.listItem()
+              .title('Authors')
+              .schemaType('author')
+              .child(S.documentTypeList('author').title('Authors')),
+            S.listItem()
+              .title('Categories')
+              .schemaType('category')
+              .child(S.documentTypeList('category').title('Categories')),
+          ]),
+    }),
+    visionTool(),
+  ],
 
   schema: {
     types: schemaTypes,

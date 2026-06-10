@@ -20,9 +20,9 @@ import {
   Star,
 } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
-import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
+import CareerApplicationModal, { GENERAL_APPLICATION } from './CareerApplicationModal';
 
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS  = '"Figtree", system-ui, sans-serif';
@@ -210,13 +210,17 @@ const TESTIMONIALS = [
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
 
-function RoleCard({ role, index }: { role: Role; index: number }) {
+function RoleCard({
+  role,
+  index,
+  onApply,
+}: {
+  role: Role;
+  index: number;
+  onApply: (position: string) => void;
+}) {
   const [open, setOpen] = useState(false);
   const accent = role.accent === 'blue' ? BLUE : RED;
-  const mailSubject = encodeURIComponent(`Application — ${role.title}`);
-  const mailBody = encodeURIComponent(
-    `Hi Sure-Fix team,\n\nI am interested in the ${role.title} position.\n\nA bit about me:\n\n`,
-  );
 
   return (
     <motion.div
@@ -312,15 +316,16 @@ function RoleCard({ role, index }: { role: Role; index: number }) {
                 ))}
               </ul>
 
-              <a
-                href={`mailto:${BUSINESS.email}?subject=${mailSubject}&body=${mailBody}`}
+              <button
+                type="button"
+                onClick={() => onApply(role.title)}
                 className="inline-flex min-h-[46px] items-center gap-2 rounded-xl px-6 py-3 text-xs font-black uppercase tracking-wider text-white transition-opacity hover:opacity-90"
                 style={{ background: accent, fontFamily: SANS }}
               >
                 <Send size={13} /> Apply for This Role
-              </a>
+              </button>
               <p className="mt-2 text-[10px] text-slate-400" style={{ fontFamily: SANS }}>
-                Opens your email app — or call us at {BUSINESS.phone}
+                Opens our quick application form — or call us at {BUSINESS.phone}
               </p>
             </div>
           </motion.div>
@@ -333,7 +338,13 @@ function RoleCard({ role, index }: { role: Role; index: number }) {
 // ─── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Careers() {
-  const { openStepper: _openStepper } = useLeadStepper();
+  const [appOpen, setAppOpen] = useState(false);
+  const [appPosition, setAppPosition] = useState<string>(GENERAL_APPLICATION);
+
+  const openApplication = (position: string) => {
+    setAppPosition(position || GENERAL_APPLICATION);
+    setAppOpen(true);
+  };
 
   useSeo({
     ...PAGE_SEO.careers,
@@ -577,7 +588,7 @@ export default function Careers() {
             style={{ fontFamily: 'Georgia, serif' }}
           >
             Click any role to see the full description and requirements. To apply, hit the button and
-            send us a quick email — no résumé required to start the conversation.
+            fill out our quick on-site application — no résumé required to start the conversation.
           </motion.p>
         </motion.div>
 
@@ -589,7 +600,7 @@ export default function Careers() {
           className="flex flex-col gap-3"
         >
           {OPEN_ROLES.map((role, i) => (
-            <RoleCard key={role.id} role={role} index={i} />
+            <RoleCard key={role.id} role={role} index={i} onApply={openApplication} />
           ))}
         </motion.div>
       </section>
@@ -721,13 +732,14 @@ export default function Careers() {
             </p>
 
             <div className="flex flex-wrap justify-center gap-3">
-              <a
-                href={`mailto:${BUSINESS.email}?subject=${encodeURIComponent('General Application — Sure-Fix Remodeling')}`}
+              <button
+                type="button"
+                onClick={() => openApplication(GENERAL_APPLICATION)}
                 className="inline-flex min-h-[52px] items-center gap-2 rounded-2xl px-8 py-4 text-sm font-black uppercase tracking-wider text-white shadow-lg shadow-black/20 transition-opacity hover:opacity-90"
                 style={{ background: RED, fontFamily: SANS }}
               >
-                <Send size={15} /> Send a General Application
-              </a>
+                <Send size={15} /> Submit a General Application
+              </button>
               <a
                 href={BUSINESS.phoneHref}
                 className="inline-flex min-h-[52px] items-center gap-2 rounded-2xl border border-slate-300 bg-white px-8 py-4 text-sm font-black uppercase tracking-wider text-slate-800 transition-colors hover:bg-slate-50"
@@ -746,6 +758,13 @@ export default function Careers() {
           </div>
         </motion.div>
       </section>
+
+      <CareerApplicationModal
+        isOpen={appOpen}
+        onClose={() => setAppOpen(false)}
+        positions={OPEN_ROLES.map(r => r.title)}
+        initialPosition={appPosition}
+      />
 
     </div>
   );
