@@ -70,6 +70,7 @@ const STATIC_ROUTES = [
   '/publications',
   '/blog',
   '/locations',
+  '/careers',
 ];
 
 // Mirrors lib/locations-data.ts — kept in sync manually because this script
