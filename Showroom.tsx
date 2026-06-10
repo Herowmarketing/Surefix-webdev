@@ -212,18 +212,22 @@ export default function Showroom() {
             style={{ background: 'radial-gradient(circle, rgba(57,70,150,0.15) 0%, transparent 70%)' }} />
         </motion.div>
 
-        {/* Floating background orbs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Floating brand product images */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none hidden lg:block">
           {[
-            { src: SHOWROOM_MATERIAL_IMAGES.countertop, x: '72%', y: '15%', size: 200, delay: 0 },
-            { src: SHOWROOM_MATERIAL_IMAGES.tile, x: '82%', y: '62%', size: 140, delay: 0.3 },
-            { src: SHOWROOM_MATERIAL_IMAGES.siding, x: '4%', y: '68%', size: 120, delay: 0.6 },
+            { src: '/manus-storage/sf-showroom-cambria.jpg', brand: 'Cambria', category: 'Countertops', x: '63%', y: '8%', w: 260, h: 200, delay: 0 },
+            { src: '/manus-storage/sf-showroom-kohler.jpg', brand: 'Kohler', category: 'Plumbing', x: '78%', y: '52%', w: 220, h: 175, delay: 0.3 },
+            { src: '/manus-storage/sf-showroom-hardie.jpg', brand: 'James Hardie', category: 'Siding', x: '2%', y: '60%', w: 200, h: 155, delay: 0.6 },
           ].map((orb, i) => (
-            <motion.div key={i} className="absolute rounded-2xl overflow-hidden border border-slate-200"
-              style={{ left: orb.x, top: orb.y, width: orb.size, height: orb.size, opacity: 0.22, filter: 'blur(1px)' }}
-              animate={{ y: [0, -20, 0], rotate: [0, 3, -3, 0] }}
-              transition={{ duration: 6 + i * 1.5, repeat: Infinity, ease: 'easeInOut', delay: orb.delay }}>
-              <img src={orb.src} alt="" className="w-full h-full object-cover" />
+            <motion.div key={i} className="absolute rounded-2xl overflow-hidden shadow-xl"
+              style={{ left: orb.x, top: orb.y, width: orb.w, height: orb.h, border: '1px solid rgba(255,255,255,0.25)' }}
+              animate={{ y: [0, -14, 0], rotate: [0, 1.5, -1.5, 0] }}
+              transition={{ duration: 7 + i * 1.5, repeat: Infinity, ease: 'easeInOut', delay: orb.delay }}>
+              <img src={orb.src} alt={orb.brand} className="w-full h-full object-cover" />
+              <div className="absolute bottom-0 inset-x-0 px-3 py-2" style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 100%)' }}>
+                <p className="text-white text-[11px] font-black uppercase tracking-widest leading-none" style={{ fontFamily: 'Figtree, sans-serif' }}>{orb.brand}</p>
+                <p className="text-white/70 text-[10px] font-medium mt-0.5" style={{ fontFamily: 'Figtree, sans-serif' }}>{orb.category}</p>
+              </div>
             </motion.div>
           ))}
         </div>
