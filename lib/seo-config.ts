@@ -100,6 +100,14 @@ export const PAGE_SEO = {
     image: `${M}sf-hero-main-poster.jpg`,
     imageAlt: 'Sure-Fix Remodeling service areas across the Lehigh Valley',
   },
+  careers: {
+    title: 'Careers — Join the Sure-Fix Remodeling Team in Easton, PA',
+    description:
+      'Sure-Fix Remodeling is hiring carpenters, tile installers, flooring specialists, project managers, and showroom consultants in Easton, PA. Family-run since 2008.',
+    path: '/careers',
+    image: `${M}sf-hero-main-poster.jpg`,
+    imageAlt: 'Careers at Sure-Fix Remodeling — Lehigh Valley design-build contractor',
+  },
   notFound: {
     title: 'Page Not Found',
     description:
