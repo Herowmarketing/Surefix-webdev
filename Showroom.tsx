@@ -10,7 +10,7 @@ import { useRef } from 'react'
 import { ArrowRight, CheckCircle, Star, Layers, Wrench, Home, Award, ShieldCheck, Droplets } from 'lucide-react'
 import { Interactive3DMaterial, Interactive3DMaterialFeatured } from '@/components/Interactive3DMaterial'
 import { BUSINESS } from '@/lib/constants'
-import { SHOWROOM_MATERIAL_IMAGES } from '@/lib/site-images'
+import { SHOWROOM_MATERIAL_IMAGES, SHOWROOM_HOME_VIDEO_SRC } from '@/lib/site-images'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
 import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo'
 import { PAGE_SEO } from '@/lib/seo-config'
@@ -340,16 +340,91 @@ export default function Showroom() {
         </div>
       </section>
 
-      {/* ─── COMPACT 3D GRID ─── */}
-      <section className="py-16 px-5 lg:px-8 max-w-7xl mx-auto">
-        <motion.h3 initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
-          className="text-2xl font-black text-slate-900 mb-10 text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
-          Also In Our Showroom
-        </motion.h3>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {GRID_MATERIALS.map((mat, i) => (
-            <Interactive3DMaterial key={mat.title} imageUrl={mat.imageUrl} title={mat.title} badge={mat.badge} accentColor={mat.accentColor} index={i} />
-          ))}
+      {/* ─── SHOWROOM VIDEO SHOWCASE ─── */}
+      <section className="py-16 px-5 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-10 text-center"
+          >
+            <p
+              className="mb-3 text-[10px] font-black uppercase tracking-[0.4em] text-[#394696]"
+              style={{ fontFamily: 'Figtree, sans-serif' }}
+            >
+              Take a Look Inside
+            </p>
+            <h3
+              className="text-slate-900"
+              style={{
+                fontFamily: '"Cormorant Garamond", Georgia, serif',
+                fontWeight: 300,
+                fontSize: 'clamp(1.75rem, 4vw, 2.75rem)',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              Also In Our <span className="italic">Showroom</span>
+            </h3>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 32, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+            className="relative overflow-hidden rounded-2xl border border-slate-200 shadow-2xl shadow-slate-300/40"
+            style={{ background: '#0d1117' }}
+          >
+            {/* Subtle top accent line */}
+            <div
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-px"
+              style={{ background: 'linear-gradient(90deg, transparent, #394696, #983631, #394696, transparent)' }}
+            />
+
+            <video
+              src={SHOWROOM_HOME_VIDEO_SRC}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              className="w-full"
+              style={{ display: 'block', aspectRatio: '16/9', objectFit: 'cover' }}
+            />
+
+            {/* Bottom overlay with CTA */}
+            <div
+              className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-end gap-4 px-6 pb-8 pt-20 sm:flex-row sm:items-end sm:justify-between sm:pb-10 sm:pt-24"
+              style={{ background: 'linear-gradient(to top, rgba(13,17,23,0.85) 0%, transparent 100%)' }}
+            >
+              <div>
+                <p
+                  className="text-xs font-black uppercase tracking-[0.3em] text-white/60"
+                  style={{ fontFamily: 'Figtree, sans-serif' }}
+                >
+                  Sure-Fix Remodeling
+                </p>
+                <p
+                  className="text-lg font-light text-white sm:text-xl"
+                  style={{ fontFamily: '"Cormorant Garamond", Georgia, serif', letterSpacing: '-0.01em' }}
+                >
+                  Visit our showroom in Easton, PA
+                </p>
+              </div>
+              <a
+                href={`https://maps.google.com/?q=${encodeURIComponent(BUSINESS.address)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center gap-2 rounded-xl px-5 py-3 text-xs font-black uppercase tracking-wider text-white transition-opacity hover:opacity-90"
+                style={{ background: '#983631', fontFamily: 'Figtree, sans-serif' }}
+              >
+                <ArrowRight size={13} /> Get Directions
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
 
