@@ -217,7 +217,7 @@ export default function InteriorDesign() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl text-gray-300 mb-6 leading-relaxed"
+              className="text-xl text-slate-700 mb-6 leading-relaxed"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               Sure-Fix Remodeling is proud to partner with <strong className="text-slate-900">Audra Frank Associates</strong> — bringing 50+ years of elite interior design experience directly to your renovation project.
@@ -227,7 +227,7 @@ export default function InteriorDesign() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.25 }}
-              className="text-gray-400 mb-8 leading-relaxed"
+              className="text-slate-600 mb-8 leading-relaxed"
               style={{ fontFamily: 'Georgia, serif' }}
             >
               Audra E. Frank has worked with some of the most discerning clients in the world — from Meryl Streep and Paul Simon to Rupert Murdoch and George Soros — and her work has been featured in Architectural Digest, House Beautiful, Elle Decor, and The New York Times.
@@ -475,7 +475,7 @@ export default function InteriorDesign() {
             <h2 className="text-3xl md:text-4xl font-black text-slate-900 mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
               Start Your Design Journey
             </h2>
-            <p className="text-gray-300 text-lg mb-8" style={{ fontFamily: 'Georgia, serif' }}>
+            <p className="text-slate-700 text-lg mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               Book a free consultation with Audra Frank and the Sure-Fix team. We'll walk through your space, understand your vision, and create a plan that brings it to life — beautifully and on budget.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
