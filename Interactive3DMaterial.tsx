@@ -496,7 +496,7 @@ export function Interactive3DMaterialFeatured({
           </motion.div>
 
           {/* Brand pills */}
-          <div className="absolute bottom-5 left-5 flex flex-wrap gap-2">
+          <div className="absolute bottom-5 left-5 right-5 flex flex-wrap gap-2">
             {brands.map(brand => (
               <motion.span
                 key={brand}
