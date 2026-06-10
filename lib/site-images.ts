@@ -139,6 +139,8 @@ export const EXTERIOR_SERVICE_GALLERY: string[] = [
   `${M}sf-exterior-gallery-02.jpg`,
   `${M}sf-exterior-gallery-03.jpg`,
   `${M}sf-exterior-gallery-04.jpg`,
+  `${M}sf-exterior-gallery-05.jpg`,
+  `${M}sf-exterior-gallery-06.jpg`,
 ];
 
 /** Home Additions page — Our Work gallery */
