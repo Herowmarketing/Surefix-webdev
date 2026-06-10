@@ -35,10 +35,14 @@ export const PAGE_SEO = {
   showroom: {
     title: 'Easton, PA Remodeling Showroom — Touch & Compare Materials',
     description:
-      'Visit the Sure-Fix Remodeling showroom in Easton, PA to compare countertops, tile, flooring, faucets and finishes in person. Featuring Moen, Gerber and Henry brand allies.',
+      'Visit the Sure-Fix Remodeling showroom in Easton, PA to compare countertops, tile, flooring, faucets and finishes in person. Featuring Cambria, Kohler, James Hardie and more.',
     path: '/showroom',
-    image: `${M}sf-kitchen-remodel.png`,
-    imageAlt: 'Sure-Fix Remodeling showroom in Easton, Pennsylvania',
+    image: `${M}sf-og-showroom-share.jpg`,
+    imageAlt: 'Sure-Fix Remodeling showroom — materials, fixtures, countertops, tile, and flooring in Easton, PA',
+    video: `${M}sf-showroom-hero-web.mp4`,
+    videoType: 'video/mp4',
+    videoWidth: 1280,
+    videoHeight: 720,
   },
   interiorDesign: {
     title: 'Interior Design Services — Lehigh Valley & Western NJ',
