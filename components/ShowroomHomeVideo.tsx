@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { SHOWROOM_HOME_IMAGE, SHOWROOM_HOME_VIDEO_SRC } from '@/lib/site-images';
 
 /**
- * In-House Showroom block: full-bleed loop from `public/Sure Fix Hero Video/`.
+ * In-House Showroom block: full-bleed optimized loop from public/manus-storage.
  */
 export default function ShowroomHomeVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -20,7 +20,7 @@ export default function ShowroomHomeVideo() {
       loop
       playsInline
       poster={SHOWROOM_HOME_IMAGE}
-      preload="metadata"
+      preload="auto"
       aria-label="Sure-Fix in-house material showroom video"
       style={{
         width: '100vw',

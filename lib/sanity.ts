@@ -7,10 +7,10 @@
  *   https://www.sanity.io/manage/project/kqp67u17/api
  */
 import { createClient, type SanityClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
+import { createImageUrlBuilder } from '@sanity/image-url';
 import type { PortableTextBlock } from '@portabletext/react';
 
-type ImageUrlBuilder = ReturnType<ReturnType<typeof imageUrlBuilder>['image']>;
+type ImageUrlBuilder = ReturnType<ReturnType<typeof createImageUrlBuilder>['image']>;
 
 export const sanityClient: SanityClient = createClient({
   projectId: 'kqp67u17',
@@ -19,7 +19,7 @@ export const sanityClient: SanityClient = createClient({
   useCdn: true,
 });
 
-const builder = imageUrlBuilder(sanityClient);
+const builder = createImageUrlBuilder(sanityClient);
 
 /** Build a CDN URL from a Sanity image reference (preserves hotspot/crop). */
 export function urlFor(source: SanityImageRef | null | undefined): ImageUrlBuilder | null {

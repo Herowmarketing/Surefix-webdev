@@ -46,9 +46,9 @@ export const INTERIOR_DESIGN_HOME_IMAGE = U('photo-1600210492486-724fe5c67fb0');
 
 /** Home page “In-House Showroom” promo block — client kitchen remodel */
 export const SHOWROOM_HOME_IMAGE = KITCHEN_STILL;
-/** In-House Showroom loop — `public/Sure Fix Hero Video/Hero Video Upscaled.mp4` (URL-encoded) */
+/** In-House Showroom loop — optimized MP4 stored in public/manus-storage for Vercel deploys. */
 export const SHOWROOM_HOME_VIDEO_SRC =
-  '/Sure%20Fix%20Hero%20Video/Hero%20Video%20Upscaled.mp4';
+  `${M}sf-showroom-hero-web.mp4`;
 
 /** Service / marketing cards (home, services page, gallery thumbnails) */
 export const SITE_IMAGES = {
