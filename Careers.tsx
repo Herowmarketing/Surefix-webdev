@@ -86,7 +86,7 @@ const OPEN_ROLES: Role[] = [
     department: 'Field Production',
     type:       'Full-Time',
     location:   'Easton, PA (field-based)',
-    pay:        '$28 – $42 / hr DOE',
+    pay:        'Competitive — DOE',
     summary:
       'Install cabinetry, trim, doors, and custom millwork on residential remodeling projects across the Lehigh Valley. You will work closely with the project manager and take ownership of your scope from rough to finish.',
     requirements: [
@@ -99,12 +99,30 @@ const OPEN_ROLES: Role[] = [
     accent: 'blue',
   },
   {
+    id:         'plumber',
+    title:      'Plumber',
+    department: 'Field Production',
+    type:       'Full-Time',
+    location:   'Easton, PA (field-based)',
+    pay:        'Competitive — DOE',
+    summary:
+      'Perform rough-in and finish plumbing on residential remodeling projects — kitchens, bathrooms, and laundry rooms. You will install and connect fixtures, supply lines, and drains while coordinating with tile and carpentry crews to stay on schedule.',
+    requirements: [
+      '3+ years of residential plumbing experience',
+      'Proficient with fixture installation, supply lines, and drain work',
+      'Comfortable working in occupied homes with minimal disruption',
+      'PA plumbing license or apprenticeship documentation preferred',
+      'Valid driver\'s license',
+    ],
+    accent: 'red',
+  },
+  {
     id:         'tile-installer',
     title:      'Tile Installer',
     department: 'Field Production',
     type:       'Full-Time',
     location:   'Easton, PA (field-based)',
-    pay:        '$26 – $38 / hr DOE',
+    pay:        'Competitive — DOE',
     summary:
       'Lay, cut, and finish ceramic, porcelain, natural stone, and mosaic tile in kitchens, bathrooms, and laundry rooms. Projects range from backsplashes and shower surrounds to full-floor installations.',
     requirements: [
@@ -114,7 +132,7 @@ const OPEN_ROLES: Role[] = [
       'Experience with large-format tile a plus',
       'Valid driver\'s license',
     ],
-    accent: 'red',
+    accent: 'blue',
   },
   {
     id:         'flooring-installer',
@@ -122,7 +140,7 @@ const OPEN_ROLES: Role[] = [
     department: 'Field Production',
     type:       'Full-Time',
     location:   'Easton, PA (field-based)',
-    pay:        '$24 – $36 / hr DOE',
+    pay:        'Competitive — DOE',
     summary:
       'Install hardwood, luxury vinyl plank, laminate, and carpet throughout occupied and newly constructed residential spaces. You should be comfortable with subfloor prep, transitions, and pattern layouts.',
     requirements: [
@@ -130,24 +148,6 @@ const OPEN_ROLES: Role[] = [
       'Proficient in at least two flooring types (hardwood, LVP, carpet)',
       'Ability to prepare and level subfloors',
       'Clean, dust-conscious work habits',
-      'Valid driver\'s license',
-    ],
-    accent: 'blue',
-  },
-  {
-    id:         'project-manager',
-    title:      'Project Manager',
-    department: 'Operations',
-    type:       'Full-Time',
-    location:   'Easton, PA (hybrid)',
-    pay:        '$60,000 – $80,000 / yr DOE',
-    summary:
-      'Own the full lifecycle of 6–10 residential projects simultaneously — from pre-construction planning and subcontractor coordination through client communication and final punch-list. You are the face of Sure-Fix on every job site.',
-    requirements: [
-      '3+ years of residential construction project management',
-      'Strong communication skills — clients, subs, and ownership',
-      'Ability to read architectural drawings and scopes of work',
-      'Proficient with scheduling tools and documentation',
       'Valid driver\'s license',
     ],
     accent: 'red',
@@ -158,7 +158,7 @@ const OPEN_ROLES: Role[] = [
     department: 'Sales & Design',
     type:       'Full-Time',
     location:   'Easton, PA (showroom)',
-    pay:        '$18 – $26 / hr + commission',
+    pay:        'Competitive — DOE',
     summary:
       'Guide homeowners through our in-house material showroom — countertops, tile, flooring, plumbing fixtures, and more. You will pair design intuition with product knowledge to help clients build their vision and convert estimates into booked projects.',
     requirements: [
@@ -176,7 +176,7 @@ const OPEN_ROLES: Role[] = [
     department: 'Field Production',
     type:       'Full-Time',
     location:   'Easton, PA (field-based)',
-    pay:        '$18 – $24 / hr',
+    pay:        'Competitive — DOE',
     summary:
       'Support field crews on active job sites — material handling, demolition cleanup, site preparation, and tool staging. This is a great entry point for someone looking to grow into a skilled trade with an established team.',
     requirements: [
