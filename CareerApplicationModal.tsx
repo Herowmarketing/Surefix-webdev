@@ -7,6 +7,7 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { X, CheckCircle2, Send } from 'lucide-react'
+import { trackCareerApplication } from '@/lib/analytics'
 
 const BLUE = '#394696'
 const RED = '#983631'
@@ -186,6 +187,10 @@ export default function CareerApplicationModal({
       if (!res.ok || !data.ok) {
         throw new Error(data?.error || 'Something went wrong. Please try again.')
       }
+      trackCareerApplication({
+        position: form.positionAppliedFor,
+        isGeneralApplication,
+      })
       setSubmitted(true)
     } catch (err) {
       setError(

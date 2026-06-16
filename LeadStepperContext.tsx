@@ -5,6 +5,7 @@
  *        openStepper()  ← call from any button
  */
 import { createContext, useContext, useState, ReactNode } from 'react'
+import { trackLeadStepperOpen } from '@/lib/analytics'
 
 interface LeadStepperContextValue {
   isOpen: boolean
@@ -27,6 +28,7 @@ export function LeadStepperProvider({ children }: { children: ReactNode }) {
   const openStepper = (service = '') => {
     setPreselectedService(service)
     setIsOpen(true)
+    trackLeadStepperOpen(service)
   }
   const closeStepper = () => setIsOpen(false)
 

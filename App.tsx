@@ -12,6 +12,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./Layout";
 import { LOGO_URL } from "./constants";
+import AnalyticsManager from "./components/AnalyticsManager";
 
 // Pages (flat layout in this repo)
 import Home from "./Home";
@@ -172,6 +173,7 @@ function ScrollManager() {
 function Router() {
   return (
     <>
+      <AnalyticsManager />
       <ScrollManager />
       <Layout>
         <Switch>
