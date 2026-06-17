@@ -386,7 +386,7 @@ export default function LeadStepper() {
         throw new Error(data?.error || 'Something went wrong. Please try again.')
       }
       trackLeadSubmission({ projectType: serviceLabel, timeline: timelineLabel })
-      setSubmitted(true)
+      window.location.assign('/thank-you?source=lead-stepper')
     } catch (err) {
       setError(
         err instanceof Error

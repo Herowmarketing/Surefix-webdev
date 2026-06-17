@@ -71,8 +71,7 @@ export default function Contact() {
       }
 
       trackLeadSubmission({ projectType: form.service, timeline: 'Contact page request' });
-      setSubmitted(true);
-      toast.success('Request submitted! We\'ll call you within 24 hours.');
+      window.location.assign('/thank-you?source=contact-page');
     } catch (err) {
       const message =
         err instanceof Error

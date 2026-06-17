@@ -37,6 +37,7 @@ import LocationDetail from "./LocationDetail";
 import BlogList from "./BlogList";
 import BlogPost from "./BlogPost";
 import Careers from "./Careers";
+import ThankYou from "./ThankYou";
 import Maintenance from "@/src/pages/Maintenance";
 
 const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
@@ -198,6 +199,7 @@ function Router() {
           <Route path="/locations/:slug" component={LocationDetail} />
           <Route path="/locations" component={Locations} />
           <Route path="/careers" component={Careers} />
+          <Route path="/thank-you" component={ThankYou} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />
         </Switch>
