@@ -1,5 +1,15 @@
 export const GA_MEASUREMENT_ID = 'G-RE67MCL4PC';
 
+/** Google Ads conversion ID — defaults to live tag; override via VITE_GOOGLE_ADS_ID if needed */
+export const GOOGLE_ADS_ID =
+  import.meta.env.VITE_GOOGLE_ADS_ID?.trim() || 'AW-18229674384';
+
+/** Label only (after the /) or full send_to (AW-xxx/label) */
+export const GOOGLE_ADS_FORM_CONVERSION =
+  import.meta.env.VITE_GOOGLE_ADS_FORM_CONVERSION?.trim() || '';
+export const GOOGLE_ADS_PHONE_CONVERSION =
+  import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || '';
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
@@ -10,6 +20,25 @@ declare global {
 function gtag(...args: unknown[]) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
   window.gtag(...args);
+}
+
+function resolveSendTo(labelOrSendTo: string): string | null {
+  if (!labelOrSendTo) return null;
+  if (labelOrSendTo.startsWith('AW-')) return labelOrSendTo;
+  if (!GOOGLE_ADS_ID) return null;
+  return `${GOOGLE_ADS_ID}/${labelOrSendTo}`;
+}
+
+export function initGoogleAds() {
+  if (GOOGLE_ADS_ID) {
+    gtag('config', GOOGLE_ADS_ID);
+  }
+}
+
+export function trackGoogleAdsConversion(labelOrSendTo: string) {
+  const sendTo = resolveSendTo(labelOrSendTo);
+  if (!sendTo) return;
+  gtag('event', 'conversion', { send_to: sendTo });
 }
 
 export function trackPageView(path: string, title?: string) {
@@ -53,6 +82,7 @@ export function trackLeadSubmission(input: {
     form_name: 'lead_stepper',
     project_type: input.projectType,
   });
+  trackGoogleAdsConversion(GOOGLE_ADS_FORM_CONVERSION);
 }
 
 export function trackCareerApplication(input: {
@@ -77,4 +107,5 @@ export function trackPhoneClick(phoneHref: string, pagePath: string) {
     link_url: phoneHref,
     page_path: pagePath,
   });
+  trackGoogleAdsConversion(GOOGLE_ADS_PHONE_CONVERSION);
 }
