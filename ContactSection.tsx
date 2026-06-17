@@ -6,7 +6,7 @@
 import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { MASCOT_URL } from '@/lib/constants';
+import { BUSINESS, MASCOT_URL } from '@/lib/constants';
 
 const services = [
   'Kitchen Remodeling',
@@ -19,10 +19,16 @@ const services = [
 ];
 
 const contactItems = [
-  { icon: Phone, label: 'Call or Text', value: '(610) 555-1234', href: 'tel:+16105551234', color: '#394696' },
-  { icon: Mail, label: 'Email Us', value: 'info@surefixremodeling.net', href: 'mailto:info@surefixremodeling.net', color: '#983631' },
-  { icon: MapPin, label: 'Service Area', value: 'Easton, PA & Greater Lehigh Valley', href: '#', color: '#394696' },
-  { icon: Clock, label: 'Hours', value: 'Mon–Sat: 7am–7pm', href: '#', color: '#983631' },
+  { icon: Phone, label: 'Call or Text', value: BUSINESS.phone, href: BUSINESS.phoneHref, color: '#394696' },
+  { icon: Mail, label: 'Email Us', value: BUSINESS.email, href: `mailto:${BUSINESS.email}`, color: '#983631' },
+  { icon: MapPin, label: 'Service Area', value: BUSINESS.serviceArea, href: '#', color: '#394696' },
+  {
+    icon: Clock,
+    label: 'Hours',
+    value: `${BUSINESS.hours.weekdays} · ${BUSINESS.hours.saturday} · ${BUSINESS.hours.sunday}`,
+    href: '#',
+    color: '#983631',
+  },
 ];
 
 export default function ContactSection() {

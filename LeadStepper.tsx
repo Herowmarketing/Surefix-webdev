@@ -14,6 +14,7 @@ import { useState, useEffect } from 'react'
 import { X, ArrowRight, ArrowLeft, CheckCircle2, Phone, Mail, MapPin, User } from 'lucide-react'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
 import { trackLeadSubmission } from '@/lib/analytics'
+import { BUSINESS } from '@/lib/constants'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -262,7 +263,7 @@ function StepSuccess({ name }: { name: string }) {
         className="mt-6 px-5 py-3 rounded-xl text-sm font-bold text-slate-500"
         style={{ background: '#f8fafc', border: '1px solid rgba(255,255,255,0.08)' }}
       >
-        📞 (610) 392-0990 · Mon–Fri 8AM–7PM
+        📞 {BUSINESS.phone} · Mon–Fri 8AM–7PM · Sat 8AM–4PM · Sun Closed
       </div>
     </motion.div>
   )

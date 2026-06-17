@@ -118,6 +118,7 @@ export default function Navbar() {
           <span>📍 {BUSINESS.address}</span>
           <span>⏰ {BUSINESS.hours.weekdays}</span>
           <span>⏰ {BUSINESS.hours.saturday}</span>
+          <span>⏰ {BUSINESS.hours.sunday}</span>
         </div>
         <div className="flex items-center gap-4">
           <span className="text-xs font-bold text-[#394696]" style={{ fontFamily: 'Figtree, sans-serif' }}>

@@ -753,7 +753,7 @@ export default function Careers() {
               className="mt-6 text-xs text-slate-500"
               style={{ fontFamily: SANS }}
             >
-              {BUSINESS.address} · Mon–Fri 8AM–7PM · Sat 8AM–4PM
+              {BUSINESS.address} · Mon–Fri 8AM–7PM · Sat 8AM–4PM · Sun Closed
             </p>
           </div>
         </motion.div>
