@@ -7,8 +7,8 @@
  * Secrets (Sanity write token, Gmail creds) live only in server env vars.
  */
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { getWriteClient } from './_lib/sanityServer';
-import { sendOperationsEmail, line, type NotifyResult } from './_lib/notify';
+import { getWriteClient } from './_lib/sanityServer.js';
+import { sendOperationsEmail, line, type NotifyResult } from './_lib/notify.js';
 import {
   cleanString,
   optionalString,
@@ -16,7 +16,7 @@ import {
   isValidEmail,
   isValidPhone,
   parseBody,
-} from './_lib/validation';
+} from './_lib/validation.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {

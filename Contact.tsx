@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
+import { trackLeadSubmission } from '@/lib/analytics';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -21,6 +22,8 @@ const SERVICES_LIST = ['Kitchen Remodeling', 'Bathroom Remodeling', 'Basement Fi
 export default function Contact() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   useSeo({
     ...PAGE_SEO.contact,
@@ -37,14 +40,49 @@ export default function Contact() {
     ],
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.phone || !form.service) {
-      toast.error('Please fill in your name, phone, and service type.');
+    if (submitting) return;
+    if (!form.name || !form.phone || !form.email || !form.service) {
+      toast.error('Please fill in your name, phone, email, and service type.');
       return;
     }
-    setSubmitted(true);
-    toast.success('Request submitted! We\'ll call you within 24 hours.');
+
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/project-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          projectType: form.service,
+          timeline: 'Contact page request',
+          projectDetails: form.message,
+          sourcePage: 'contact-page-form',
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (!res.ok || !data.ok) {
+        throw new Error(data?.error || 'We could not submit your request. Please try again.');
+      }
+
+      trackLeadSubmission({ projectType: form.service, timeline: 'Contact page request' });
+      setSubmitted(true);
+      toast.success('Request submitted! We\'ll call you within 24 hours.');
+    } catch (err) {
+      const message =
+        err instanceof Error
+          ? err.message
+          : 'We could not submit your request. Please call us at (610) 392-0990.';
+      setError(message);
+      toast.error(message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -121,9 +159,10 @@ export default function Contact() {
                   </motion.div>
                 </div>
                 <motion.div variants={fadeUp} custom={3} className="mb-4">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>Email Address</label>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>Email Address *</label>
                   <input
                     type="email"
+                    required
                     value={form.email}
                     onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
                     placeholder="john@example.com"
@@ -155,10 +194,16 @@ export default function Contact() {
                     style={{ background: '#f8fafc', border: '1px solid #e2e8f0', fontFamily: 'Figtree, sans-serif' }}
                   />
                 </motion.div>
+                {error && (
+                  <p role="alert" className="mb-4 text-sm font-semibold" style={{ color: '#983631', fontFamily: 'Figtree, sans-serif' }}>
+                    {error}
+                  </p>
+                )}
                 <motion.button variants={fadeUp} custom={6} type="submit"
+                  disabled={submitting}
                   className="w-full py-4 rounded-xl text-sm font-black text-slate-900 uppercase tracking-wider flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-                  style={{ background: '#983631', fontFamily: 'Figtree, sans-serif' }}>
-                  Request Free Estimate <ArrowRight size={15} />
+                  style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', opacity: submitting ? 0.7 : 1 }}>
+                  {submitting ? 'Submitting...' : 'Request Free Estimate'} <ArrowRight size={15} />
                 </motion.button>
                 <p className="text-xs text-slate-400 text-center mt-3" style={{ fontFamily: 'Figtree, sans-serif' }}>
                   We'll contact you within 24 hours. No spam, ever.
