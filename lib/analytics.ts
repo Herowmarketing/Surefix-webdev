@@ -10,6 +10,40 @@ export const GOOGLE_ADS_FORM_CONVERSION =
 export const GOOGLE_ADS_PHONE_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || '';
 
+const ATTRIBUTION_STORAGE_KEY = 'sf_attribution';
+
+const ATTRIBUTION_PARAM_KEYS = [
+  'utm_source',
+  'utm_medium',
+  'utm_campaign',
+  'utm_term',
+  'utm_content',
+  'gclid',
+  'gbraid',
+  'wbraid',
+  'msclkid',
+  'fbclid',
+] as const;
+
+export type AttributionPayload = {
+  landingPage?: string;
+  landingPagePath?: string;
+  conversionPage?: string;
+  referrer?: string;
+  firstSeenAt?: string;
+  lastSeenAt?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
+  gclid?: string;
+  gbraid?: string;
+  wbraid?: string;
+  msclkid?: string;
+  fbclid?: string;
+};
+
 declare global {
   interface Window {
     gtag?: (...args: unknown[]) => void;
@@ -20,6 +54,78 @@ declare global {
 function gtag(...args: unknown[]) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
   window.gtag(...args);
+}
+
+function safeReadAttribution(): AttributionPayload {
+  if (typeof window === 'undefined') return {};
+  try {
+    const raw = window.localStorage.getItem(ATTRIBUTION_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as AttributionPayload) : {};
+  } catch {
+    return {};
+  }
+}
+
+function safeWriteAttribution(payload: AttributionPayload) {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(ATTRIBUTION_STORAGE_KEY, JSON.stringify(payload));
+  } catch {
+    // Storage may be disabled; GA events still fire without persisted attribution.
+  }
+}
+
+function getParam(search: URLSearchParams, key: (typeof ATTRIBUTION_PARAM_KEYS)[number]) {
+  return search.get(key)?.trim() || undefined;
+}
+
+function buildAttributionFromLocation(existing: AttributionPayload = {}): AttributionPayload {
+  if (typeof window === 'undefined') return existing;
+
+  const now = new Date().toISOString();
+  const url = new URL(window.location.href);
+  const search = url.searchParams;
+  const next: AttributionPayload = {
+    ...existing,
+    landingPage: existing.landingPage || url.href,
+    landingPagePath: existing.landingPagePath || `${url.pathname}${url.search}`,
+    conversionPage: url.href,
+    referrer: existing.referrer || document.referrer || undefined,
+    firstSeenAt: existing.firstSeenAt || now,
+    lastSeenAt: now,
+  };
+
+  const map: Record<(typeof ATTRIBUTION_PARAM_KEYS)[number], keyof AttributionPayload> = {
+    utm_source: 'utmSource',
+    utm_medium: 'utmMedium',
+    utm_campaign: 'utmCampaign',
+    utm_term: 'utmTerm',
+    utm_content: 'utmContent',
+    gclid: 'gclid',
+    gbraid: 'gbraid',
+    wbraid: 'wbraid',
+    msclkid: 'msclkid',
+    fbclid: 'fbclid',
+  };
+
+  for (const key of ATTRIBUTION_PARAM_KEYS) {
+    const value = getParam(search, key);
+    if (value) next[map[key]] = value;
+  }
+
+  return next;
+}
+
+export function captureAttribution() {
+  const attribution = buildAttributionFromLocation(safeReadAttribution());
+  safeWriteAttribution(attribution);
+  return attribution;
+}
+
+export function getAttributionPayload(): AttributionPayload {
+  const attribution = buildAttributionFromLocation(safeReadAttribution());
+  safeWriteAttribution(attribution);
+  return attribution;
 }
 
 function resolveSendTo(labelOrSendTo: string): string | null {

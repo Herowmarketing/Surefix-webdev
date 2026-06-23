@@ -13,7 +13,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { X, ArrowRight, ArrowLeft, CheckCircle2, Phone, Mail, MapPin, User } from 'lucide-react'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
-import { trackLeadSubmission } from '@/lib/analytics'
+import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics'
 import { BUSINESS } from '@/lib/constants'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -364,6 +364,7 @@ export default function LeadStepper() {
 
     const serviceLabel = SERVICES.find(s => s.id === service)?.label || service
     const timelineLabel = TIMELINES.find(t => t.id === timeline)?.label || timeline
+    const attribution = getAttributionPayload()
 
     try {
       const res = await fetch('/api/project-inquiry', {
@@ -380,6 +381,7 @@ export default function LeadStepper() {
           company: honeypot,
           rawServiceId: service,
           rawTimelineId: timeline,
+          attribution,
         }),
       })
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string }

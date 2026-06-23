@@ -18,6 +18,31 @@ import {
   parseBody,
 } from './_lib/validation.js';
 
+function cleanAttribution(body: Record<string, unknown>) {
+  const raw = body.attribution;
+  const attribution =
+    raw && typeof raw === 'object' && !Array.isArray(raw) ? (raw as Record<string, unknown>) : {};
+
+  return {
+    landingPage: optionalString(attribution.landingPage, 1000),
+    landingPagePath: optionalString(attribution.landingPagePath, 500),
+    conversionPage: optionalString(attribution.conversionPage, 1000),
+    referrer: optionalString(attribution.referrer, 1000),
+    firstSeenAt: optionalString(attribution.firstSeenAt, 80),
+    lastSeenAt: optionalString(attribution.lastSeenAt, 80),
+    utmSource: optionalString(attribution.utmSource, 200),
+    utmMedium: optionalString(attribution.utmMedium, 200),
+    utmCampaign: optionalString(attribution.utmCampaign, 300),
+    utmTerm: optionalString(attribution.utmTerm, 300),
+    utmContent: optionalString(attribution.utmContent, 300),
+    gclid: optionalString(attribution.gclid, 300),
+    gbraid: optionalString(attribution.gbraid, 300),
+    wbraid: optionalString(attribution.wbraid, 300),
+    msclkid: optionalString(attribution.msclkid, 300),
+    fbclid: optionalString(attribution.fbclid, 300),
+  };
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -52,6 +77,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const projectDetails = optionalString(body.projectDetails, 4000);
   const preferredContactMethod = optionalString(body.preferredContactMethod, 60);
   const sourcePage = optionalString(body.sourcePage, 120) || 'purchase-inquiry-stepper';
+  const attribution = cleanAttribution(body);
 
   const submittedAt = new Date().toISOString();
 
@@ -99,6 +125,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       priority: 'medium',
       submittedAt,
       sourcePage,
+      ...attribution,
       rawSubmissionData: JSON.stringify(body, null, 2),
     });
     createdId = doc._id;
@@ -122,6 +149,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     line('Service Area / Address', projectAddress) +
     line('Preferred Contact', preferredContactMethod) +
     line('Project Details', projectDetails) +
+    line('Landing Page', attribution.landingPage) +
+    line('Conversion Page', attribution.conversionPage) +
+    line('Referrer', attribution.referrer) +
+    line(
+      'Campaign',
+      [attribution.utmSource, attribution.utmMedium, attribution.utmCampaign]
+        .filter(Boolean)
+        .join(' / '),
+    ) +
+    line(
+      'Click IDs',
+      [
+        attribution.gclid && `gclid: ${attribution.gclid}`,
+        attribution.gbraid && `gbraid: ${attribution.gbraid}`,
+        attribution.wbraid && `wbraid: ${attribution.wbraid}`,
+        attribution.msclkid && `msclkid: ${attribution.msclkid}`,
+        attribution.fbclid && `fbclid: ${attribution.fbclid}`,
+      ]
+        .filter(Boolean)
+        .join(' | '),
+    ) +
     line('Submitted', new Date(submittedAt).toLocaleString('en-US')) +
     line('Source', sourcePage) +
     `\nReview and update this lead in Sanity Studio (status, priority, follow-up, notes).`;

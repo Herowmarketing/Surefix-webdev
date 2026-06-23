@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
-import { trackLeadSubmission } from '@/lib/analytics';
+import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -50,6 +50,7 @@ export default function Contact() {
 
     setSubmitting(true);
     setError('');
+    const attribution = getAttributionPayload();
 
     try {
       const res = await fetch('/api/project-inquiry', {
@@ -63,6 +64,7 @@ export default function Contact() {
           timeline: 'Contact page request',
           projectDetails: form.message,
           sourcePage: 'contact-page-form',
+          attribution,
         }),
       });
       const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };

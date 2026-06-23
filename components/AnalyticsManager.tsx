@@ -1,15 +1,17 @@
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { trackPageView, trackPhoneClick, initGoogleAds } from '@/lib/analytics';
+import { captureAttribution, trackPageView, trackPhoneClick, initGoogleAds } from '@/lib/analytics';
 
 export default function AnalyticsManager() {
   const [location] = useLocation();
 
   useEffect(() => {
+    captureAttribution();
     initGoogleAds();
   }, []);
 
   useEffect(() => {
+    captureAttribution();
     trackPageView(location);
   }, [location]);
 
