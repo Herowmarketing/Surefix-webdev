@@ -5,8 +5,9 @@
 import { Toaster } from "@/components/ui/sonner";
 import { LeadStepperProvider } from './contexts/LeadStepperContext';
 import LeadStepper from './LeadStepper';
+import PromoPopup from './PromoPopup';
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Route, Switch, useLocation } from "wouter";
+import { Redirect, Route, Switch, useLocation } from "wouter";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -34,9 +35,9 @@ import PublicationArticle from "./PublicationArticle";
 import Promotions from "./Promotions";
 import Locations from "./Locations";
 import LocationDetail from "./LocationDetail";
-import BlogList from "./BlogList";
 import BlogPost from "./BlogPost";
 import Careers from "./Careers";
+import FAQ from "./FAQ";
 import ThankYou from "./ThankYou";
 import Maintenance from "@/src/pages/Maintenance";
 
@@ -194,11 +195,12 @@ function Router() {
           <Route path="/publications/blog/:slug" component={PublicationArticle} />
           <Route path="/publications" component={Publications} />
           <Route path="/blog/:slug" component={BlogPost} />
-          <Route path="/blog" component={BlogList} />
+          <Route path="/blog">{() => <Redirect to="/publications" />}</Route>
           <Route path="/promotions" component={Promotions} />
           <Route path="/locations/:slug" component={LocationDetail} />
           <Route path="/locations" component={Locations} />
           <Route path="/careers" component={Careers} />
+          <Route path="/faq" component={FAQ} />
           <Route path="/thank-you" component={ThankYou} />
           <Route path="/404" component={NotFound} />
           <Route component={NotFound} />
@@ -226,6 +228,7 @@ function App() {
             <WelcomeLoader />
             <Router />
             <LeadStepper />
+            <PromoPopup />
           </TooltipProvider>
         </LeadStepperProvider>
       </ThemeProvider>

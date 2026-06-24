@@ -226,7 +226,11 @@ export default function About() {
               Ready to Work with Us?
             </motion.h2>
             <motion.p variants={fadeUp} custom={1} className="text-white/85 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
-              Contact us today at {BUSINESS.phone} to request a free consultation for your next project.
+              Contact us today at{' '}
+              <a href={BUSINESS.phoneHref} className="font-bold text-white underline underline-offset-2 hover:text-white/80">
+                {BUSINESS.phone}
+              </a>{' '}
+              to request a free consultation for your next project.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap justify-center gap-4">
               <motion.button

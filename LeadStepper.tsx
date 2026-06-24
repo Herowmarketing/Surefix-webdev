@@ -3,15 +3,15 @@
  * Design: Modern Futuristic Craftsman — dark navy modal, French Blue accents, Brown Red CTAs
  * 4-step qualifying questionnaire:
  *   Step 1 — Project type (service selection)
- *   Step 2 — Project scope & timeline
- *   Step 3 — Budget range
- *   Step 4 — Contact info (name, phone, email, zip)
+ *   Step 2 — Timeline
+ *   Step 3 — Project details (scope + preferred contact method)
+ *   Step 4 — Contact info (name, phone, email, address, zip)
  * Framer Motion: slide transitions between steps, spring modal entrance, AnimatePresence
  */
 
 import { AnimatePresence, motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
-import { X, ArrowRight, ArrowLeft, CheckCircle2, Phone, Mail, MapPin, User } from 'lucide-react'
+import { X, ArrowRight, ArrowLeft, CheckCircle2, Phone, Mail, MapPin, User, Home } from 'lucide-react'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
 import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics'
 import { BUSINESS } from '@/lib/constants'
@@ -34,6 +34,12 @@ const TIMELINES = [
   { id: '1-3mo',   label: '1–3 Months',        sub: 'Planning stage, ready soon' },
   { id: '3-6mo',   label: '3–6 Months',        sub: 'Still in early planning' },
   { id: 'flexible',label: 'Flexible',          sub: 'No fixed timeline yet' },
+]
+
+const CONTACT_METHODS = [
+  { id: 'call',  label: 'Call' },
+  { id: 'text',  label: 'Text' },
+  { id: 'email', label: 'Email' },
 ]
 
 
@@ -162,11 +168,61 @@ function Step2({
 }
 
 
+function Step3({
+  details, contactMethod,
+  onDetails, onContactMethod,
+}: {
+  details: string; contactMethod: string
+  onDetails: (v: string) => void
+  onContactMethod: (v: string) => void
+}) {
+  return (
+    <div>
+      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+        Tell us about your project
+      </h2>
+      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+        A few details help us prepare an accurate estimate before we reach out.
+      </p>
+      <div className="flex flex-col gap-5">
+        <div>
+          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-2">
+            Project details *
+          </label>
+          <textarea
+            className="w-full px-4 py-3 rounded-xl text-sm text-slate-900 placeholder-slate-400 bg-white border border-slate-200 focus:outline-none focus:border-[#394696] transition-all duration-200 resize-none"
+            placeholder="What are you hoping to accomplish? Include the room(s), approximate size, must-haves, and anything else that helps us understand the scope."
+            rows={5}
+            value={details}
+            onChange={e => onDetails(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-2">
+            Preferred contact method
+          </label>
+          <div className="grid grid-cols-3 gap-3">
+            {CONTACT_METHODS.map(m => (
+              <OptionCard
+                key={m.id}
+                selected={contactMethod === m.id}
+                onClick={() => onContactMethod(m.id)}
+              >
+                <div className="text-center text-sm font-bold text-slate-900">{m.label}</div>
+              </OptionCard>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function Step4({
-  name, phone, email, zip,
+  name, phone, email, address, zip,
   onChange,
 }: {
-  name: string; phone: string; email: string; zip: string
+  name: string; phone: string; email: string; address: string; zip: string
   onChange: (field: string, value: string) => void
 }) {
   const inputClass = `
@@ -217,13 +273,24 @@ function Step4({
           />
         </div>
         <div className="relative">
+          <Home size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+          <input
+            className={inputClass + ' pl-10'}
+            placeholder="Project Street Address *"
+            value={address}
+            onChange={e => onChange('address', e.target.value)}
+            autoComplete="street-address"
+          />
+        </div>
+        <div className="relative">
           <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             className={inputClass + ' pl-10'}
-            placeholder="ZIP Code"
+            placeholder="ZIP Code *"
             value={zip}
             onChange={e => onChange('zip', e.target.value)}
             autoComplete="postal-code"
+            inputMode="numeric"
             maxLength={5}
           />
         </div>
@@ -263,7 +330,11 @@ function StepSuccess({ name }: { name: string }) {
         className="mt-6 px-5 py-3 rounded-xl text-sm font-bold text-slate-500"
         style={{ background: '#f8fafc', border: '1px solid rgba(255,255,255,0.08)' }}
       >
-        📞 {BUSINESS.phone} · Mon–Fri 8AM–7PM · Sat 8AM–4PM · Sun Closed
+        📞{' '}
+        <a href={BUSINESS.phoneHref} className="font-bold text-[#394696] hover:underline">
+          {BUSINESS.phone}
+        </a>{' '}
+        · Mon–Fri 8AM–7PM · Sat 8AM–4PM · Sun Closed
       </div>
     </motion.div>
   )
@@ -271,7 +342,9 @@ function StepSuccess({ name }: { name: string }) {
 
 // ─── Main Modal ───────────────────────────────────────────────────────────────
 
-const TOTAL_STEPS = 3
+const TOTAL_STEPS = 4
+
+const ZIP_RE = /^\d{5}$/
 
 const slideVariants = {
   enter: (dir: number) => ({
@@ -304,7 +377,10 @@ export default function LeadStepper() {
   // Step 2
   const [timeline, setTimeline] = useState('')
   // Step 3
-  const [contact, setContact] = useState({ name: '', phone: '', email: '', zip: '' })
+  const [details, setDetails] = useState('')
+  const [contactMethod, setContactMethod] = useState('')
+  // Step 4
+  const [contact, setContact] = useState({ name: '', phone: '', email: '', address: '', zip: '' })
   // Spam honeypot — hidden from real users; only bots fill it.
   const [honeypot, setHoneypot] = useState('')
 
@@ -320,7 +396,9 @@ export default function LeadStepper() {
       if (preselectedService) setService(preselectedService)
       else setService('')
       setTimeline('')
-      setContact({ name: '', phone: '', email: '', zip: '' })
+      setDetails('')
+      setContactMethod('')
+      setContact({ name: '', phone: '', email: '', address: '', zip: '' })
     }
   }, [isOpen, preselectedService])
 
@@ -337,7 +415,15 @@ export default function LeadStepper() {
   const canAdvance = () => {
     if (step === 1) return !!service
     if (step === 2) return !!timeline
-    if (step === 3) return !!(contact.name && contact.phone && contact.email)
+    if (step === 3) return details.trim().length > 0
+    if (step === 4)
+      return !!(
+        contact.name &&
+        contact.phone &&
+        contact.email &&
+        contact.address.trim() &&
+        ZIP_RE.test(contact.zip.trim())
+      )
     return false
   }
 
@@ -364,6 +450,11 @@ export default function LeadStepper() {
 
     const serviceLabel = SERVICES.find(s => s.id === service)?.label || service
     const timelineLabel = TIMELINES.find(t => t.id === timeline)?.label || timeline
+    const contactMethodLabel =
+      CONTACT_METHODS.find(m => m.id === contactMethod)?.label || ''
+    const projectAddress = [contact.address.trim(), contact.zip.trim()]
+      .filter(Boolean)
+      .join(', ')
     const attribution = getAttributionPayload()
 
     try {
@@ -374,9 +465,11 @@ export default function LeadStepper() {
           name: contact.name,
           email: contact.email,
           phone: contact.phone,
-          projectAddress: contact.zip,
+          projectAddress,
           projectType: serviceLabel,
           timeline: timelineLabel,
+          projectDetails: details,
+          preferredContactMethod: contactMethodLabel,
           sourcePage: 'purchase-inquiry-stepper',
           company: honeypot,
           rawServiceId: service,
@@ -401,7 +494,7 @@ export default function LeadStepper() {
     }
   }
 
-  const stepLabel = ['Project Type', 'Timeline', 'Your Info'][step - 1]
+  const stepLabel = ['Project Type', 'Timeline', 'Project Details', 'Your Info'][step - 1]
 
   return (
     <AnimatePresence>
@@ -491,10 +584,19 @@ export default function LeadStepper() {
                         <Step2 timeline={timeline} onTimeline={setTimeline} />
                       )}
                       {step === 3 && (
+                        <Step3
+                          details={details}
+                          contactMethod={contactMethod}
+                          onDetails={setDetails}
+                          onContactMethod={setContactMethod}
+                        />
+                      )}
+                      {step === 4 && (
                         <Step4
                           name={contact.name}
                           phone={contact.phone}
                           email={contact.email}
+                          address={contact.address}
                           zip={contact.zip}
                           onChange={(field, value) =>
                             setContact(prev => ({ ...prev, [field]: value }))

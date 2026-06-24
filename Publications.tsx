@@ -1,7 +1,11 @@
 /*
- * PUBLICATIONS — Print collateral + online blog hub
+ * PUBLICATIONS — Unified hub for print collateral + every blog post.
+ *
+ * Blog posts are pulled live from Sanity (so anything published via the CMS —
+ * including by our SEO partner — shows up automatically) and merged with the
+ * static print pieces and any evergreen on-site articles.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   BookOpen,
@@ -12,12 +16,26 @@ import {
   ChevronRight,
 } from 'lucide-react';
 import { Link } from 'wouter';
-import { ALL_PUBLICATIONS, type PublicationItem, type PublicationKind } from '@/lib/publications-data';
+import { ALL_PUBLICATIONS, type PublicationKind } from '@/lib/publications-data';
+import { fetchPosts, formatPostDate, urlFor, type PostListItem } from '@/lib/sanity';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
 
 type FilterKey = 'all' | PublicationKind;
+
+/** Unified card model covering print pieces and blog posts from any source. */
+type CardItem = {
+  id: string;
+  title: string;
+  kind: PublicationKind;
+  excerpt: string;
+  dateLabel: string;
+  formatLabel: string;
+  href?: string;
+  published?: boolean;
+  imageUrl?: string | null;
+};
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -30,11 +48,34 @@ const fadeUp = {
 
 const FILTERS: { id: FilterKey; label: string }[] = [
   { id: 'all', label: 'All' },
-  { id: 'print', label: 'Print' },
   { id: 'blog', label: 'Blog' },
+  { id: 'print', label: 'Print' },
 ];
 
-function PublicationCard({ item, index, onRequestCopy }: { item: PublicationItem; index: number; onRequestCopy: () => void }) {
+/** Map a Sanity post into the unified card model. */
+function postToCard(post: PostListItem): CardItem {
+  return {
+    id: post._id,
+    title: post.title ?? 'Untitled',
+    kind: 'blog',
+    excerpt: post.excerpt ?? '',
+    dateLabel: formatPostDate(post.publishedAt) ?? '',
+    formatLabel: post.categories?.[0] ?? 'Article',
+    href: post.slug ? `/blog/${post.slug}` : undefined,
+    published: Boolean(post.slug),
+    imageUrl: urlFor(post.mainImage)?.width(800).height(500).fit('crop').auto('format').url() ?? null,
+  };
+}
+
+function PublicationCard({
+  item,
+  index,
+  onRequestCopy,
+}: {
+  item: CardItem;
+  index: number;
+  onRequestCopy: () => void;
+}) {
   const isPrint = item.kind === 'print';
   const canLink = Boolean(item.published !== false);
   const href = item.href ?? '';
@@ -47,72 +88,94 @@ function PublicationCard({ item, index, onRequestCopy }: { item: PublicationItem
       animate="visible"
       variants={fadeUp}
       custom={index}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white p-4 shadow-lg shadow-black/20 sm:p-5"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-gradient-to-b from-slate-50 to-white shadow-lg shadow-black/20"
       style={{ fontFamily: 'Figtree, sans-serif' }}
     >
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <span
-          className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
-            isPrint
-              ? 'border border-[#394696]/40 bg-[#394696]/20 text-slate-800'
-              : 'border border-[#983631]/40 bg-[#983631]/15 text-slate-800'
-          }`}
-        >
-          {isPrint ? (
-            <>
-              <Newspaper size={11} /> Print
-            </>
-          ) : (
-            <>
-              <BookOpen size={11} /> Blog
-            </>
-          )}
-        </span>
-        <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
-          {item.formatLabel}
-        </span>
-        <span className="ml-auto text-[10px] text-slate-400">{item.dateLabel}</span>
-      </div>
+      {item.imageUrl ? (
+        <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-100">
+          <img
+            src={item.imageUrl}
+            alt={item.title}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </div>
+      ) : null}
 
-      <h2 className="mb-2 text-lg font-black leading-snug text-slate-900">{item.title}</h2>
-      <p className="mb-5 flex-1 text-sm leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
-        {item.excerpt}
-      </p>
-
-      <div className="mt-auto flex flex-col gap-2">
-        {!canLink ? (
-          <span className="inline-flex items-center gap-2 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-xs font-semibold text-slate-500">
-            Coming soon
+      <div className="flex flex-1 flex-col p-4 sm:p-5">
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <span
+            className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
+              isPrint
+                ? 'border border-[#394696]/40 bg-[#394696]/20 text-slate-800'
+                : 'border border-[#983631]/40 bg-[#983631]/15 text-slate-800'
+            }`}
+          >
+            {isPrint ? (
+              <>
+                <Newspaper size={11} /> Print
+              </>
+            ) : (
+              <>
+                <BookOpen size={11} /> Blog
+              </>
+            )}
           </span>
-        ) : isPrint ? (
-          <>
-            <button
-              type="button"
-              onClick={onRequestCopy}
+          <span className="text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+            {item.formatLabel}
+          </span>
+          {item.dateLabel ? (
+            <span className="ml-auto text-[10px] text-slate-400">{item.dateLabel}</span>
+          ) : null}
+        </div>
+
+        <h2 className="mb-2 text-lg font-black leading-snug text-slate-900">{item.title}</h2>
+        {item.excerpt ? (
+          <p
+            className="mb-5 line-clamp-3 flex-1 text-sm leading-relaxed text-slate-600"
+            style={{ fontFamily: 'Georgia, serif' }}
+          >
+            {item.excerpt}
+          </p>
+        ) : (
+          <div className="mb-5 flex-1" />
+        )}
+
+        <div className="mt-auto flex flex-col gap-2">
+          {!canLink ? (
+            <span className="inline-flex items-center gap-2 rounded-lg border border-dashed border-slate-300 px-3 py-2 text-xs font-semibold text-slate-500">
+              Coming soon
+            </span>
+          ) : isPrint ? (
+            <>
+              <button
+                type="button"
+                onClick={onRequestCopy}
+                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
+              >
+                <Mail size={14} /> Request a Copy
+              </button>
+              <p className="text-[10px] leading-snug text-slate-400" style={{ fontFamily: 'Georgia, serif' }}>
+                Start a conversation — we&apos;ll mail or email this piece directly to you.
+              </p>
+            </>
+          ) : isInternal ? (
+            <Link href={href}>
+              <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
+                Read post <ChevronRight size={14} aria-hidden />
+              </span>
+            </Link>
+          ) : (
+            <a
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
             >
-              <Mail size={14} /> Request a Copy
-            </button>
-            <p className="text-[10px] leading-snug text-slate-400" style={{ fontFamily: 'Georgia, serif' }}>
-              Start a conversation — we&apos;ll mail or email this piece directly to you.
-            </p>
-          </>
-        ) : isInternal ? (
-          <Link href={href}>
-            <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
-              Read post <ChevronRight size={14} aria-hidden />
-            </span>
-          </Link>
-        ) : (
-          <a
-            href={href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
-          >
-            Read post <ExternalLink size={13} />
-          </a>
-        )}
+              Read post <ExternalLink size={13} />
+            </a>
+          )}
+        </div>
       </div>
 
       <div
@@ -126,6 +189,7 @@ function PublicationCard({ item, index, onRequestCopy }: { item: PublicationItem
 export default function Publications() {
   const { openStepper } = useLeadStepper();
   const [filter, setFilter] = useState<FilterKey>('all');
+  const [sanityPosts, setSanityPosts] = useState<PostListItem[]>([]);
 
   useSeo({
     ...PAGE_SEO.publications,
@@ -137,10 +201,36 @@ export default function Publications() {
     ],
   });
 
+  // Pull live blog posts from Sanity — anything published via the CMS appears here.
+  useEffect(() => {
+    let cancelled = false;
+    fetchPosts()
+      .then((data) => {
+        if (!cancelled) setSanityPosts(data);
+      })
+      .catch(() => {
+        // Non-fatal: fall back to static print + on-site content.
+        if (!cancelled) setSanityPosts([]);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Merge: live Sanity posts first (newest), then evergreen on-site content, then print.
+  const allCards = useMemo<CardItem[]>(() => {
+    const liveSlugs = new Set(sanityPosts.map((p) => p.slug).filter(Boolean));
+    const staticCards: CardItem[] = ALL_PUBLICATIONS
+      // Avoid showing a static placeholder if a live post has the same slug.
+      .filter((p) => !(p.href && liveSlugs.has(p.href.split('/').pop() ?? '')))
+      .map((p) => ({ ...p }));
+    return [...sanityPosts.map(postToCard), ...staticCards];
+  }, [sanityPosts]);
+
   const filtered = useMemo(() => {
-    if (filter === 'all') return ALL_PUBLICATIONS;
-    return ALL_PUBLICATIONS.filter((p) => p.kind === filter);
-  }, [filter]);
+    if (filter === 'all') return allCards;
+    return allCards.filter((p) => p.kind === filter);
+  }, [filter, allCards]);
 
   return (
     <div className="min-h-screen bg-white">
@@ -158,14 +248,14 @@ export default function Publications() {
             Resources
           </p>
           <h1
-            className="mb-4 text-[1.65rem] font-black leading-[1.12] text-white sm:mb-5 sm:text-4xl md:text-5xl"
+            className="mb-4 text-[1.65rem] font-black leading-[1.12] text-slate-900 sm:mb-5 sm:text-4xl md:text-5xl"
             style={{ fontFamily: 'Figtree, sans-serif' }}
           >
             Publications &amp; Blog
           </h1>
           <p className="mx-auto max-w-xl text-base leading-relaxed text-slate-600 min-[400px]:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
-            Browse Sure-Fix print pieces we distribute at home shows and in the community, plus articles from our
-            online blog—remodeling tips, project stories, and homeowner guides.
+            Remodeling tips, project stories, and homeowner guides from our blog — alongside the Sure-Fix
+            print pieces we share at home shows and throughout the community.
           </p>
         </motion.div>
 

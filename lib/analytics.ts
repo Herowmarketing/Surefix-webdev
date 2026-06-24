@@ -9,6 +9,9 @@ export const GOOGLE_ADS_FORM_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_FORM_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
 export const GOOGLE_ADS_PHONE_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || '';
+/** Thank-you page conversion — fires once on the /thank-you page load. */
+export const GOOGLE_ADS_THANKYOU_CONVERSION =
+  import.meta.env.VITE_GOOGLE_ADS_THANKYOU_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
 
 const ATTRIBUTION_STORAGE_KEY = 'sf_attribution';
 
@@ -141,10 +144,18 @@ export function initGoogleAds() {
   }
 }
 
-export function trackGoogleAdsConversion(labelOrSendTo: string) {
+export function trackGoogleAdsConversion(
+  labelOrSendTo: string,
+  params?: Record<string, string | number>,
+) {
   const sendTo = resolveSendTo(labelOrSendTo);
   if (!sendTo) return;
-  gtag('event', 'conversion', { send_to: sendTo });
+  gtag('event', 'conversion', { send_to: sendTo, ...params });
+}
+
+/** Fire the Thank You Page Submission conversion (page-load based). */
+export function trackThankYouConversion() {
+  trackGoogleAdsConversion(GOOGLE_ADS_THANKYOU_CONVERSION, { value: 1.0, currency: 'USD' });
 }
 
 export function trackPageView(path: string, title?: string) {

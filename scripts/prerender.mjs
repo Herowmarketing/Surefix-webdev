@@ -68,9 +68,9 @@ const STATIC_ROUTES = [
   '/interior-design',
   '/promotions',
   '/publications',
-  '/blog',
   '/locations',
   '/careers',
+  '/faq',
   '/thank-you',
 ];
 

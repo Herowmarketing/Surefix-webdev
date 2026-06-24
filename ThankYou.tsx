@@ -3,13 +3,15 @@ import { Link } from 'wouter';
 import { CheckCircle2, Phone, ArrowRight } from 'lucide-react';
 import { BUSINESS, LOGO_URL } from '@/lib/constants';
 import { useSeo, breadcrumbList } from '@/lib/seo';
-import { trackGoogleAdsConversion, GOOGLE_ADS_FORM_CONVERSION } from '@/lib/analytics';
+import { trackGoogleAdsConversion, GOOGLE_ADS_FORM_CONVERSION, trackThankYouConversion } from '@/lib/analytics';
 
 export default function ThankYou() {
-  /* Fire Google Ads conversion on page load — belt-and-suspenders alongside
-     the trackLeadSubmission() call on the form page.  Google Ads de-dupes
-     because the conversion action is set to "One conversion" per click. */
+  // Fire Google Ads conversions on page load:
+  //  1. "Thank You Page Submission" conversion (page-load based).
+  //  2. Form-submission conversion — belt-and-suspenders alongside the
+  //     trackLeadSubmission() call on the form page (Google de-dupes per click).
   useEffect(() => {
+    trackThankYouConversion();
     trackGoogleAdsConversion(GOOGLE_ADS_FORM_CONVERSION);
   }, []);
 

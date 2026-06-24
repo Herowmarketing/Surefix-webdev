@@ -26,29 +26,47 @@ interface SendArgs {
   html?: string;
 }
 
-function getGmailConfig() {
+interface SendToArgs extends SendArgs {
+  /** Recipient address. */
+  to: string;
+  /** Friendly From display name (defaults to "Sure-Fix Remodeling"). */
+  fromName?: string;
+  /** Optional Reply-To (e.g. the operations inbox). */
+  replyTo?: string;
+}
+
+function getGmailCreds() {
   const clientId = process.env.GMAIL_CLIENT_ID;
   const clientSecret = process.env.GMAIL_CLIENT_SECRET;
   const refreshToken = process.env.GMAIL_REFRESH_TOKEN;
   const from = process.env.GMAIL_FROM_EMAIL;
-  const to = process.env.OPERATIONS_MANAGER_EMAIL || from;
 
-  if (!clientId || !clientSecret || !refreshToken || !from || !to) {
+  if (!clientId || !clientSecret || !refreshToken || !from) {
     return null;
   }
-  return { clientId, clientSecret, refreshToken, from, to };
+  return { clientId, clientSecret, refreshToken, from };
 }
 
 /**
- * Send an internal notification email.
+ * Low-level send to an explicit recipient.
  * Never throws — always resolves with a NotifyResult the caller can persist.
  */
-export async function sendOperationsEmail({ subject, text, html }: SendArgs): Promise<NotifyResult> {
-  const cfg = getGmailConfig();
-  if (!cfg) {
-    const reason = 'Gmail env vars not configured — notification skipped.';
+export async function sendEmail({
+  to,
+  subject,
+  text,
+  html,
+  fromName = 'Sure-Fix Remodeling',
+  replyTo,
+}: SendToArgs): Promise<NotifyResult> {
+  const creds = getGmailCreds();
+  if (!creds) {
+    const reason = 'Gmail env vars not configured — email skipped.';
     console.warn(`[notify] ${reason}`);
     return { ok: false, skipped: true, reason };
+  }
+  if (!to) {
+    return { ok: false, skipped: true, reason: 'No recipient address.' };
   }
 
   try {
@@ -56,16 +74,17 @@ export async function sendOperationsEmail({ subject, text, html }: SendArgs): Pr
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: cfg.from,
-        clientId: cfg.clientId,
-        clientSecret: cfg.clientSecret,
-        refreshToken: cfg.refreshToken,
+        user: creds.from,
+        clientId: creds.clientId,
+        clientSecret: creds.clientSecret,
+        refreshToken: creds.refreshToken,
       },
     });
 
     await transporter.sendMail({
-      from: `Sure-Fix Website <${cfg.from}>`,
-      to: cfg.to,
+      from: `${fromName} <${creds.from}>`,
+      to,
+      replyTo,
       subject,
       text,
       html: html || `<pre style="font-family:inherit;white-space:pre-wrap">${escapeHtml(text)}</pre>`,
@@ -74,9 +93,18 @@ export async function sendOperationsEmail({ subject, text, html }: SendArgs): Pr
     return { ok: true };
   } catch (err) {
     const reason = err instanceof Error ? err.message : 'Unknown email error';
-    console.error('[notify] Failed to send operations email:', reason);
+    console.error('[notify] Failed to send email:', reason);
     return { ok: false, skipped: false, reason };
   }
+}
+
+/**
+ * Send an internal notification email to the operations manager.
+ * Never throws — always resolves with a NotifyResult the caller can persist.
+ */
+export async function sendOperationsEmail({ subject, text, html }: SendArgs): Promise<NotifyResult> {
+  const to = process.env.OPERATIONS_MANAGER_EMAIL || process.env.GMAIL_FROM_EMAIL || '';
+  return sendEmail({ to, subject, text, html, fromName: 'Sure-Fix Website' });
 }
 
 function escapeHtml(s: string): string {

@@ -116,6 +116,14 @@ export const PAGE_SEO = {
     image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Careers at Sure-Fix Remodeling — Lehigh Valley design-build contractor',
   },
+  faq: {
+    title: 'Remodeling FAQ — Costs, Timelines & Process | Sure-Fix Remodeling',
+    description:
+      'Answers to common remodeling questions — service areas, licensing, free estimates, project costs and timelines, design, permits, financing and warranties from Sure-Fix Remodeling in the Lehigh Valley.',
+    path: '/faq',
+    image: `${M}sf-og-showroom-share.jpg`,
+    imageAlt: 'Sure-Fix Remodeling frequently asked questions',
+  },
   notFound: {
     title: 'Page Not Found',
     description:

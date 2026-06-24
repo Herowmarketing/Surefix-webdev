@@ -325,7 +325,10 @@ function RoleCard({
                 <Send size={13} /> Apply for This Role
               </button>
               <p className="mt-2 text-[10px] text-slate-400" style={{ fontFamily: SANS }}>
-                Opens our quick application form — or call us at {BUSINESS.phone}
+                Opens our quick application form — or call us at{' '}
+                <a href={BUSINESS.phoneHref} className="font-bold text-[#394696] hover:underline">
+                  {BUSINESS.phone}
+                </a>
               </p>
             </div>
           </motion.div>

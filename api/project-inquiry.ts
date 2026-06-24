@@ -9,7 +9,8 @@
  */
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getWriteClient } from './_lib/sanityServer.js';
-import { sendOperationsEmail, line, type NotifyResult } from './_lib/notify.js';
+import { sendOperationsEmail, sendEmail, line, type NotifyResult } from './_lib/notify.js';
+import { renderBrandedEmail, renderBrandedText, type DetailRow } from './_lib/emailTemplate.js';
 import {
   cleanString,
   optionalString,
@@ -194,6 +195,55 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await client.patch(createdId).set({ notificationStatus }).commit();
   } catch (err) {
     console.warn('[project-inquiry] Could not record notificationStatus:', err);
+  }
+
+  // ── Branded confirmation email to the prospect (best-effort) ────────────────
+  try {
+    const firstName = name.split(' ')[0] || '';
+    const isGiftCard = sourcePage === 'promo-popup-500-gift-card';
+
+    const paragraphs = isGiftCard
+      ? [
+          `Thank you for claiming your <strong>$500 Friends &amp; Family Gift Card</strong> from Sure-Fix Remodeling. It's reserved and ready to apply toward your project.`,
+          `A member of our family-run team will reach out within <strong>24 hours</strong> to learn about your space and schedule a free, no-obligation estimate.`,
+        ]
+      : [
+          `Thank you for reaching out to Sure-Fix Remodeling. We've received your request and a member of our family-run team will follow up within <strong>24 hours</strong> to talk through your project and schedule a free, no-obligation estimate.`,
+          `In the meantime, feel free to call us with any questions — we're always happy to help.`,
+        ];
+
+    const highlightRows: DetailRow[] = [
+      { label: 'Project', value: projectType },
+      { label: 'Timeline', value: timeline },
+      { label: 'Preferred contact', value: preferredContactMethod },
+      { label: 'Service area', value: projectAddress },
+    ];
+
+    const emailOpts = {
+      preheader: isGiftCard
+        ? 'Your $500 gift card is reserved — here\u2019s what happens next.'
+        : 'We received your request — here\u2019s what happens next.',
+      heading: firstName ? `Thanks, ${firstName}!` : 'Thank you!',
+      paragraphs,
+      highlightTitle: 'Your request',
+      highlightRows,
+      ctaLabel: 'See Our Recent Work',
+      ctaHref: 'https://surefixremodelinglv.com/showroom',
+    };
+
+    await sendEmail({
+      to: email,
+      subject: isGiftCard
+        ? 'Your $500 Sure-Fix Gift Card is reserved'
+        : 'Thanks for contacting Sure-Fix Remodeling',
+      text: renderBrandedText(emailOpts),
+      html: renderBrandedEmail(emailOpts),
+      fromName: 'Sure-Fix Remodeling',
+      replyTo: process.env.OPERATIONS_MANAGER_EMAIL || undefined,
+    });
+  } catch (err) {
+    // Confirmation email is non-critical — never fail the submission for it.
+    console.warn('[project-inquiry] Could not send prospect confirmation:', err);
   }
 
   // Submission was saved — return success regardless of email outcome.
