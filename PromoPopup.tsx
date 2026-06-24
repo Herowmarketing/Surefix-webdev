@@ -20,7 +20,7 @@ import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
 
 const STORAGE_KEY = 'sf_promo_500_popup_v1';
 const SUPPRESS_DAYS = 7;
-const DWELL_MS = 18000;
+const DWELL_MS = 45000;
 
 function shouldSuppress(): boolean {
   try {
@@ -168,9 +168,8 @@ export default function PromoPopup() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[9990]"
+            className="pointer-events-none fixed inset-0 z-[9990]"
             style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(5px)' }}
-            onClick={handleClose}
           />
 
           <motion.div

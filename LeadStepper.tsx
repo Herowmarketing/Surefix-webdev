@@ -288,12 +288,17 @@ function Step4({
             className={inputClass + ' pl-10'}
             placeholder="ZIP Code *"
             value={zip}
-            onChange={e => onChange('zip', e.target.value)}
+            onChange={e => onChange('zip', e.target.value.replace(/\D/g, '').slice(0, 5))}
             autoComplete="postal-code"
             inputMode="numeric"
             maxLength={5}
           />
         </div>
+        {zip && !ZIP_RE.test(zip.trim()) ? (
+          <p className="-mt-2 text-xs font-semibold text-[#983631]">
+            Please enter a 5-digit ZIP code.
+          </p>
+        ) : null}
         <p className="text-xs text-slate-400 leading-relaxed">
           By submitting you agree to be contacted by Sure-Fix Remodeling. We never share your info.
         </p>
@@ -427,6 +432,14 @@ export default function LeadStepper() {
     return false
   }
 
+  const stepFourMissingRequired =
+    step === 4 &&
+    (!contact.name.trim() ||
+      !contact.phone.trim() ||
+      !contact.email.trim() ||
+      !contact.address.trim() ||
+      !ZIP_RE.test(contact.zip.trim()))
+
   const goNext = () => {
     if (step < TOTAL_STEPS) {
       setDirection(1)
@@ -452,7 +465,8 @@ export default function LeadStepper() {
     const timelineLabel = TIMELINES.find(t => t.id === timeline)?.label || timeline
     const contactMethodLabel =
       CONTACT_METHODS.find(m => m.id === contactMethod)?.label || ''
-    const projectAddress = [contact.address.trim(), contact.zip.trim()]
+    const zip = contact.zip.replace(/\D/g, '').slice(0, 5)
+    const projectAddress = [contact.address.trim(), zip]
       .filter(Boolean)
       .join(', ')
     const attribution = getAttributionPayload()
@@ -650,10 +664,11 @@ export default function LeadStepper() {
                     disabled={!canAdvance() || submitting}
                     whileHover={canAdvance() && !submitting ? { scale: 1.03 } : {}}
                     whileTap={canAdvance() && !submitting ? { scale: 0.97 } : {}}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-slate-900 uppercase tracking-wider transition-all duration-200"
+                    aria-disabled={!canAdvance() || submitting}
+                    className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black uppercase tracking-wider transition-all duration-200"
                     style={{
                       background: canAdvance() && !submitting ? '#983631' : 'rgba(255,255,255,0.08)',
-                      color: canAdvance() && !submitting ? '#fff' : 'rgba(255,255,255,0.3)',
+                      color: canAdvance() && !submitting ? '#fff' : '#64748b',
                       cursor: canAdvance() && !submitting ? 'pointer' : 'not-allowed',
                       fontFamily: 'Figtree, sans-serif',
                     }}
@@ -667,6 +682,12 @@ export default function LeadStepper() {
                   </motion.button>
                 </div>
               )}
+
+              {stepFourMissingRequired && !submitting ? (
+                <p className="px-6 pb-4 text-right text-xs font-semibold text-slate-500">
+                  Fill out all required fields, including a 5-digit ZIP code, to submit.
+                </p>
+              ) : null}
 
               {submitted && (
                 <div className="px-6 pb-6 flex justify-center">

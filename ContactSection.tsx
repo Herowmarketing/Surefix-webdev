@@ -7,6 +7,7 @@ import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { BUSINESS, MASCOT_URL } from '@/lib/constants';
+import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
 
 const services = [
   'Kitchen Remodeling',
@@ -35,11 +36,48 @@ export default function ContactSection() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-80px' });
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
   const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', message: '' });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    if (submitting) return;
+    setSubmitting(true);
+    setError('');
+
+    const projectType = form.service || 'General Inquiry';
+    try {
+      const res = await fetch('/api/project-inquiry', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          phone: form.phone,
+          email: form.email,
+          projectType,
+          timeline: 'Homepage contact section request',
+          projectDetails: form.message,
+          sourcePage: 'homepage-contact-section',
+          attribution: getAttributionPayload(),
+        }),
+      });
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
+      if (!res.ok || !data.ok) {
+        throw new Error(data?.error || 'We could not submit your request. Please try again.');
+      }
+
+      trackLeadSubmission({ projectType, timeline: 'Homepage contact section request' });
+      window.location.assign('/thank-you?source=homepage-contact-section');
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : `We could not submit your request. Please call us at ${BUSINESS.phone}.`,
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const inputClass = `w-full px-4 py-3 rounded-xl text-sm text-white placeholder-white/30 focus:outline-none transition-all duration-200`
@@ -146,13 +184,20 @@ export default function ContactSection() {
                     className={`${inputClass} resize-none`}
                     style={{ fontFamily: 'Georgia, serif' }} />
                 </div>
+                {error ? (
+                  <p role="alert" className="text-sm font-semibold" style={{ color: '#983631' }}>
+                    {error}
+                  </p>
+                ) : null}
                 <motion.button
                   type="submit"
+                  disabled={submitting}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                   className="btn-primary w-full justify-center"
+                  style={{ opacity: submitting ? 0.75 : 1 }}
                 >
-                  Send My Request <ArrowRight size={16} />
+                  {submitting ? 'Submitting...' : 'Send My Request'} <ArrowRight size={16} />
                 </motion.button>
                 <p className="text-slate-400 text-xs text-center" style={{ fontFamily: 'Figtree, sans-serif' }}>
                   We respond within 24 hours. No spam, ever.
