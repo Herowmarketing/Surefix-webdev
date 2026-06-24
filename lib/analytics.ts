@@ -6,7 +6,7 @@ export const GOOGLE_ADS_ID =
 
 /** Label only (after the /) or full send_to (AW-xxx/label) */
 export const GOOGLE_ADS_FORM_CONVERSION =
-  import.meta.env.VITE_GOOGLE_ADS_FORM_CONVERSION?.trim() || '';
+  import.meta.env.VITE_GOOGLE_ADS_FORM_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
 export const GOOGLE_ADS_PHONE_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || '';
 

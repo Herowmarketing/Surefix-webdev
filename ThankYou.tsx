@@ -1,9 +1,18 @@
+import { useEffect } from 'react';
 import { Link } from 'wouter';
 import { CheckCircle2, Phone, ArrowRight } from 'lucide-react';
 import { BUSINESS, LOGO_URL } from '@/lib/constants';
 import { useSeo, breadcrumbList } from '@/lib/seo';
+import { trackGoogleAdsConversion, GOOGLE_ADS_FORM_CONVERSION } from '@/lib/analytics';
 
 export default function ThankYou() {
+  /* Fire Google Ads conversion on page load — belt-and-suspenders alongside
+     the trackLeadSubmission() call on the form page.  Google Ads de-dupes
+     because the conversion action is set to "One conversion" per click. */
+  useEffect(() => {
+    trackGoogleAdsConversion(GOOGLE_ADS_FORM_CONVERSION);
+  }, []);
+
   useSeo({
     title: 'Thank You — Request Received',
     description:
