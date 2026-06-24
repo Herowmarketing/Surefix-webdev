@@ -56,6 +56,10 @@ declare global {
 
 function gtag(...args: unknown[]) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
+  // Skip analytics/conversions during headless prerendering (build-time). The
+  // prerender bot reports navigator.webdriver === true; firing conversion
+  // events here opens a persistent tracking iframe that stalls networkidle.
+  if (typeof navigator !== 'undefined' && navigator.webdriver) return;
   window.gtag(...args);
 }
 
