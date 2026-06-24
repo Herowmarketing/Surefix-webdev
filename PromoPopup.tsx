@@ -60,7 +60,7 @@ export default function PromoPopup() {
   useEffect(() => {
     if (triggered.current) return;
     if (typeof window === 'undefined') return;
-    if (location.startsWith('/thank-you')) return;
+    if (location.startsWith('/thank-you') || location.startsWith('/contact')) return;
     if (shouldSuppress()) return;
 
     let timer = 0;
