@@ -8,7 +8,7 @@ export const GOOGLE_ADS_ID =
 export const GOOGLE_ADS_FORM_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_FORM_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
 export const GOOGLE_ADS_PHONE_CONVERSION =
-  import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || '';
+  import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || 'GItgCMrltsQcEJCDy_RD';
 /** Thank-you page conversion — fires once on the /thank-you page load. */
 export const GOOGLE_ADS_THANKYOU_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_THANKYOU_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
@@ -228,5 +228,5 @@ export function trackPhoneClick(phoneHref: string, pagePath: string) {
     link_url: phoneHref,
     page_path: pagePath,
   });
-  trackGoogleAdsConversion(GOOGLE_ADS_PHONE_CONVERSION);
+  trackGoogleAdsConversion(GOOGLE_ADS_PHONE_CONVERSION, { value: 1.0, currency: 'USD' });
 }
