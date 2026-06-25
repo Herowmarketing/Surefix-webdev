@@ -8,7 +8,8 @@
  */
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { getWriteClient } from './_lib/sanityServer.js';
-import { sendOperationsEmail, line, type NotifyResult } from './_lib/notify.js';
+import { sendOperationsEmail, sendEmail, line, type NotifyResult } from './_lib/notify.js';
+import { renderBrandedEmail, renderBrandedText, type DetailRow } from './_lib/emailTemplate.js';
 import {
   cleanString,
   optionalString,
@@ -177,6 +178,40 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await client.patch(createdId).set({ notificationStatus }).commit();
   } catch (err) {
     console.warn('[candidate-application] Could not record notificationStatus:', err);
+  }
+
+  // ── Confirmation email to applicant (best-effort) ─────────────────────────
+  try {
+    const firstName = fullName.split(' ')[0] || '';
+    const highlightRows: DetailRow[] = [
+      { label: 'Position', value: positionAppliedFor },
+      { label: 'Location', value: location },
+      { label: 'Experience', value: yearsOfExperience },
+      { label: 'Availability', value: availabilityOrStartDate },
+    ];
+    const emailOpts = {
+      preheader: 'We received your Sure-Fix Remodeling application.',
+      heading: firstName ? `Thanks, ${firstName}!` : 'Application received',
+      paragraphs: [
+        `Thank you for applying to Sure-Fix Remodeling. We received your application and our team will review your experience.`,
+        `If your background matches what we need, we will reach out with next steps. You are also welcome to call us with questions.`,
+      ],
+      highlightTitle: 'Your application',
+      highlightRows,
+      ctaLabel: 'Visit Our Website',
+      ctaHref: 'https://surefixremodelinglv.com/careers',
+    };
+
+    await sendEmail({
+      to: email,
+      subject: 'Thanks for applying to Sure-Fix Remodeling',
+      text: renderBrandedText(emailOpts),
+      html: renderBrandedEmail(emailOpts),
+      fromName: 'Sure-Fix Remodeling',
+      replyTo: process.env.OPERATIONS_MANAGER_EMAIL || undefined,
+    });
+  } catch (err) {
+    console.warn('[candidate-application] Could not send applicant confirmation:', err);
   }
 
   return res.status(200).json({ ok: true, id: createdId });

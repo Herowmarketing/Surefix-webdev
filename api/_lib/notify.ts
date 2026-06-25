@@ -6,11 +6,13 @@
  * sending is skipped gracefully (logged) so a missing email setup never blocks a
  * Sanity submission. Callers should record the returned status on the document.
  *
- * Required environment variables (all secret — set in Vercel, never client-side):
+ * Supported environment variables (all secret — set in Vercel, never client-side):
  *   GMAIL_CLIENT_ID
  *   GMAIL_CLIENT_SECRET
  *   GMAIL_REFRESH_TOKEN
  *   GMAIL_FROM_EMAIL           (the Gmail account that sends the notification)
+ *   GMAIL_APP_PASSWORD         (recommended stable Gmail fallback; requires 2FA)
+ *   SMTP_HOST / SMTP_PORT / SMTP_USER / SMTP_PASSWORD / SMTP_FROM_EMAIL
  *   OPERATIONS_MANAGER_EMAIL   (recipient — falls back to GMAIL_FROM_EMAIL)
  */
 import nodemailer from 'nodemailer';
@@ -47,6 +49,23 @@ function getGmailCreds() {
   return { clientId, clientSecret, refreshToken, from };
 }
 
+function getGmailAppPasswordCreds() {
+  const user = process.env.GMAIL_FROM_EMAIL;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+  if (!user || !pass) return null;
+  return { user, pass };
+}
+
+function getSmtpCreds() {
+  const host = process.env.SMTP_HOST;
+  const port = Number(process.env.SMTP_PORT || 587);
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASSWORD;
+  const from = process.env.SMTP_FROM_EMAIL || process.env.GMAIL_FROM_EMAIL || user;
+  if (!host || !user || !pass || !from) return null;
+  return { host, port, user, pass, from };
+}
+
 /**
  * Low-level send to an explicit recipient.
  * Never throws — always resolves with a NotifyResult the caller can persist.
@@ -59,9 +78,11 @@ export async function sendEmail({
   fromName = 'Sure-Fix Remodeling',
   replyTo,
 }: SendToArgs): Promise<NotifyResult> {
-  const creds = getGmailCreds();
-  if (!creds) {
-    const reason = 'Gmail env vars not configured — email skipped.';
+  const smtp = getSmtpCreds();
+  const appPassword = getGmailAppPasswordCreds();
+  const oauth = getGmailCreds();
+  if (!smtp && !appPassword && !oauth) {
+    const reason = 'Email env vars not configured — email skipped.';
     console.warn(`[notify] ${reason}`);
     return { ok: false, skipped: true, reason };
   }
@@ -70,19 +91,34 @@ export async function sendEmail({
   }
 
   try {
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: creds.from,
-        clientId: creds.clientId,
-        clientSecret: creds.clientSecret,
-        refreshToken: creds.refreshToken,
-      },
-    });
+    const transporter = nodemailer.createTransport(
+      smtp
+        ? {
+            host: smtp.host,
+            port: smtp.port,
+            secure: smtp.port === 465,
+            auth: { user: smtp.user, pass: smtp.pass },
+          }
+        : appPassword
+          ? {
+              service: 'gmail',
+              auth: { user: appPassword.user, pass: appPassword.pass },
+            }
+          : {
+              service: 'gmail',
+              auth: {
+                type: 'OAuth2',
+                user: oauth!.from,
+                clientId: oauth!.clientId,
+                clientSecret: oauth!.clientSecret,
+                refreshToken: oauth!.refreshToken,
+              },
+            },
+    );
+    const fromAddress = smtp?.from || appPassword?.user || oauth!.from;
 
     await transporter.sendMail({
-      from: `${fromName} <${creds.from}>`,
+      from: `${fromName} <${fromAddress}>`,
       to,
       replyTo,
       subject,

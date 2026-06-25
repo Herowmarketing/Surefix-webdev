@@ -18,9 +18,9 @@ import { GIFT_CARD_TERMS } from '@/lib/promotions-data';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
 
-const STORAGE_KEY = 'sf_promo_500_popup_v1';
+const STORAGE_KEY = 'sf_promo_500_popup_v2';
 const SUPPRESS_DAYS = 7;
-const DWELL_MS = 45000;
+const DWELL_MS = 12000;
 
 function shouldSuppress(): boolean {
   try {

@@ -8,37 +8,37 @@ import LeadStepper from './LeadStepper';
 import PromoPopup from './PromoPopup';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Redirect, Route, Switch, useLocation } from "wouter";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Layout from "./Layout";
 import { LOGO_URL } from "./constants";
 import AnalyticsManager from "./components/AnalyticsManager";
 
-// Pages (flat layout in this repo)
-import Home from "./Home";
-import Services from "./Services";
-import About from "./About";
-import Contact from "./Contact";
-import Reviews from "./Reviews";
-import NotFound from "./NotFound";
-import Showroom from "./Showroom";
-import InteriorDesign from "./InteriorDesign";
-import Kitchen from "./Kitchen";
-import Bathroom from "./Bathroom";
-import Basement from "./Basement";
-import Exterior from "./Exterior";
-import Flooring from "./Flooring";
-import Additions from "./Additions";
-import Publications from "./Publications";
-import PublicationArticle from "./PublicationArticle";
-import Promotions from "./Promotions";
-import Locations from "./Locations";
-import LocationDetail from "./LocationDetail";
-import BlogPost from "./BlogPost";
-import Careers from "./Careers";
-import FAQ from "./FAQ";
-import ThankYou from "./ThankYou";
+// Pages are code-split so the first visit does not download every route.
+const Home = lazy(() => import("./Home"));
+const Services = lazy(() => import("./Services"));
+const About = lazy(() => import("./About"));
+const Contact = lazy(() => import("./Contact"));
+const Reviews = lazy(() => import("./Reviews"));
+const NotFound = lazy(() => import("./NotFound"));
+const Showroom = lazy(() => import("./Showroom"));
+const InteriorDesign = lazy(() => import("./InteriorDesign"));
+const Kitchen = lazy(() => import("./Kitchen"));
+const Bathroom = lazy(() => import("./Bathroom"));
+const Basement = lazy(() => import("./Basement"));
+const Exterior = lazy(() => import("./Exterior"));
+const Flooring = lazy(() => import("./Flooring"));
+const Additions = lazy(() => import("./Additions"));
+const Publications = lazy(() => import("./Publications"));
+const PublicationArticle = lazy(() => import("./PublicationArticle"));
+const Promotions = lazy(() => import("./Promotions"));
+const Locations = lazy(() => import("./Locations"));
+const LocationDetail = lazy(() => import("./LocationDetail"));
+const BlogPost = lazy(() => import("./BlogPost"));
+const Careers = lazy(() => import("./Careers"));
+const FAQ = lazy(() => import("./FAQ"));
+const ThankYou = lazy(() => import("./ThankYou"));
 import Maintenance from "@/src/pages/Maintenance";
 
 const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
@@ -178,33 +178,35 @@ function Router() {
       <AnalyticsManager />
       <ScrollManager />
       <Layout>
-        <Switch>
-          <Route path="/" component={Home} />
-          <Route path="/services" component={Services} />
-          <Route path="/services/kitchen" component={Kitchen} />
-          <Route path="/services/bathroom" component={Bathroom} />
-          <Route path="/services/basement" component={Basement} />
-          <Route path="/services/exterior" component={Exterior} />
-          <Route path="/services/flooring" component={Flooring} />
-          <Route path="/services/additions" component={Additions} />
-          <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
-          <Route path="/reviews" component={Reviews} />
-          <Route path="/showroom" component={Showroom} />
-          <Route path="/interior-design" component={InteriorDesign} />
-          <Route path="/publications/blog/:slug" component={PublicationArticle} />
-          <Route path="/publications" component={Publications} />
-          <Route path="/blog/:slug" component={BlogPost} />
-          <Route path="/blog">{() => <Redirect to="/publications" />}</Route>
-          <Route path="/promotions" component={Promotions} />
-          <Route path="/locations/:slug" component={LocationDetail} />
-          <Route path="/locations" component={Locations} />
-          <Route path="/careers" component={Careers} />
-          <Route path="/faq" component={FAQ} />
-          <Route path="/thank-you" component={ThankYou} />
-          <Route path="/404" component={NotFound} />
-          <Route component={NotFound} />
-        </Switch>
+        <Suspense fallback={null}>
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route path="/services" component={Services} />
+            <Route path="/services/kitchen" component={Kitchen} />
+            <Route path="/services/bathroom" component={Bathroom} />
+            <Route path="/services/basement" component={Basement} />
+            <Route path="/services/exterior" component={Exterior} />
+            <Route path="/services/flooring" component={Flooring} />
+            <Route path="/services/additions" component={Additions} />
+            <Route path="/about" component={About} />
+            <Route path="/contact" component={Contact} />
+            <Route path="/reviews" component={Reviews} />
+            <Route path="/showroom" component={Showroom} />
+            <Route path="/interior-design" component={InteriorDesign} />
+            <Route path="/publications/blog/:slug" component={PublicationArticle} />
+            <Route path="/publications" component={Publications} />
+            <Route path="/blog/:slug" component={BlogPost} />
+            <Route path="/blog">{() => <Redirect to="/publications" />}</Route>
+            <Route path="/promotions" component={Promotions} />
+            <Route path="/locations/:slug" component={LocationDetail} />
+            <Route path="/locations" component={Locations} />
+            <Route path="/careers" component={Careers} />
+            <Route path="/faq" component={FAQ} />
+            <Route path="/thank-you" component={ThankYou} />
+            <Route path="/404" component={NotFound} />
+            <Route component={NotFound} />
+          </Switch>
+        </Suspense>
       </Layout>
     </>
   );

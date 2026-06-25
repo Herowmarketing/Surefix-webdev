@@ -3,7 +3,7 @@
  * Real address, phone, hours, and estimate form
  */
 import { motion } from 'framer-motion';
-import { Phone, MapPin, Clock, Mail, ArrowRight, Star } from 'lucide-react';
+import { Phone, MapPin, Clock, Mail, ArrowRight, Star, Home } from 'lucide-react';
 import { BUSINESS, MASCOT_URL } from '@/lib/constants';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -18,9 +18,18 @@ const fadeUp = {
 const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.1 } } };
 
 const SERVICES_LIST = ['Kitchen Remodeling', 'Bathroom Remodeling', 'Basement Finishing', 'Exterior Remodeling', 'Flooring', 'Home Additions', 'Other'];
+const ZIP_RE = /^\d{5}$/;
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', phone: '', email: '', service: '', message: '' });
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    service: '',
+    address: '',
+    zip: '',
+    message: '',
+  });
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -43,8 +52,8 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (submitting) return;
-    if (!form.name || !form.phone || !form.email || !form.service) {
-      toast.error('Please fill in your name, phone, email, and service type.');
+    if (!form.name || !form.phone || !form.email || !form.service || !form.address || !ZIP_RE.test(form.zip)) {
+      toast.error('Please fill in your name, phone, email, service type, project address, and 5-digit ZIP code.');
       return;
     }
 
@@ -60,6 +69,7 @@ export default function Contact() {
           name: form.name,
           phone: form.phone,
           email: form.email,
+          projectAddress: `${form.address.trim()}, ${form.zip.trim()}`,
           projectType: form.service,
           timeline: 'Contact page request',
           projectDetails: form.message,
@@ -184,9 +194,47 @@ export default function Contact() {
                     {SERVICES_LIST.map(s => <option key={s} value={s} style={{ background: '#0d1117' }}>{s}</option>)}
                   </select>
                 </motion.div>
-                <motion.div variants={fadeUp} custom={5} className="mb-6">
-                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>Tell Us More</label>
+                <div className="grid grid-cols-1 sm:grid-cols-[1fr_160px] gap-4 mb-4">
+                  <motion.div variants={fadeUp} custom={5}>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>Project Address *</label>
+                    <div className="relative">
+                      <Home size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        required
+                        value={form.address}
+                        onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
+                        placeholder="Street address"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl text-slate-900 text-sm bg-white outline-none focus:border-[#394696] transition-colors"
+                        style={{ background: '#f8fafc', border: '1px solid #e2e8f0', fontFamily: 'Figtree, sans-serif' }}
+                      />
+                    </div>
+                  </motion.div>
+                  <motion.div variants={fadeUp} custom={6}>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>ZIP Code *</label>
+                    <div className="relative">
+                      <MapPin size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        required
+                        inputMode="numeric"
+                        maxLength={5}
+                        value={form.zip}
+                        onChange={e => setForm(f => ({ ...f, zip: e.target.value.replace(/\D/g, '').slice(0, 5) }))}
+                        placeholder="18042"
+                        className="w-full pl-10 pr-4 py-3 rounded-xl text-slate-900 text-sm bg-white outline-none focus:border-[#394696] transition-colors"
+                        style={{ background: '#f8fafc', border: '1px solid #e2e8f0', fontFamily: 'Figtree, sans-serif' }}
+                      />
+                    </div>
+                    {form.zip && !ZIP_RE.test(form.zip) ? (
+                      <p className="mt-1 text-xs font-semibold text-[#983631]">Enter a 5-digit ZIP.</p>
+                    ) : null}
+                  </motion.div>
+                </div>
+                <motion.div variants={fadeUp} custom={7} className="mb-6">
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2" style={{ fontFamily: 'Figtree, sans-serif' }}>Tell Us More *</label>
                   <textarea
+                    required
                     rows={4}
                     value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
@@ -200,7 +248,7 @@ export default function Contact() {
                     {error}
                   </p>
                 )}
-                <motion.button variants={fadeUp} custom={6} type="submit"
+                <motion.button variants={fadeUp} custom={8} type="submit"
                   disabled={submitting}
                   className="w-full py-4 rounded-xl text-sm font-black text-slate-900 uppercase tracking-wider flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
                   style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', opacity: submitting ? 0.7 : 1 }}>
