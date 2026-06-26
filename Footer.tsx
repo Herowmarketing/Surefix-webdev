@@ -53,8 +53,8 @@ export default function Footer() {
               <Link href="/promotions" className="text-[#983631] transition-colors hover:text-[#7a2a26]">
                 Promotions
               </Link>
-              <Link href="/publications" className="text-[#394696] transition-colors hover:text-[#2a3578]">
-                Publications &amp; blog
+              <Link href="/resources" className="text-[#394696] transition-colors hover:text-[#2a3578]">
+                Resources
               </Link>
               <Link href="/locations" className="text-slate-600 transition-colors hover:text-slate-900">
                 Locations

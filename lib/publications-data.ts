@@ -1,10 +1,10 @@
 /**
- * Publications & blog listings — blog slugs match lib/blog-content.ts
+ * Static fallback resources — live blog/resource content comes from Sanity.
  */
 
 import { BUSINESS } from '@/lib/constants';
 
-export type PublicationKind = 'print' | 'blog';
+export type PublicationKind = 'print' | 'blog' | 'featured';
 
 export type PublicationItem = {
   readonly id: string;
@@ -23,7 +23,7 @@ function printRequestSubject(title: string): string {
   return `Request print materials: ${title}`;
 }
 
-/** Print: request-by-email until PDFs are hosted — each card is actionable */
+/** Print fallback: request-by-email until matching resources are added in Sanity. */
 export const PRINT_PUBLICATIONS: readonly PublicationItem[] = [
   {
     id: 'print-1',
@@ -60,7 +60,7 @@ export const PRINT_PUBLICATIONS: readonly PublicationItem[] = [
   },
 ];
 
-/** Online blog — full articles on-site */
+/** Static fallback articles — full articles on-site. */
 export const BLOG_POSTS: readonly PublicationItem[] = [
   {
     id: 'blog-1',

@@ -55,34 +55,68 @@ export type PostDetail = {
   categories: string[] | null;
 };
 
-const POST_LIST_QUERY = `*[_type == "post" && defined(slug.current)] | order(coalesce(publishedAt, _createdAt) desc) {
+export type ResourceListItem = {
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  kind: string | null;
+  excerpt: string | null;
+  dateLabel: string | null;
+  formatLabel: string | null;
+  image: SanityImageRef | null;
+  fileUrl: string | null;
+  externalUrl: string | null;
+  ctaLabel: string | null;
+};
+
+const BLOG_TYPES = ['post', 'blogPost', 'article'];
+
+const POST_LIST_QUERY = `*[_type in $types && defined(slug.current)] | order(coalesce(publishedAt, date, _createdAt) desc) {
   _id,
-  title,
+  "title": coalesce(title, headline),
   "slug": slug.current,
-  publishedAt,
-  mainImage,
-  "author": author->name,
-  "categories": categories[]->title,
-  "excerpt": pt::text(body[0])
+  "publishedAt": coalesce(publishedAt, date, _createdAt),
+  "mainImage": coalesce(mainImage, image, coverImage),
+  "author": coalesce(author->name, author.name, author),
+  "categories": coalesce(categories[]->title, categories[], []),
+  "excerpt": coalesce(excerpt, description, pt::text(body[0]), pt::text(content[0]))
 }`;
 
-const POST_DETAIL_QUERY = `*[_type == "post" && slug.current == $slug][0] {
+const POST_DETAIL_QUERY = `*[_type in $types && slug.current == $slug][0] {
+  _id,
+  "title": coalesce(title, headline),
+  "slug": slug.current,
+  "publishedAt": coalesce(publishedAt, date, _createdAt),
+  "mainImage": coalesce(mainImage, image, coverImage),
+  "body": coalesce(body, content),
+  "author": coalesce(author->name, author.name, author),
+  "categories": coalesce(categories[]->title, categories[], [])
+}`;
+
+const RESOURCE_LIST_QUERY = `*[_type == "resourceItem" && isPublished == true] | order(coalesce(publishedAt, _createdAt) desc) {
   _id,
   title,
   "slug": slug.current,
-  publishedAt,
-  mainImage,
-  body,
-  "author": author->name,
-  "categories": categories[]->title
+  kind,
+  excerpt,
+  dateLabel,
+  formatLabel,
+  image,
+  "fileUrl": file.asset->url,
+  externalUrl,
+  ctaLabel
 }`;
 
 export function fetchPosts(): Promise<PostListItem[]> {
-  return sanityClient.fetch<PostListItem[]>(POST_LIST_QUERY);
+  return sanityClient.fetch<PostListItem[]>(POST_LIST_QUERY, { types: BLOG_TYPES });
 }
 
 export function fetchPost(slug: string): Promise<PostDetail | null> {
-  return sanityClient.fetch<PostDetail | null>(POST_DETAIL_QUERY, { slug });
+  return sanityClient.fetch<PostDetail | null>(POST_DETAIL_QUERY, { slug, types: BLOG_TYPES });
+}
+
+export function fetchResourceItems(): Promise<ResourceListItem[]> {
+  return sanityClient.fetch<ResourceListItem[]>(RESOURCE_LIST_QUERY);
 }
 
 /** Format an ISO date as e.g. "May 22, 2026". Returns null for missing input. */

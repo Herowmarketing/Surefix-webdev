@@ -49,6 +49,14 @@ const PORT = Number.parseInt(process.env.PRERENDER_PORT ?? '4180', 10);
 const SANITY_PROJECT_ID = 'kqp67u17';
 const SANITY_DATASET = 'production';
 const SANITY_API_VERSION = '2024-01-01';
+const MACOS_CHROME_PATH = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
+
+function getLocalChromePath() {
+  if (process.platform === 'darwin' && fs.existsSync(MACOS_CHROME_PATH)) {
+    return MACOS_CHROME_PATH;
+  }
+  return undefined;
+}
 
 /* ─────────────────────────── ROUTE ENUMERATION ─────────────────────────── */
 
@@ -67,6 +75,7 @@ const STATIC_ROUTES = [
   '/showroom',
   '/interior-design',
   '/promotions',
+  '/resources',
   '/publications',
   '/locations',
   '/careers',
@@ -85,6 +94,7 @@ const LOCATION_SLUGS = [
   'phillipsburg-nj',
   'hackettstown-nj',
   'washington-nj',
+  'milford-nj',
 ];
 
 // Static blog posts in /publications/blog/:slug (lib/blog-content.ts)
@@ -96,7 +106,7 @@ const PUBLICATION_BLOG_SLUGS = [
 
 async function fetchSanityBlogSlugs() {
   const groq = encodeURIComponent(
-    `*[_type == "post" && defined(slug.current)]{ "slug": slug.current }`,
+    `*[_type in ["post", "blogPost", "article"] && defined(slug.current)]{ "slug": slug.current }`,
   );
   const url = `https://${SANITY_PROJECT_ID}.api.sanity.io/v${SANITY_API_VERSION}/data/query/${SANITY_DATASET}?query=${groq}`;
   try {
@@ -223,6 +233,7 @@ async function main() {
       }
     : {
         args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
+        executablePath: getLocalChromePath(),
         headless: true,
       };
   const browser = await puppeteer.launch(launchOptions);

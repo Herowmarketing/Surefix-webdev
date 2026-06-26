@@ -39,6 +39,14 @@ export default defineConfig({
               .schemaType('post')
               .child(S.documentTypeList('post').title('Blog Posts')),
             S.listItem()
+              .title('Resources / Print Guides')
+              .schemaType('resourceItem')
+              .child(
+                S.documentTypeList('resourceItem')
+                  .title('Resources / Print Guides')
+                  .defaultOrdering([{field: 'publishedAt', direction: 'desc'}]),
+              ),
+            S.listItem()
               .title('Authors')
               .schemaType('author')
               .child(S.documentTypeList('author').title('Authors')),
