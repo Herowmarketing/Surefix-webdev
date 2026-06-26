@@ -1,0 +1,230 @@
+%PDF-1.4
+%‚„œ”
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Length 4155 >>
+stream
+BT 0.450 0.490 0.560 rg /F1 8 Tf 1 0 0 1 54 26 Tm (Sure-Fix Remodeling Post-Launch Report) Tj ET
+0.050 0.080 0.220 rg 0 696 612 96 re f
+BT 1.000 1.000 1.000 rg /F2 11 Tf 1 0 0 1 54 750 Tm (Sure-Fix Website) Tj ET
+BT 1.000 1.000 1.000 rg /F2 23 Tf 1 0 0 1 54 722 Tm (Post-Launch Edits and Adjustments) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 666 Tm (This report summarizes the website edits, feature additions, integrations, tracking) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 652 Tm (updates, SEO work, and reliability improvements completed after the site went live.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 638 Tm (Report window: June 1-26, 2026.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 18 Tf 1 0 0 1 54 612 Tm (Executive Summary) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 588 Tm (The post-launch work focused on converting the site from a polished marketing website) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 574 Tm (into a measurable lead-generation system: stronger forms, Sanity-backed CRM storage,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 560 Tm (email notifications, branded confirmations, conversion tracking, SEO improvements,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 546 Tm (service-page imagery, and a faster initial bundle.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 18 Tf 1 0 0 1 54 520 Tm (Summary Metrics) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 496 Tm (- Report window: June 1-26, 2026) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 483 Tm (- Post-launch commits: 50+) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 470 Tm (- Current initial JavaScript before gzip: 371 KB) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 457 Tm (- Core intake endpoints: 2) Tj ET
+BT 0.050 0.070 0.120 rg /F2 18 Tf 1 0 0 1 54 436 Tm (Major Change Areas) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 412 Tm (Lead Capture & Forms) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 394 Tm (Stepper expanded into a qualified 4-step lead flow. Contact page now captures address,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 380 Tm (ZIP, service, project details, and routes to the backend.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 362 Tm (Email & CRM Workflow) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 344 Tm (Added Sanity-backed project inquiries and candidate applications, internal) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 330 Tm (notifications, branded customer confirmation emails, Gmail App Password support, and) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 316 Tm (SMTP fallback.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 298 Tm (Analytics & Ads) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 280 Tm (Added GA4, Google Ads base tag, form conversion, thank-you conversion, phone click) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 266 Tm (conversion, enhanced conversions in-page user data, and attribution capture.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 248 Tm (SEO & Content) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 230 Tm (Unified publications/blog hub, added FAQ page with FAQPage structured data, Bing) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 216 Tm (verification, route prerender coverage, metadata refinements, and link-preview assets.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 198 Tm (Showroom & Service Pages) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 180 Tm (Added/updated service galleries, showroom brand imagery, showroom video showcase,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 166 Tm (certified installer messaging, and fixes for brand pills, image positioning, and video) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 152 Tm (autoplay.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 134 Tm (Performance & Reliability) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 116 Tm (Code-split page routes, reduced initial JS from roughly 750 KB to 371 KB before gzip,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 102 Tm (fixed prerender timeouts caused by analytics, and improved production deploy flow.) Tj ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 11 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Length 5760 >>
+stream
+BT 0.450 0.490 0.560 rg /F1 8 Tf 1 0 0 1 54 26 Tm (Sure-Fix Remodeling Post-Launch Report) Tj ET
+BT 0.050 0.070 0.120 rg /F2 18 Tf 1 0 0 1 54 726 Tm (Deployment Timeline) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 702 Tm (- Jun 1-2: Hero/link preview fixes - stopped hero frame flash and corrected social) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 689 Tm (  preview imagery.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 676 Tm (- Jun 9: Navigation, service pages, promotions - tightened nav, added Bing) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 663 Tm (  verification, expanded basement/additions imagery, overhauled promotions.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 650 Tm (- Jun 10: Showroom, careers, Sanity intake - added Careers, Sanity CRM schemas/API) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 637 Tm (  endpoints, showroom video and brand/product updates, Design/About fixes.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 624 Tm (- Jun 16-17: Analytics and conversion tracking - added GA4, Google Ads, form) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 611 Tm (  conversion tracking, thank-you redirect, attribution storage, weekend hours.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 598 Tm (- Jun 23-24: Lead generation upgrades - added FAQ, unified publications/blog, $500) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 585 Tm (  popup, branded prospect emails, click-to-call tracking, and stepper/contact) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 572 Tm (  fixes.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 559 Tm (- Jun 25-26: Email reliability and speed - added Gmail App Password/SMTP fallback,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 546 Tm (  redeployed for env vars, and code-split route bundles for faster initial load.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 18 Tf 1 0 0 1 54 525 Tm (Detailed Report) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 501 Tm (Lead Capture and Intake) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 483 Tm (- Lead Stepper now asks project type, timeline, project details, preferred contact) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 470 Tm (  method, name, phone, email, project address, and required ZIP.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 457 Tm (- Contact page form now submits to /api/project-inquiry and includes address, ZIP,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 444 Tm (  project details, service type, and attribution.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 431 Tm (- $500 offer popup submits to the same backend so promotional leads land in Sanity) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 418 Tm (  with the rest of the project inquiries.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 405 Tm (- Form submissions redirect to /thank-you for conversion tracking instead of) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 392 Tm (  leaving users in a modal-only success state.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 379 Tm (- Honeypot spam fields were added to reduce automated form abuse without affecting) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 366 Tm (  normal users.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 353 Tm (Email and Sanity CRM) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 335 Tm (- Project inquiries are stored as Sanity projectInquiry documents with status,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 322 Tm (  priority, attribution, raw payload, and notification status.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 309 Tm (- Candidate applications are stored as Sanity candidateApplication documents with) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 296 Tm (  role, experience, links, and notification status.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 283 Tm (- Internal operations emails are sent on project inquiries and candidate) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 270 Tm (  applications.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 257 Tm (- Prospects receive branded confirmation emails matching Sure-Fix styling, with a) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 244 Tm (  PNG logo created for email-client compatibility.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 231 Tm (- Applicants now receive branded confirmation emails after submitting a career) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 218 Tm (  application.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 205 Tm (- Email delivery supports Gmail OAuth, Gmail App Password, or generic SMTP. App) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 192 Tm (  Password is the recommended production path.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 179 Tm (Analytics, Ads, and Attribution) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 161 Tm (- GA4 tag G-RE67MCL4PC added site-wide.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 148 Tm (- Google Ads tag AW-18229674384 added site-wide.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 135 Tm (- Form submission conversion and thank-you page conversion were wired into the) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 122 Tm (  analytics layer.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 109 Tm (- Phone numbers were converted to clickable tel: links where needed, and all phone) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 96 Tm (  clicks now fire the click-to-call conversion label.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 83 Tm (- Google Ads enhanced conversions were updated based on the diagnostics alert to) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 70 Tm (  use manual in-page code in addition to automatic collection.) Tj ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 11 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 5670 >>
+stream
+BT 0.450 0.490 0.560 rg /F1 8 Tf 1 0 0 1 54 26 Tm (Sure-Fix Remodeling Post-Launch Report) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 734 Tm (- Lead forms now pass first-party user data to the Google tag before conversion) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 721 Tm (  events: email, phone number, first name, last name, postal code, and country) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 708 Tm (  where available.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 695 Tm (- The thank-you page reads pending enhanced-conversion user data from session) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 682 Tm (  storage so redirect-based conversion events also include user-provided data.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 669 Tm (- UTM parameters, Google/Bing/Facebook click IDs, referrer, landing page, and) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 656 Tm (  conversion page are captured and sent with inquiries.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 643 Tm (- Analytics/conversions are skipped during headless prerendering to prevent build-) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 630 Tm (  time timeouts and avoid false conversion pings.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 617 Tm (Content, SEO, and Routing) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 599 Tm (- Publications and blog were consolidated into a single /publications hub.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 586 Tm (- Old /blog index now redirects to /publications, while individual /blog/:slug) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 573 Tm (  routes remain supported.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 560 Tm (- FAQ page was added and wired into navigation, footer, SEO config, and prerender) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 547 Tm (  routes.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 534 Tm (- FAQPage structured data was added for search eligibility.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 521 Tm (- Bing Webmaster verification meta tag was added.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 508 Tm (- Google/iMessage link previews were updated with showroom poster/video assets and) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 495 Tm (  H.264-compatible video.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 482 Tm (Visual and UX Adjustments) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 464 Tm (- Welcome loader added before the site appears.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 451 Tm (- Scroll position preservation added for browser refreshes.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 438 Tm (- Hero scroll indicator and nav layout were refined.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 425 Tm (- Weekend hours added across visible business-hour areas.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 412 Tm (- Showroom page fixes included Cambria image positioning, flooring brand pill) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 399 Tm (  spacing, plumbing brand pills, and video autoplay.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 386 Tm (- Popup behavior was adjusted so it is visible again, uses a new storage key, and) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 373 Tm (  does not appear on /contact where it could block the form.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 360 Tm (Service Pages and Image Assets) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 342 Tm (- Basement and additions pages received expanded imagery and improved customer-) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 329 Tm (  focused copy.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 316 Tm (- Basement page now emphasizes usable square footage gains.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 303 Tm (- Additions page includes in-law suite language.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 290 Tm (- Exterior galleries were replaced/expanded with outdoor living, roof, siding,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 277 Tm (  fence, and pool-deck assets.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 264 Tm (- Flooring gallery was replaced with tile, luxury carpet, office carpet, LVP, and) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 251 Tm (  a floor-focused basement image.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 238 Tm (- Bathroom gallery received an additional portfolio image.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 225 Tm (- Images containing competitor/signage issues were replaced.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 212 Tm (Careers and Hiring) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 194 Tm (- Careers page was added and linked from nav/footer.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 181 Tm (- Careers page was included in prerendering.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 168 Tm (- Plumber role was added.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 155 Tm (- Project Manager role and salary ranges were removed.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 142 Tm (- Career application modal submits to Sanity and now sends internal and applicant) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 129 Tm (  confirmation emails.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 13 Tf 1 0 0 1 54 116 Tm (Performance and Build Reliability) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 98 Tm (- Route-level code splitting was added in App.tsx.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 85 Tm (- Initial JS bundle reduced from roughly 750 KB to 371 KB before gzip.) Tj ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 11 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 3235 >>
+stream
+BT 0.450 0.490 0.560 rg /F1 8 Tf 1 0 0 1 54 26 Tm (Sure-Fix Remodeling Post-Launch Report) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 734 Tm (- Prerender script coverage was updated for new routes like /faq, /careers, and) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 721 Tm (  /thank-you.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 708 Tm (- Analytics calls are disabled for Puppeteer/headless prerender to prevent) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 695 Tm (  networkidle0 timeouts.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 682 Tm (- Vercel production redeploys were triggered after email env-var changes so) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 669 Tm (  serverless functions picked up the latest configuration.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 18 Tf 1 0 0 1 54 648 Tm (Known External Dependencies) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 624 Tm (- Adaptify blog publishing: the live Sanity project kqp67u17 / production) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 611 Tm (  currently has zero post documents. The site is ready to display Sanity posts,) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 598 Tm (  but Adaptify is not publishing into this dataset.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 585 Tm (- Email operations validation: Gmail App Password setup was added and production) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 572 Tm (  was redeployed. Continue monitoring real submissions and spam/promotions folders) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 559 Tm (  for the operations inbox.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 546 Tm (- Ongoing performance: future improvements could include image audits, route) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 533 Tm (  preloading strategy, and further vendor chunk splitting if traffic data shows a) Tj ET
+BT 0.240 0.280 0.340 rg /F1 9 Tf 1 0 0 1 62 520 Tm (  need.) Tj ET
+BT 0.050 0.070 0.120 rg /F2 18 Tf 1 0 0 1 54 499 Tm (Most Recent Production Work) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 475 Tm (The most recent production changes improved the Contact page form, re-enabled visible) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 461 Tm (popup behavior without blocking the Contact page, added Gmail App Password and SMTP) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 447 Tm (email fallback support, added applicant confirmation emails, reduced the initial) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 433 Tm (JavaScript bundle through route-level code splitting, and added manual enhanced) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 419 Tm (conversions user data for Google Ads lead forms.) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 401 Tm (Google Ads diagnostics flagged enhanced conversions coverage with the alert 'Implement) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 387 Tm (in-page code in addition to Automatic for better results.' The site was updated to) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 373 Tm (send manual enhanced-conversion user data through the Google tag on project lead) Tj ET
+BT 0.240 0.280 0.340 rg /F1 10 Tf 1 0 0 1 54 359 Tm (conversions.) Tj ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 11 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R] /Count 4 >>
+endobj
+12 0 obj
+<< /Type /Catalog /Pages 11 0 R >>
+endobj
+xref
+0 13
+0000000000 65535 f 
+0000000015 00000 n 
+0000000085 00000 n 
+0000000160 00000 n 
+0000004367 00000 n 
+0000004504 00000 n 
+0000010316 00000 n 
+0000010453 00000 n 
+0000016175 00000 n 
+0000016312 00000 n 
+0000019599 00000 n 
+0000019737 00000 n 
+0000019814 00000 n 
+trailer
+<< /Size 13 /Root 12 0 R >>
+startxref
+19865
+%%EOF
