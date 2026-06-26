@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
-import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
+import { buildEnhancedConversionUserData, getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -82,7 +82,16 @@ export default function Contact() {
         throw new Error(data?.error || 'We could not submit your request. Please try again.');
       }
 
-      trackLeadSubmission({ projectType: form.service, timeline: 'Contact page request' });
+      trackLeadSubmission({
+        projectType: form.service,
+        timeline: 'Contact page request',
+        userData: buildEnhancedConversionUserData({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          zip: form.zip,
+        }),
+      });
       window.location.assign('/thank-you?source=contact-page');
     } catch (err) {
       const message =

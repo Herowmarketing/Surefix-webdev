@@ -14,6 +14,7 @@ export const GOOGLE_ADS_THANKYOU_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_THANKYOU_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
 
 const ATTRIBUTION_STORAGE_KEY = 'sf_attribution';
+const ENHANCED_CONVERSION_STORAGE_KEY = 'sf_enhanced_conversion_user_data';
 
 const ATTRIBUTION_PARAM_KEYS = [
   'utm_source',
@@ -45,6 +46,15 @@ export type AttributionPayload = {
   wbraid?: string;
   msclkid?: string;
   fbclid?: string;
+};
+
+export type EnhancedConversionUserData = {
+  email?: string;
+  phone?: string;
+  firstName?: string;
+  lastName?: string;
+  postalCode?: string;
+  country?: string;
 };
 
 declare global {
@@ -80,6 +90,107 @@ function safeWriteAttribution(payload: AttributionPayload) {
   } catch {
     // Storage may be disabled; GA events still fire without persisted attribution.
   }
+}
+
+function normalizeEmail(value?: string) {
+  return value?.trim().toLowerCase() || undefined;
+}
+
+function normalizePhone(value?: string) {
+  if (!value) return undefined;
+  const digits = value.replace(/\D/g, '');
+  if (!digits) return undefined;
+  if (digits.length === 10) return `+1${digits}`;
+  if (digits.length === 11 && digits.startsWith('1')) return `+${digits}`;
+  return value.trim() || undefined;
+}
+
+function splitName(fullName?: string) {
+  const parts = fullName?.trim().split(/\s+/).filter(Boolean) || [];
+  return {
+    firstName: parts[0],
+    lastName: parts.length > 1 ? parts.slice(1).join(' ') : undefined,
+  };
+}
+
+function buildUserDataPayload(input?: EnhancedConversionUserData) {
+  if (!input) return null;
+  const email = normalizeEmail(input.email);
+  const phone = normalizePhone(input.phone);
+  const firstName = input.firstName?.trim();
+  const lastName = input.lastName?.trim();
+  const postalCode = input.postalCode?.replace(/\D/g, '').slice(0, 5);
+  const country = input.country?.trim().toUpperCase() || 'US';
+
+  const address =
+    firstName && lastName && postalCode
+      ? {
+          first_name: firstName,
+          last_name: lastName,
+          postal_code: postalCode,
+          country,
+        }
+      : undefined;
+
+  if (!email && !phone && !address) return null;
+
+  return {
+    ...(email ? { email } : {}),
+    ...(phone ? { phone_number: phone } : {}),
+    ...(address ? { address } : {}),
+  };
+}
+
+function rememberEnhancedConversionUserData(input?: EnhancedConversionUserData) {
+  if (typeof window === 'undefined' || !input) return;
+  try {
+    window.sessionStorage.setItem(ENHANCED_CONVERSION_STORAGE_KEY, JSON.stringify(input));
+  } catch {
+    // Enhanced conversions are best-effort; normal conversions still fire.
+  }
+}
+
+export function getPendingEnhancedConversionUserData(): EnhancedConversionUserData | undefined {
+  if (typeof window === 'undefined') return undefined;
+  try {
+    const raw = window.sessionStorage.getItem(ENHANCED_CONVERSION_STORAGE_KEY);
+    return raw ? (JSON.parse(raw) as EnhancedConversionUserData) : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+export function clearPendingEnhancedConversionUserData() {
+  if (typeof window === 'undefined') return;
+  try {
+    window.sessionStorage.removeItem(ENHANCED_CONVERSION_STORAGE_KEY);
+  } catch {
+    // Ignore storage errors.
+  }
+}
+
+export function buildEnhancedConversionUserData(input: {
+  name?: string;
+  email?: string;
+  phone?: string;
+  zip?: string;
+  country?: string;
+}): EnhancedConversionUserData {
+  const { firstName, lastName } = splitName(input.name);
+  return {
+    email: input.email,
+    phone: input.phone,
+    firstName,
+    lastName,
+    postalCode: input.zip,
+    country: input.country || 'US',
+  };
+}
+
+export function setEnhancedConversionUserData(input?: EnhancedConversionUserData) {
+  const userData = buildUserDataPayload(input);
+  if (!userData) return;
+  gtag('set', 'user_data', userData);
 }
 
 function getParam(search: URLSearchParams, key: (typeof ATTRIBUTION_PARAM_KEYS)[number]) {
@@ -151,15 +262,21 @@ export function initGoogleAds() {
 export function trackGoogleAdsConversion(
   labelOrSendTo: string,
   params?: Record<string, string | number>,
+  userData?: EnhancedConversionUserData,
 ) {
   const sendTo = resolveSendTo(labelOrSendTo);
   if (!sendTo) return;
+  setEnhancedConversionUserData(userData);
   gtag('event', 'conversion', { send_to: sendTo, ...params });
 }
 
 /** Fire the Thank You Page Submission conversion (page-load based). */
-export function trackThankYouConversion() {
-  trackGoogleAdsConversion(GOOGLE_ADS_THANKYOU_CONVERSION, { value: 1.0, currency: 'USD' });
+export function trackThankYouConversion(userData?: EnhancedConversionUserData) {
+  trackGoogleAdsConversion(
+    GOOGLE_ADS_THANKYOU_CONVERSION,
+    { value: 1.0, currency: 'USD' },
+    userData,
+  );
 }
 
 export function trackPageView(path: string, title?: string) {
@@ -191,6 +308,7 @@ export function trackLeadStepperOpen(service?: string) {
 export function trackLeadSubmission(input: {
   projectType: string;
   timeline: string;
+  userData?: EnhancedConversionUserData;
 }) {
   trackEvent('generate_lead', {
     currency: 'USD',
@@ -203,7 +321,8 @@ export function trackLeadSubmission(input: {
     form_name: 'lead_stepper',
     project_type: input.projectType,
   });
-  trackGoogleAdsConversion(GOOGLE_ADS_FORM_CONVERSION);
+  rememberEnhancedConversionUserData(input.userData);
+  trackGoogleAdsConversion(GOOGLE_ADS_FORM_CONVERSION, undefined, input.userData);
 }
 
 export function trackCareerApplication(input: {

@@ -16,7 +16,7 @@ import { X, Phone, Mail, User, Gift, CheckCircle2 } from 'lucide-react';
 import { BUSINESS } from '@/lib/constants';
 import { GIFT_CARD_TERMS } from '@/lib/promotions-data';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
-import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
+import { buildEnhancedConversionUserData, getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
 
 const STORAGE_KEY = 'sf_promo_500_popup_v2';
 const SUPPRESS_DAYS = 7;
@@ -141,7 +141,15 @@ export default function PromoPopup() {
       if (!res.ok || !data.ok) {
         throw new Error(data?.error || 'Something went wrong. Please try again.');
       }
-      trackLeadSubmission({ projectType: '$500 Gift Card Offer', timeline: 'Promo popup' });
+      trackLeadSubmission({
+        projectType: '$500 Gift Card Offer',
+        timeline: 'Promo popup',
+        userData: buildEnhancedConversionUserData({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+        }),
+      });
       remember('submitted');
       setSubmitted(true);
     } catch (err) {

@@ -7,7 +7,7 @@ import { useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { BUSINESS, MASCOT_URL } from '@/lib/constants';
-import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
+import { buildEnhancedConversionUserData, getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
 
 const services = [
   'Kitchen Remodeling',
@@ -67,7 +67,15 @@ export default function ContactSection() {
         throw new Error(data?.error || 'We could not submit your request. Please try again.');
       }
 
-      trackLeadSubmission({ projectType, timeline: 'Homepage contact section request' });
+      trackLeadSubmission({
+        projectType,
+        timeline: 'Homepage contact section request',
+        userData: buildEnhancedConversionUserData({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+        }),
+      });
       window.location.assign('/thank-you?source=homepage-contact-section');
     } catch (err) {
       setError(

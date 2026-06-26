@@ -13,7 +13,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { X, ArrowRight, ArrowLeft, CheckCircle2, Phone, Mail, MapPin, User, Home } from 'lucide-react'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
-import { getAttributionPayload, trackLeadSubmission } from '@/lib/analytics'
+import { buildEnhancedConversionUserData, getAttributionPayload, trackLeadSubmission } from '@/lib/analytics'
 import { BUSINESS } from '@/lib/constants'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -495,7 +495,16 @@ export default function LeadStepper() {
       if (!res.ok || !data.ok) {
         throw new Error(data?.error || 'Something went wrong. Please try again.')
       }
-      trackLeadSubmission({ projectType: serviceLabel, timeline: timelineLabel })
+      trackLeadSubmission({
+        projectType: serviceLabel,
+        timeline: timelineLabel,
+        userData: buildEnhancedConversionUserData({
+          name: contact.name,
+          email: contact.email,
+          phone: contact.phone,
+          zip,
+        }),
+      })
       window.location.assign('/thank-you?source=lead-stepper')
     } catch (err) {
       setError(

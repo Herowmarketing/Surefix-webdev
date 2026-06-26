@@ -3,7 +3,13 @@ import { Link } from 'wouter';
 import { CheckCircle2, Phone, ArrowRight } from 'lucide-react';
 import { BUSINESS, LOGO_URL } from '@/lib/constants';
 import { useSeo, breadcrumbList } from '@/lib/seo';
-import { trackGoogleAdsConversion, GOOGLE_ADS_FORM_CONVERSION, trackThankYouConversion } from '@/lib/analytics';
+import {
+  clearPendingEnhancedConversionUserData,
+  getPendingEnhancedConversionUserData,
+  GOOGLE_ADS_FORM_CONVERSION,
+  trackGoogleAdsConversion,
+  trackThankYouConversion,
+} from '@/lib/analytics';
 
 export default function ThankYou() {
   // Fire Google Ads conversions on page load:
@@ -11,8 +17,10 @@ export default function ThankYou() {
   //  2. Form-submission conversion — belt-and-suspenders alongside the
   //     trackLeadSubmission() call on the form page (Google de-dupes per click).
   useEffect(() => {
-    trackThankYouConversion();
-    trackGoogleAdsConversion(GOOGLE_ADS_FORM_CONVERSION);
+    const userData = getPendingEnhancedConversionUserData();
+    trackThankYouConversion(userData);
+    trackGoogleAdsConversion(GOOGLE_ADS_FORM_CONVERSION, undefined, userData);
+    clearPendingEnhancedConversionUserData();
   }, []);
 
   useSeo({
