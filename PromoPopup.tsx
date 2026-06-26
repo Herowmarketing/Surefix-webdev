@@ -213,16 +213,16 @@ export default function PromoPopup() {
                   <Gift size={24} />
                 </span>
                 <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-white/75">
-                  Friends &amp; Family
+                  Friends &amp; Family Reward
                 </p>
                 <p
                   className="my-1 text-5xl font-black leading-none"
                   style={{ fontFamily: 'Figtree, sans-serif' }}
                 >
-                  $500 OFF
+                  EARN $500
                 </p>
                 <p className="text-sm font-semibold text-white/90">
-                  toward your Sure-Fix remodeling project
+                  gift card toward your remodeling project
                 </p>
               </div>
 
@@ -233,7 +233,7 @@ export default function PromoPopup() {
                     className="mb-2 text-xl font-black text-slate-900"
                     style={{ fontFamily: 'Figtree, sans-serif' }}
                   >
-                    Your $500 savings is reserved!
+                    You've earned your $500 gift card!
                   </h2>
                   <p className="mb-5 text-sm leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
                     Thanks{form.name ? `, ${form.name.split(' ')[0]}` : ''}! A member of our team will
@@ -254,8 +254,8 @@ export default function PromoPopup() {
                     className="mb-4 text-center text-sm leading-relaxed text-slate-600"
                     style={{ fontFamily: 'Georgia, serif' }}
                   >
-                    Drop your info and we&apos;ll lock in your <strong className="text-slate-900">$500 gift card</strong> —
-                    apply it toward any Sure-Fix transformation.
+                    Fill out your info below and earn a <strong className="text-slate-900">$500 gift card</strong> —
+                    redeemable toward any Sure-Fix remodeling project.
                   </p>
 
                   <div className="flex flex-col gap-3">
@@ -320,7 +320,7 @@ export default function PromoPopup() {
                         fontFamily: 'Figtree, sans-serif',
                       }}
                     >
-                      {submitting ? 'Reserving…' : 'Claim My $500 Gift Card'}
+                      {submitting ? 'Submitting…' : 'Earn My $500 Gift Card'}
                     </button>
 
                     <button
