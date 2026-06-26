@@ -42,6 +42,8 @@ export interface BrandedEmailOptions {
   /** Optional call-to-action button. */
   ctaLabel?: string;
   ctaHref?: string;
+  /** If set, renders a branded $500 gift card graphic with the recipient's name. */
+  giftCardRecipient?: string;
 }
 
 function esc(s: string): string {
@@ -54,6 +56,77 @@ function esc(s: string): string {
 
 const FONT =
   "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+
+/** Render a branded $500 gift card graphic suitable for inline email use. */
+function renderGiftCardBlock(recipientName: string): string {
+  const name = esc(recipientName || 'Valued Customer');
+  return `
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:4px 0 28px;">
+    <tr><td>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+        style="background:${BRAND.navy};border-radius:14px;overflow:hidden;">
+        <!-- Red accent bar -->
+        <tr>
+          <td style="height:5px;background:${BRAND.red};font-size:0;line-height:0;">&nbsp;</td>
+        </tr>
+        <!-- Card body -->
+        <tr><td style="padding:26px 28px 22px;">
+          <!-- Top row: logo + GIFT CARD label -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr>
+              <td>
+                <img src="${BRAND.logo}" width="110" alt="${esc(BRAND.name)}"
+                  style="display:block;width:110px;height:auto;border:0;" />
+              </td>
+              <td align="right" valign="top">
+                <p style="margin:0;font-family:${FONT};font-size:9px;font-weight:700;
+                  letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.55);">
+                  GIFT CARD
+                </p>
+              </td>
+            </tr>
+          </table>
+          <!-- Amount -->
+          <p style="margin:18px 0 2px;font-family:${FONT};font-size:54px;font-weight:900;
+            line-height:1;color:#ffffff;letter-spacing:-1.5px;">$500</p>
+          <p style="margin:0 0 18px;font-family:${FONT};font-size:11px;font-weight:600;
+            letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,0.6);">
+            toward your remodeling project
+          </p>
+          <!-- Thin divider -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+            <tr><td style="height:1px;background:rgba(255,255,255,0.14);font-size:0;line-height:0;">&nbsp;</td></tr>
+          </table>
+          <!-- Recipient -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:16px;">
+            <tr>
+              <td>
+                <p style="margin:0;font-family:${FONT};font-size:9px;font-weight:600;
+                  letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);">
+                  ISSUED TO
+                </p>
+                <p style="margin:5px 0 0;font-family:${FONT};font-size:19px;font-weight:800;
+                  color:#ffffff;letter-spacing:0.2px;">
+                  ${name}
+                </p>
+              </td>
+              <td align="right" valign="bottom">
+                <p style="margin:0;font-family:${FONT};font-size:9px;font-weight:500;
+                  color:rgba(255,255,255,0.35);line-height:1.6;">
+                  Sure-Fix Remodeling<br />Easton, PA 18042
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td></tr>
+        <!-- Bottom red strip -->
+        <tr>
+          <td style="height:3px;background:${BRAND.red};font-size:0;line-height:0;">&nbsp;</td>
+        </tr>
+      </table>
+    </td></tr>
+  </table>`;
+}
 
 /** Build a fully branded HTML email body. */
 export function renderBrandedEmail(opts: BrandedEmailOptions): string {
@@ -121,6 +194,7 @@ export function renderBrandedEmail(opts: BrandedEmailOptions): string {
         <!-- Body -->
         <tr><td style="padding:30px 36px 8px;">
           <h1 style="margin:0 0 18px;font-family:${FONT};font-size:24px;line-height:1.25;font-weight:800;color:${BRAND.ink};">${esc(opts.heading)}</h1>
+          ${opts.giftCardRecipient ? renderGiftCardBlock(opts.giftCardRecipient) : ''}
           ${paragraphs}
           ${highlight}
           ${cta}

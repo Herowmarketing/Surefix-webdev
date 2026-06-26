@@ -204,8 +204,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const paragraphs = isGiftCard
       ? [
-          `Thank you for claiming your <strong>$500 Friends &amp; Family Gift Card</strong> from Sure-Fix Remodeling. It's reserved and ready to apply toward your project.`,
-          `A member of our family-run team will reach out within <strong>24 hours</strong> to learn about your space and schedule a free, no-obligation estimate.`,
+          `Welcome to the Sure-Fix family, ${firstName || 'friend'}! Your <strong>$500 gift card</strong> is officially earned and reserved under your name — see it above.`,
+          `One of our team members will reach out within <strong>24 hours</strong> to learn about your project and walk you through how to redeem it toward your free estimate.`,
+          `We can't wait to show you what we can do with your space.`,
         ]
       : [
           `Thank you for reaching out to Sure-Fix Remodeling. We've received your request and a member of our family-run team will follow up within <strong>24 hours</strong> to talk through your project and schedule a free, no-obligation estimate.`,
@@ -221,20 +222,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const emailOpts = {
       preheader: isGiftCard
-        ? 'Your $500 gift card is reserved — here\u2019s what happens next.'
+        ? `Welcome, ${firstName || 'friend'}! Your $500 Sure-Fix gift card is earned and ready.`
         : 'We received your request — here\u2019s what happens next.',
-      heading: firstName ? `Thanks, ${firstName}!` : 'Thank you!',
+      heading: isGiftCard
+        ? `You earned it, ${firstName || 'friend'}!`
+        : firstName ? `Thanks, ${firstName}!` : 'Thank you!',
       paragraphs,
-      highlightTitle: 'Your request',
-      highlightRows,
-      ctaLabel: 'See Our Recent Work',
+      giftCardRecipient: isGiftCard ? name : undefined,
+      highlightTitle: isGiftCard ? undefined : 'Your request',
+      highlightRows: isGiftCard ? [] : highlightRows,
+      ctaLabel: isGiftCard ? 'See Our Work' : 'See Our Recent Work',
       ctaHref: 'https://surefixremodelinglv.com/showroom',
     };
 
     await sendEmail({
       to: email,
       subject: isGiftCard
-        ? 'Your $500 Sure-Fix Gift Card is reserved'
+        ? `You earned your $500 Sure-Fix gift card, ${firstName || 'friend'}!`
         : 'Thanks for contacting Sure-Fix Remodeling',
       text: renderBrandedText(emailOpts),
       html: renderBrandedEmail(emailOpts),
