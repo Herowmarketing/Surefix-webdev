@@ -1,5 +1,5 @@
 /*
- * PUBLICATIONS — Unified hub for print collateral + every blog post.
+ * RESOURCES — Unified hub for print collateral + every blog post.
  *
  * Blog posts are pulled live from Sanity (so anything published via the CMS —
  * including by our SEO partner — shows up automatically) and merged with the
@@ -17,7 +17,14 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import { ALL_PUBLICATIONS, type PublicationKind } from '@/lib/publications-data';
-import { fetchPosts, formatPostDate, urlFor, type PostListItem } from '@/lib/sanity';
+import {
+  fetchPosts,
+  fetchResourceItems,
+  formatPostDate,
+  urlFor,
+  type PostListItem,
+  type ResourceListItem,
+} from '@/lib/sanity';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
@@ -35,6 +42,7 @@ type CardItem = {
   href?: string;
   published?: boolean;
   imageUrl?: string | null;
+  ctaLabel?: string;
 };
 
 const fadeUp = {
@@ -48,8 +56,9 @@ const fadeUp = {
 
 const FILTERS: { id: FilterKey; label: string }[] = [
   { id: 'all', label: 'All' },
-  { id: 'blog', label: 'Blog' },
-  { id: 'print', label: 'Print' },
+  { id: 'blog', label: 'Articles' },
+  { id: 'print', label: 'Print Guides' },
+  { id: 'featured', label: 'Featured' },
 ];
 
 /** Map a Sanity post into the unified card model. */
@@ -67,6 +76,23 @@ function postToCard(post: PostListItem): CardItem {
   };
 }
 
+/** Map a Sanity-managed print/resource item into the unified card model. */
+function resourceToCard(resource: ResourceListItem): CardItem {
+  const kind: PublicationKind = resource.kind === 'featured' ? 'featured' : 'print';
+  return {
+    id: resource._id,
+    title: resource.title ?? 'Untitled resource',
+    kind,
+    excerpt: resource.excerpt ?? '',
+    dateLabel: resource.dateLabel ?? '',
+    formatLabel: resource.formatLabel ?? (kind === 'featured' ? 'Featured' : 'Print guide'),
+    href: resource.fileUrl ?? resource.externalUrl ?? undefined,
+    published: true,
+    imageUrl: urlFor(resource.image)?.width(800).height(500).fit('crop').auto('format').url() ?? null,
+    ctaLabel: resource.ctaLabel ?? (resource.fileUrl ? 'Download PDF' : kind === 'featured' ? 'Read feature' : 'Request a Copy'),
+  };
+}
+
 function PublicationCard({
   item,
   index,
@@ -77,9 +103,12 @@ function PublicationCard({
   onRequestCopy: () => void;
 }) {
   const isPrint = item.kind === 'print';
-  const canLink = Boolean(item.published !== false);
+  const isFeatured = item.kind === 'featured';
   const href = item.href ?? '';
+  const canLink = Boolean(item.published !== false && (isPrint || href));
   const isInternal = href.startsWith('/');
+  const isMail = href.startsWith('mailto:');
+  const printCta = item.ctaLabel ?? (href ? 'Download PDF' : 'Request a Copy');
 
   return (
     <motion.article
@@ -108,6 +137,8 @@ function PublicationCard({
             className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-black uppercase tracking-wider ${
               isPrint
                 ? 'border border-[#394696]/40 bg-[#394696]/20 text-slate-800'
+                : isFeatured
+                  ? 'border border-slate-300 bg-slate-100 text-slate-800'
                 : 'border border-[#983631]/40 bg-[#983631]/15 text-slate-800'
             }`}
           >
@@ -115,9 +146,13 @@ function PublicationCard({
               <>
                 <Newspaper size={11} /> Print
               </>
+            ) : isFeatured ? (
+              <>
+                <Newspaper size={11} /> Featured
+              </>
             ) : (
               <>
-                <BookOpen size={11} /> Blog
+                <BookOpen size={11} /> Article
               </>
             )}
           </span>
@@ -148,17 +183,37 @@ function PublicationCard({
             </span>
           ) : isPrint ? (
             <>
-              <button
-                type="button"
-                onClick={onRequestCopy}
-                className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
-              >
-                <Mail size={14} /> Request a Copy
-              </button>
+              {href ? (
+                <a
+                  href={href}
+                  target={isMail ? undefined : '_blank'}
+                  rel={isMail ? undefined : 'noopener noreferrer'}
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
+                >
+                  <Mail size={14} /> {printCta}
+                </a>
+              ) : (
+                <button
+                  type="button"
+                  onClick={onRequestCopy}
+                  className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
+                >
+                  <Mail size={14} /> {printCta}
+                </button>
+              )}
               <p className="text-[10px] leading-snug text-slate-400" style={{ fontFamily: 'Georgia, serif' }}>
-                Start a conversation — we&apos;ll mail or email this piece directly to you.
+                Download available guides instantly, or ask us to mail or email print pieces directly to you.
               </p>
             </>
+          ) : isFeatured ? (
+            <a
+              href={href}
+              target={isInternal ? undefined : '_blank'}
+              rel={isInternal ? undefined : 'noopener noreferrer'}
+              className="inline-flex min-h-[44px] items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25"
+            >
+              {item.ctaLabel ?? 'Read feature'} <ExternalLink size={13} />
+            </a>
           ) : isInternal ? (
             <Link href={href}>
               <span className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-lg bg-slate-100 px-4 py-3 text-xs font-bold text-slate-900 transition-colors hover:bg-[#394696]/35 active:bg-[#394696]/25">
@@ -190,42 +245,58 @@ export default function Publications() {
   const { openStepper } = useLeadStepper();
   const [filter, setFilter] = useState<FilterKey>('all');
   const [sanityPosts, setSanityPosts] = useState<PostListItem[]>([]);
+  const [sanityResources, setSanityResources] = useState<ResourceListItem[]>([]);
 
   useSeo({
-    ...PAGE_SEO.publications,
+    ...PAGE_SEO.resources,
     structuredData: [
       breadcrumbList([
         { name: 'Home', path: '/' },
-        { name: 'Publications', path: '/publications' },
+        { name: 'Resources', path: '/resources' },
       ]),
     ],
   });
 
-  // Pull live blog posts from Sanity — anything published via the CMS appears here.
+  // Pull live posts/resources from Sanity — anything published via the CMS appears here.
   useEffect(() => {
     let cancelled = false;
-    fetchPosts()
-      .then((data) => {
-        if (!cancelled) setSanityPosts(data);
+    Promise.all([
+      fetchPosts().catch(() => []),
+      fetchResourceItems().catch(() => []),
+    ])
+      .then(([posts, resources]) => {
+        if (!cancelled) {
+          setSanityPosts(posts);
+          setSanityResources(resources);
+        }
       })
       .catch(() => {
         // Non-fatal: fall back to static print + on-site content.
-        if (!cancelled) setSanityPosts([]);
+        if (!cancelled) {
+          setSanityPosts([]);
+          setSanityResources([]);
+        }
       });
     return () => {
       cancelled = true;
     };
   }, []);
 
-  // Merge: live Sanity posts first (newest), then evergreen on-site content, then print.
+  // Merge: live Sanity posts first (newest), then Sanity-managed resources,
+  // then evergreen on-site content and fallback print pieces.
   const allCards = useMemo<CardItem[]>(() => {
     const liveSlugs = new Set(sanityPosts.map((p) => p.slug).filter(Boolean));
+    const liveResourceTitles = new Set(
+      sanityResources.map((r) => r.title?.trim().toLowerCase()).filter(Boolean),
+    );
     const staticCards: CardItem[] = ALL_PUBLICATIONS
       // Avoid showing a static placeholder if a live post has the same slug.
       .filter((p) => !(p.href && liveSlugs.has(p.href.split('/').pop() ?? '')))
+      // Avoid duplicate print guides once the office creates them in Sanity.
+      .filter((p) => p.kind !== 'print' || !liveResourceTitles.has(p.title.trim().toLowerCase()))
       .map((p) => ({ ...p }));
-    return [...sanityPosts.map(postToCard), ...staticCards];
-  }, [sanityPosts]);
+    return [...sanityPosts.map(postToCard), ...sanityResources.map(resourceToCard), ...staticCards];
+  }, [sanityPosts, sanityResources]);
 
   const filtered = useMemo(() => {
     if (filter === 'all') return allCards;
@@ -251,11 +322,11 @@ export default function Publications() {
             className="mb-4 text-[1.65rem] font-black leading-[1.12] text-slate-900 sm:mb-5 sm:text-4xl md:text-5xl"
             style={{ fontFamily: 'Figtree, sans-serif' }}
           >
-            Publications &amp; Blog
+            Resources
           </h1>
           <p className="mx-auto max-w-xl text-base leading-relaxed text-slate-600 min-[400px]:text-lg" style={{ fontFamily: 'Georgia, serif' }}>
-            Remodeling tips, project stories, and homeowner guides from our blog — alongside the Sure-Fix
-            print pieces we share at home shows and throughout the community.
+            Remodeling articles, project guidance, printable homeowner guides, and featured Sure-Fix resources
+            in one place.
           </p>
         </motion.div>
 
@@ -263,7 +334,7 @@ export default function Publications() {
           <div
             className="inline-flex max-w-full snap-x snap-mandatory items-center gap-1 overflow-x-auto rounded-full border border-white/[0.1] bg-slate-50 p-1 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             role="tablist"
-            aria-label="Filter publications"
+            aria-label="Filter resources"
           >
             <Filter size={14} className="mx-1 shrink-0 text-slate-400 sm:mx-2" aria-hidden />
             {FILTERS.map(({ id, label }) => (
@@ -319,7 +390,7 @@ export default function Publications() {
             Need a custom packet for your project?
           </h3>
           <p className="mb-5 text-sm leading-relaxed text-slate-600" style={{ fontFamily: 'Georgia, serif' }}>
-            Ask us for physical collateral, or subscribe to new blog posts—we&apos;ll tailor recommendations to your
+            Ask us for physical collateral, or get help choosing the right guide—we&apos;ll tailor recommendations to your
             remodel.
           </p>
           <div className="flex flex-wrap justify-center gap-3">

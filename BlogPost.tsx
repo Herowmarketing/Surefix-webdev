@@ -116,7 +116,7 @@ function BlogPostContent({
     structuredData: [
       breadcrumbList([
         { name: 'Home', path: '/' },
-        { name: 'Blog', path: '/blog' },
+        { name: 'Resources', path: '/resources' },
         { name: post.title ?? 'Article', path: `/blog/${params.slug}` },
       ]),
       blogPostingSchema({
@@ -134,9 +134,9 @@ function BlogPostContent({
   return (
     <div className="min-h-screen bg-white">
       <article className="mx-auto max-w-3xl px-4 pb-[max(5rem,env(safe-area-inset-bottom,0px)+3rem)] pt-[max(8rem,calc(7rem+env(safe-area-inset-top,0px)))] sm:px-6 lg:px-8">
-        <Link href="/blog">
+        <Link href="/resources">
           <span className="mb-6 inline-flex min-h-[44px] cursor-pointer items-center gap-2 py-2 text-sm font-semibold text-[#394696] transition-colors hover:text-slate-900 sm:mb-8">
-            <ArrowLeft size={18} aria-hidden /> Back to blog
+            <ArrowLeft size={18} aria-hidden /> Back to resources
           </span>
         </Link>
 
@@ -189,12 +189,12 @@ function BlogPostContent({
         </div>
 
         <div className="mt-12 border-t border-slate-200 pt-8">
-          <Link href="/blog">
+          <Link href="/resources">
             <span
               className="text-sm font-bold text-[#394696] hover:text-slate-900"
               style={{ fontFamily: 'Figtree, sans-serif' }}
             >
-              ← More articles
+              ← More resources
             </span>
           </Link>
         </div>
@@ -321,9 +321,9 @@ function ErrorState({ message }: { message: string }) {
   return (
     <div className="min-h-screen bg-white">
       <div className="mx-auto max-w-3xl px-4 pb-20 pt-[max(8rem,calc(7rem+env(safe-area-inset-top,0px)))] sm:px-6 lg:px-8">
-        <Link href="/blog">
+        <Link href="/resources">
           <span className="mb-6 inline-flex min-h-[44px] cursor-pointer items-center gap-2 py-2 text-sm font-semibold text-[#394696] transition-colors hover:text-slate-900">
-            <ArrowLeft size={18} aria-hidden /> Back to blog
+            <ArrowLeft size={18} aria-hidden /> Back to resources
           </span>
         </Link>
         <div className="rounded-2xl border border-red-200 bg-red-50 p-6 text-sm text-red-800">

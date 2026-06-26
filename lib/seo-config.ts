@@ -84,13 +84,21 @@ export const PAGE_SEO = {
     image: `${M}sf-og-showroom-share.jpg`,
     imageAlt: 'Contact Sure-Fix Remodeling in Easton, Pennsylvania',
   },
-  publications: {
-    title: 'Press & Publications — Lehigh Valley Remodeling Coverage',
+  resources: {
+    title: 'Remodeling Resources — Guides, Articles & Tips',
     description:
-      'Featured in Forbes, Home Builder Digest, Expertise, and Houzz. Read press coverage and editorial features about Sure-Fix Remodeling.',
+      'Read Sure-Fix Remodeling resources: Lehigh Valley remodeling articles, kitchen and bathroom planning tips, printable guides, and homeowner education.',
+    path: '/resources',
+    image: `${M}sf-og-showroom-share.jpg`,
+    imageAlt: 'Sure-Fix Remodeling resources and homeowner guides',
+  },
+  publications: {
+    title: 'Remodeling Resources — Guides, Articles & Tips',
+    description:
+      'Read Sure-Fix Remodeling resources: Lehigh Valley remodeling articles, kitchen and bathroom planning tips, printable guides, and homeowner education.',
     path: '/publications',
     image: `${M}sf-og-showroom-share.jpg`,
-    imageAlt: 'Sure-Fix Remodeling in the press',
+    imageAlt: 'Sure-Fix Remodeling resources and homeowner guides',
   },
   blog: {
     title: 'Remodeling Blog — Kitchen, Bath & Home Renovation Tips',

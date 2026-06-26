@@ -50,8 +50,7 @@ Sure-Fix partners with Audra Frank Associates (notable clients include Meryl Str
 - [About / Our Story](https://surefixremodelinglv.com/about): Family-run since 2008, founder Henry Rouhana, 25+ years experience, 500+ projects, licensed and insured.
 - [Reviews](https://surefixremodelinglv.com/reviews): Customer reviews across Google, Angi, Houzz, and Facebook.
 - [Promotions & Financing](https://surefixremodelinglv.com/promotions): Year-round and seasonal promotions, financing options, gift cards.
-- [Publications](https://surefixremodelinglv.com/publications): Sure-Fix print collateral and editorial articles for homeowners.
-- [Blog](https://surefixremodelinglv.com/blog): Practical remodeling guidance — written by the Sure-Fix team for Lehigh Valley homeowners.
+- [Resources](https://surefixremodelinglv.com/resources): Sure-Fix remodeling articles, print guides, homeowner education, and editorial resources.
 - [Contact / Free Estimate](https://surefixremodelinglv.com/contact): Free, no-obligation in-home estimate. Call (610) 392-0990 or email info@surefixremodeling.net.
 
 ## What Sure-Fix Is Best For

@@ -194,9 +194,10 @@ function Router() {
             <Route path="/showroom" component={Showroom} />
             <Route path="/interior-design" component={InteriorDesign} />
             <Route path="/publications/blog/:slug" component={PublicationArticle} />
-            <Route path="/publications" component={Publications} />
+            <Route path="/resources" component={Publications} />
+            <Route path="/publications">{() => <Redirect to="/resources" />}</Route>
             <Route path="/blog/:slug" component={BlogPost} />
-            <Route path="/blog">{() => <Redirect to="/publications" />}</Route>
+            <Route path="/blog">{() => <Redirect to="/resources" />}</Route>
             <Route path="/promotions" component={Promotions} />
             <Route path="/locations/:slug" component={LocationDetail} />
             <Route path="/locations" component={Locations} />
