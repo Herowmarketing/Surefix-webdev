@@ -4,8 +4,6 @@
  */
 import { Toaster } from "@/components/ui/sonner";
 import { LeadStepperProvider } from './contexts/LeadStepperContext';
-import LeadStepper from './LeadStepper';
-import PromoPopup from './PromoPopup';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Redirect, Route, Switch, useLocation } from "wouter";
 import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState } from "react";
@@ -39,6 +37,9 @@ const BlogPost = lazy(() => import("./BlogPost"));
 const Careers = lazy(() => import("./Careers"));
 const FAQ = lazy(() => import("./FAQ"));
 const ThankYou = lazy(() => import("./ThankYou"));
+// Heavy overlays — only download when needed, not on first paint.
+const LeadStepper = lazy(() => import("./LeadStepper"));
+const PromoPopup = lazy(() => import("./PromoPopup"));
 import Maintenance from "@/src/pages/Maintenance";
 
 const MAINTENANCE_MODE = import.meta.env.VITE_MAINTENANCE_MODE === 'true';
@@ -47,28 +48,10 @@ function WelcomeLoader() {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    let loadDone = document.readyState === 'complete';
-    let minimumDone = false;
-
-    const hideWhenReady = () => {
-      if (loadDone && minimumDone) setVisible(false);
-    };
-    const onLoad = () => {
-      loadDone = true;
-      hideWhenReady();
-    };
-    const timer = window.setTimeout(() => {
-      minimumDone = true;
-      hideWhenReady();
-    }, 900);
-
-    if (loadDone) hideWhenReady();
-    else window.addEventListener('load', onLoad, { once: true });
-
-    return () => {
-      window.clearTimeout(timer);
-      window.removeEventListener('load', onLoad);
-    };
+    // Dismiss as soon as the app shell is interactive — do NOT wait for
+    // window.load (that waits for the 19MB hero video and stalls the UI).
+    const timer = window.setTimeout(() => setVisible(false), 450);
+    return () => window.clearTimeout(timer);
   }, []);
 
   if (!visible) return null;
@@ -213,6 +196,48 @@ function Router() {
   );
 }
 
+function DeferredOverlays() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    // Keep the first paint free of LeadStepper / PromoPopup JS.
+    // Load on idle, or immediately on first user interaction so CTAs still work.
+    let done = false;
+    const enable = () => {
+      if (done) return;
+      done = true;
+      setReady(true);
+    };
+
+    const onInteract = () => enable();
+    window.addEventListener('pointerdown', onInteract, { once: true, passive: true });
+    window.addEventListener('keydown', onInteract, { once: true });
+
+    let idleId: number | undefined;
+    let timer: number | undefined;
+    if ('requestIdleCallback' in window) {
+      idleId = window.requestIdleCallback(enable, { timeout: 2500 });
+    } else {
+      timer = window.setTimeout(enable, 1500);
+    }
+
+    return () => {
+      window.removeEventListener('pointerdown', onInteract);
+      window.removeEventListener('keydown', onInteract);
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, []);
+
+  if (!ready) return null;
+  return (
+    <Suspense fallback={null}>
+      <LeadStepper />
+      <PromoPopup />
+    </Suspense>
+  );
+}
+
 function App() {
   if (MAINTENANCE_MODE) {
     return (
@@ -230,8 +255,7 @@ function App() {
             <Toaster />
             <WelcomeLoader />
             <Router />
-            <LeadStepper />
-            <PromoPopup />
+            <DeferredOverlays />
           </TooltipProvider>
         </LeadStepperProvider>
       </ThemeProvider>

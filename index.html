@@ -4,15 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
-    <!-- Google tag (gtag.js) — GA4 + Google Ads -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RE67MCL4PC"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18229674384"></script>
+    <!-- Google tag (gtag.js) — GA4 + Google Ads. Loaded after first paint so it
+         does not compete with the hero poster/video on the critical path. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-RE67MCL4PC');
-      gtag('config', 'AW-18229674384');
+      window.addEventListener('load', function () {
+        var loadTag = function (id) {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
+          document.head.appendChild(s);
+        };
+        loadTag('G-RE67MCL4PC');
+        loadTag('AW-18229674384');
+        gtag('js', new Date());
+        gtag('config', 'G-RE67MCL4PC');
+        gtag('config', 'AW-18229674384');
+      }, { once: true });
     </script>
 
     <!-- Bing Webmaster Tools verification -->
@@ -188,7 +197,9 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,700&display=swap" rel="stylesheet" />
+    <!-- Only the Figtree weights used on the site — full family was ~9 weights + italics. -->
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+    <link rel="preload" as="image" href="/Sure%20Fix%20Hero%20Video/hero_scroll_poster.jpg" fetchpriority="high" />
   </head>
   <body>
     <div id="root"></div>

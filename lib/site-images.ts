@@ -49,6 +49,9 @@ export const SHOWROOM_HOME_IMAGE = KITCHEN_STILL;
 /** In-House Showroom loop — optimized MP4 stored in public/manus-storage for Vercel deploys. */
 export const SHOWROOM_HOME_VIDEO_SRC =
   `${M}sf-showroom-hero-web.mp4`;
+/** Smaller showroom loop for phones/tablets — avoids competing with the hero video. */
+export const SHOWROOM_HOME_VIDEO_SRC_MOBILE =
+  `${M}sf-showroom-hero-mobile.mp4`;
 
 /** Service / marketing cards (home, services page, gallery thumbnails) */
 export const SITE_IMAGES = {

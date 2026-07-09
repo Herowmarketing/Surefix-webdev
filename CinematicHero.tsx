@@ -24,7 +24,8 @@ import { BUSINESS } from '@/lib/constants';
 
 // ── Config ─────────────────────────────────────────────────────────
 const VIDEO_SRC          = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
-const VIDEO_SRC_MOBILE   = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
+const VIDEO_SRC_MOBILE   = '/Sure%20Fix%20Hero%20Video/hero_scroll_mobile.mp4';
+const VIDEO_POSTER       = '/Sure%20Fix%20Hero%20Video/hero_scroll_poster.jpg';
 const VIDEO_MOBILE_MEDIA = '(max-width: 1023px)';
 const SCROLL_MULTIPLIER = 4;
 /** Finale on when progress ≥ this; dips below → hide immediately (no sticky overlap with prior beats) */
@@ -380,26 +381,38 @@ export default function CinematicHero() {
 
         {/* ── Video ────────────────────────────────────────────────── */}
         {!reducedMotion ? (
-          <video
-            key={heroVideoSrc}
-            ref={videoRef}
-            src={heroVideoSrc}
-            muted
-            playsInline
-            preload="auto"
-            className="absolute inset-0 h-full w-full object-cover object-center"
-            style={{
-              opacity: videoRevealed ? 1 : 0,
-              transition: videoRevealed ? 'opacity 0.4s ease' : 'none',
-              WebkitTransform: 'translateZ(0)',
-              transform: 'translateZ(0)',
-            }}
-          />
+          <>
+            {/* Poster paints immediately so the hero isn't a black void while video buffers */}
+            <img
+              src={VIDEO_POSTER}
+              alt=""
+              aria-hidden
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              style={{ opacity: videoRevealed ? 0 : 1, transition: 'opacity 0.35s ease' }}
+              fetchPriority="high"
+            />
+            <video
+              key={heroVideoSrc}
+              ref={videoRef}
+              src={heroVideoSrc}
+              muted
+              playsInline
+              preload="metadata"
+              poster={VIDEO_POSTER}
+              className="absolute inset-0 h-full w-full object-cover object-center"
+              style={{
+                opacity: videoRevealed ? 1 : 0,
+                transition: videoRevealed ? 'opacity 0.4s ease' : 'none',
+                WebkitTransform: 'translateZ(0)',
+                transform: 'translateZ(0)',
+              }}
+            />
+          </>
         ) : (
-          <div
-            className="absolute inset-0 bg-[#0d1117]"
-            role="img"
-            aria-label="Hero background"
+          <img
+            src={VIDEO_POSTER}
+            alt="Sure-Fix Remodeling showroom"
+            className="absolute inset-0 h-full w-full object-cover object-center"
           />
         )}
 
