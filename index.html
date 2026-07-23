@@ -4,6 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
+    <!-- Kill stale service workers / Cache Storage from the previous site host.
+         This is why some visitors needed a manual cache clear after redirects —
+         an old SW can keep serving outdated HTML/JS until unregistered. -->
+    <script>
+      (function () {
+        var KEY = 'sf_cache_bust_v4';
+        try {
+          if (localStorage.getItem(KEY) === '1') return;
+        } catch (e) {}
+        var done = function () {
+          try { localStorage.setItem(KEY, '1'); } catch (e) {}
+        };
+        var tasks = [];
+        if ('serviceWorker' in navigator) {
+          tasks.push(
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              return Promise.all(regs.map(function (r) { return r.unregister(); }));
+            })
+          );
+        }
+        if (window.caches && caches.keys) {
+          tasks.push(
+            caches.keys().then(function (keys) {
+              return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+            })
+          );
+        }
+        Promise.all(tasks).then(done).catch(done);
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) — GA4 + Google Ads. Loaded after first paint so it
          does not compete with the hero poster/video on the critical path. -->
     <script>
@@ -199,7 +230,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <!-- Only the Figtree weights used on the site — full family was ~9 weights + italics. -->
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="preload" as="image" href="/Sure%20Fix%20Hero%20Video/hero_scroll_poster.jpg" fetchpriority="high" />
+    <link rel="preload" as="image" href="/videos/hero-scroll-poster.jpg" fetchpriority="high" />
   </head>
   <body>
     <div id="root"></div>

@@ -6,13 +6,13 @@
  *   - GOP = 1 (-g 1 -keyint_min 1) for instant seek on any frame
  *   - 1920px wide, H.264 yuv420p, CRF 22, +faststart, no audio
  *
- * Output (served by Vite/Vercel): public/Sure Fix Hero Video/hero_scroll_final.mp4
+ * Output (served by Vite/Vercel): public/videos/hero-scroll.mp4
  *
  * Run:  node scripts/encode-scroll-video.mjs
  */
 
 import { spawn } from 'node:child_process';
-import { existsSync } from 'node:fs';
+import { existsSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import ffmpegPath from 'ffmpeg-static';
@@ -26,7 +26,8 @@ const CANDIDATE_INPUTS = [
 ];
 
 const INPUT = CANDIDATE_INPUTS.find((p) => existsSync(p));
-const OUTPUT = path.join(ROOT, 'public', 'Sure Fix Hero Video', 'hero_scroll_final.mp4');
+const OUTPUT = path.join(ROOT, 'public', 'videos', 'hero-scroll.mp4');
+mkdirSync(path.dirname(OUTPUT), { recursive: true });
 
 if (!INPUT) {
   console.error('✗ No source MP4 found. Place one of:');

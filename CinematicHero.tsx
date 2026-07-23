@@ -23,9 +23,9 @@ import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { BUSINESS } from '@/lib/constants';
 
 // ── Config ─────────────────────────────────────────────────────────
-const VIDEO_SRC          = '/Sure%20Fix%20Hero%20Video/hero_scroll_final.mp4';
-const VIDEO_SRC_MOBILE   = '/Sure%20Fix%20Hero%20Video/hero_scroll_mobile.mp4';
-const VIDEO_POSTER       = '/Sure%20Fix%20Hero%20Video/hero_scroll_poster.jpg';
+const VIDEO_SRC          = '/videos/hero-scroll.mp4';
+const VIDEO_SRC_MOBILE   = '/videos/hero-scroll-mobile.mp4';
+const VIDEO_POSTER       = '/videos/hero-scroll-poster.jpg';
 const VIDEO_MOBILE_MEDIA = '(max-width: 1023px)';
 const SCROLL_MULTIPLIER = 4;
 /** Finale on when progress ≥ this; dips below → hide immediately (no sticky overlap with prior beats) */
@@ -120,10 +120,21 @@ export default function CinematicHero() {
   );
 
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [heroVideoSrc, setHeroVideoSrc] = useState(() =>
-    typeof window !== 'undefined' && window.matchMedia(VIDEO_MOBILE_MEDIA).matches
-      ? VIDEO_SRC_MOBILE : VIDEO_SRC
-  );
+  const pickHeroSrc = () => {
+    if (typeof window === 'undefined') return VIDEO_SRC_MOBILE;
+    const mobile = window.matchMedia(VIDEO_MOBILE_MEDIA).matches;
+    const conn = (navigator as Navigator & {
+      connection?: { saveData?: boolean; effectiveType?: string };
+    }).connection;
+    const slowNet =
+      Boolean(conn?.saveData) ||
+      conn?.effectiveType === '2g' ||
+      conn?.effectiveType === '3g';
+    return mobile || slowNet ? VIDEO_SRC_MOBILE : VIDEO_SRC;
+  };
+  const [heroVideoSrc, setHeroVideoSrc] = useState(pickHeroSrc);
+  /** Don't attach the video URL until after first paint / idle — poster shows first. */
+  const [videoAttached, setVideoAttached] = useState(false);
   /** Keeps the video invisible until the first scroll-seek has landed, preventing a flash of frame 0 on navigation */
   const videoReadyRef = useRef(false);
   /** React state (not ref) so opacity survives re-renders from matchMedia / context on mobile */
@@ -167,10 +178,31 @@ export default function CinematicHero() {
   }, []);
 
   useEffect(() => {
+    // Attach the video source after first paint so the poster wins the critical path.
+    const attach = () => setVideoAttached(true);
+    const onScroll = () => attach();
+    window.addEventListener('scroll', onScroll, { once: true, passive: true });
+    window.addEventListener('pointerdown', onScroll, { once: true, passive: true });
+    let idleId: number | undefined;
+    let timer: number | undefined;
+    if ('requestIdleCallback' in window) {
+      idleId = window.requestIdleCallback(attach, { timeout: 900 });
+    } else {
+      timer = window.setTimeout(attach, 400);
+    }
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('pointerdown', onScroll);
+      if (idleId !== undefined) window.cancelIdleCallback(idleId);
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
+  }, []);
+
+  useEffect(() => {
     const mq = window.matchMedia(VIDEO_MOBILE_MEDIA);
     const pick = () => {
       isMobileViewportRef.current = mq.matches;
-      setHeroVideoSrc(mq.matches ? VIDEO_SRC_MOBILE : VIDEO_SRC);
+      setHeroVideoSrc(pickHeroSrc());
     };
     pick();
     mq.addEventListener('change', pick);
@@ -348,7 +380,7 @@ export default function CinematicHero() {
       v?.removeEventListener('durationchange', onMeta);
       v?.removeEventListener('seeked', onSeeked);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, videoAttached, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -394,10 +426,10 @@ export default function CinematicHero() {
             <video
               key={heroVideoSrc}
               ref={videoRef}
-              src={heroVideoSrc}
+              src={videoAttached ? heroVideoSrc : undefined}
               muted
               playsInline
-              preload="metadata"
+              preload="none"
               poster={VIDEO_POSTER}
               className="absolute inset-0 h-full w-full object-cover object-center"
               style={{

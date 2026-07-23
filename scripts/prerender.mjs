@@ -258,7 +258,23 @@ async function main() {
         // Wait for the useSeo hook to inject its structured data so the snapshot
         // includes per-route JSON-LD, not just the static index.html graph.
         await page.waitForSelector('script[data-seo="page"]', { timeout: 10000 }).catch(() => {});
-        const html = await page.evaluate(() => '<!doctype html>\n' + document.documentElement.outerHTML);
+        let html = await page.evaluate(() => '<!doctype html>\n' + document.documentElement.outerHTML);
+
+        // Sanitize prerender snapshots so they don't force every visitor to
+        // download desktop-only videos, deferred overlays, or build-time ads pixels.
+        html = html
+          // Poster-only hero in static HTML — client JS attaches the video after paint.
+          .replace(/(<video\b[^>]*?)\s+src="[^"]*"/gi, '$1')
+          .replace(/\/videos\/hero-scroll\.mp4/g, '/videos/hero-scroll-mobile.mp4')
+          .replace(/\/Sure%20Fix%20Hero%20Video\/hero_scroll_final\.mp4/g, '/videos/hero-scroll-mobile.mp4')
+          .replace(/\/Sure Fix Hero Video\/hero_scroll_final\.mp4/g, '/videos/hero-scroll-mobile.mp4')
+          // Drop modulepreloads for overlays / page chunks that should stay deferred.
+          .replace(/<link[^>]+rel="modulepreload"[^>]+(?:LeadStepper|PromoPopup|Home-|Showroom-|Careers-)[^>]*>/gi, '')
+          // Strip tracking pixels injected by headless Chrome during the build.
+          .replace(/<script[^>]+googleads\.g\.doubleclick\.net[^>]*>[\s\S]*?<\/script>/gi, '')
+          .replace(/<img[^>]+googleads\.g\.doubleclick\.net[^>]*>/gi, '')
+          .replace(/url=http%3A%2F%2F127\.0\.0\.1%3A4180[^"&\s]*/g, '');
+
         ensureDir(path.dirname(outPath));
         fs.writeFileSync(outPath, html, 'utf8');
         console.log(`  ✓ ${route}`);
