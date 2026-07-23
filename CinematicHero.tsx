@@ -133,8 +133,6 @@ export default function CinematicHero() {
     return mobile || slowNet ? VIDEO_SRC_MOBILE : VIDEO_SRC;
   };
   const [heroVideoSrc, setHeroVideoSrc] = useState(pickHeroSrc);
-  /** Don't attach the video URL until after first paint / idle — poster shows first. */
-  const [videoAttached, setVideoAttached] = useState(false);
   /** Keeps the video invisible until the first scroll-seek has landed, preventing a flash of frame 0 on navigation */
   const videoReadyRef = useRef(false);
   /** React state (not ref) so opacity survives re-renders from matchMedia / context on mobile */
@@ -175,27 +173,6 @@ export default function CinematicHero() {
     const cb = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
     mq.addEventListener('change', cb);
     return () => mq.removeEventListener('change', cb);
-  }, []);
-
-  useEffect(() => {
-    // Attach the video source after first paint so the poster wins the critical path.
-    const attach = () => setVideoAttached(true);
-    const onScroll = () => attach();
-    window.addEventListener('scroll', onScroll, { once: true, passive: true });
-    window.addEventListener('pointerdown', onScroll, { once: true, passive: true });
-    let idleId: number | undefined;
-    let timer: number | undefined;
-    if ('requestIdleCallback' in window) {
-      idleId = window.requestIdleCallback(attach, { timeout: 900 });
-    } else {
-      timer = window.setTimeout(attach, 400);
-    }
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('pointerdown', onScroll);
-      if (idleId !== undefined) window.cancelIdleCallback(idleId);
-      if (timer !== undefined) window.clearTimeout(timer);
-    };
   }, []);
 
   useEffect(() => {
@@ -380,7 +357,7 @@ export default function CinematicHero() {
       v?.removeEventListener('durationchange', onMeta);
       v?.removeEventListener('seeked', onSeeked);
     };
-  }, [reducedMotion, handleScroll, heroVideoSrc, videoAttached, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame]);
+  }, [reducedMotion, handleScroll, heroVideoSrc, refreshSectionMetrics, showFinale, revealVideo, syncVideoFrame]);
 
   const fadeUp = (delay: number) => ({
     initial: { opacity: 0, y: 16 },
@@ -426,10 +403,10 @@ export default function CinematicHero() {
             <video
               key={heroVideoSrc}
               ref={videoRef}
-              src={videoAttached ? heroVideoSrc : undefined}
+              src={heroVideoSrc}
               muted
               playsInline
-              preload="none"
+              preload="auto"
               poster={VIDEO_POSTER}
               className="absolute inset-0 h-full w-full object-cover object-center"
               style={{
