@@ -12,6 +12,9 @@ import {
 } from '@/lib/analytics';
 
 export default function ThankYou() {
+  const isKitchenPromo =
+    typeof window !== 'undefined' &&
+    new URLSearchParams(window.location.search).get('source') === 'kitchen-promo-stepper';
   // Fire Google Ads conversions on page load:
   //  1. "Thank You Page Submission" conversion (page-load based).
   //  2. Form-submission conversion — belt-and-suspenders alongside the
@@ -52,20 +55,21 @@ export default function ThankYou() {
           className="mb-3 text-xs font-black uppercase tracking-[0.32em] text-[#394696]"
           style={{ fontFamily: 'Figtree, sans-serif' }}
         >
-          Request Received
+          {isKitchenPromo ? 'Kitchen Sale Request Received' : 'Request Received'}
         </p>
         <h1
           className="mb-5 text-4xl font-black leading-tight text-slate-900 sm:text-5xl"
           style={{ fontFamily: 'Figtree, sans-serif' }}
         >
-          Thanks, we got your request.
+          {isKitchenPromo ? 'Your kitchen savings are noted.' : 'Thanks, we got your request.'}
         </h1>
         <p
           className="mb-9 max-w-xl text-lg leading-relaxed text-slate-600"
           style={{ fontFamily: 'Georgia, serif' }}
         >
-          A member of the Sure-Fix Remodeling team will review your project details and follow up within
-          24 hours to talk through next steps.
+          {isKitchenPromo
+            ? 'Your 10% kitchen discount, up to $2,000, is attached to your request. A Sure-Fix team member will follow up within 24 hours to plan your consultation.'
+            : 'A member of the Sure-Fix Remodeling team will review your project details and follow up within 24 hours to talk through next steps.'}
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
@@ -77,12 +81,12 @@ export default function ThankYou() {
             <Phone size={15} />
             Call Now: {BUSINESS.phone}
           </a>
-          <Link href="/services">
+          <Link href={isKitchenPromo ? '/services/kitchen' : '/services'}>
             <span
               className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-sm font-black uppercase tracking-wider text-slate-900 transition-colors hover:bg-slate-50"
               style={{ fontFamily: 'Figtree, sans-serif' }}
             >
-              Explore Services <ArrowRight size={15} />
+              {isKitchenPromo ? 'Explore Kitchens' : 'Explore Services'} <ArrowRight size={15} />
             </span>
           </Link>
         </div>

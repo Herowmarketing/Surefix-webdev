@@ -7,11 +7,12 @@
 import { Fragment, useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { motion, AnimatePresence, useReducedMotion, LayoutGroup } from 'framer-motion';
-import { Phone, ChevronDown } from 'lucide-react';
+import { Phone, ChevronDown, ArrowRight } from 'lucide-react';
 import { LOGO_URL, BUSINESS, SERVICES } from '@/lib/constants';
 import { buildPrimaryNav, hasNavChildren } from '@/lib/navigation';
 import type { PrimaryNavEntry } from '@/lib/navigation';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import { KITCHEN_PROMOTION, useKitchenPromotion } from '@/lib/kitchen-promotion';
 
 type LeafNavEntry = Extract<PrimaryNavEntry, { href: string }>;
 
@@ -50,7 +51,8 @@ function MenuMorphGlyph({ open, light }: { open: boolean; light?: boolean }) {
 }
 
 export default function Navbar() {
-  const { openStepper } = useLeadStepper();
+  const { openStepper, openKitchenPromoStepper } = useLeadStepper();
+  const promotion = useKitchenPromotion();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [desktopExpandedId, setDesktopExpandedId] = useState<string | null>(null);
@@ -106,6 +108,18 @@ export default function Navbar() {
             : 'border-b border-slate-200/80 bg-white/90 backdrop-blur-sm'
       }`}
     >
+      {promotion.active ? (
+        <button
+          type="button"
+          onClick={() => openKitchenPromoStepper('navbar-announcement')}
+          className="flex min-h-[34px] w-full items-center justify-center gap-2 bg-[#983631] px-3 py-1.5 text-center text-[9px] font-black uppercase tracking-[0.12em] text-white transition-colors hover:bg-[#832e2a] min-[400px]:text-[10px] sm:gap-3 sm:tracking-[0.18em]"
+        >
+          <span>{KITCHEN_PROMOTION.promise}</span>
+          <span className="hidden sm:inline">10% off kitchens up to $2,000</span>
+          <span className="text-white/75">{promotion.deadlineLabel}</span>
+          <ArrowRight size={12} className="shrink-0" />
+        </button>
+      ) : null}
       <div
         className={`hidden items-center justify-between border-b px-6 py-1.5 md:flex ${
           onHero && !solid ? 'border-white/10 bg-black/20 text-white/70' : 'border-slate-200 bg-slate-50 text-slate-600'

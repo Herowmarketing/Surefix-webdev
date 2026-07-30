@@ -53,12 +53,12 @@ export const PAGE_SEO = {
     imageAlt: 'Sure-Fix Remodeling interior design — comfortable suburban home',
   },
   promotions: {
-    title: 'Remodeling Promotions, Bundles & Financing',
+    title: 'Kitchen Remodeling Sale — 10% Off Up to $2,000',
     description:
-      'Current Sure-Fix Remodeling offers: year-round value pillars, seasonal bundles, gift card terms, and financing options for Lehigh Valley homeowners.',
+      'Save 10% up to $2,000 on a Sure-Fix kitchen remodel through October 2026. Prices will never be lower. Request your free kitchen consultation.',
     path: '/promotions',
-    image: `${M}sf-bathroom-remodel.png`,
-    imageAlt: 'Sure-Fix Remodeling promotions and financing options',
+    image: `${M}sf-kitchen-remodel.png`,
+    imageAlt: 'Sure-Fix kitchen remodeling sale in the Lehigh Valley',
   },
   about: {
     title: 'About — Henry Rouhana, Family-Run Design-Build Since 2008',

@@ -10,6 +10,7 @@ import { BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList, serviceSchema, SITE_URL } from '@/lib/seo';
 import { SERVICE_SEO } from '@/lib/seo-config';
+import KitchenPromotionSection from '@/components/KitchenPromotionSection';
 
 interface ServicePageProps {
   title: string;
@@ -38,7 +39,11 @@ export default function ServicePageTemplate({
   title, tagline, description, icon, heroImage, features, galleryImages, subServices, accentColor = '#394696',
   serviceId, slug,
 }: ServicePageProps) {
-  const { openStepper } = useLeadStepper();
+  const { openStepper, openKitchenPromoStepper } = useLeadStepper();
+  const openServiceStepper = (source: string) => {
+    if (serviceId === 'kitchen') openKitchenPromoStepper(source);
+    else openStepper(serviceId);
+  };
 
   const seoCopy = SERVICE_SEO[serviceId];
   const absoluteHeroImage = heroImage.startsWith('http')
@@ -108,6 +113,10 @@ export default function ServicePageTemplate({
         </div>
       </section>
 
+      {serviceId === 'kitchen' ? (
+        <KitchenPromotionSection source="kitchen-service-primary" className="bg-slate-50" />
+      ) : null}
+
       {/* ─── DESCRIPTION + FEATURES ─── */}
       <section className="py-20 px-5 lg:px-8 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
@@ -122,13 +131,13 @@ export default function ServicePageTemplate({
             <motion.div variants={fadeUp} custom={2} className="flex flex-col sm:flex-row gap-3">
               <motion.button
                   type="button"
-                  onClick={() => openStepper()}
+                  onClick={() => openServiceStepper(`${serviceId}-service-about`)}
                   whileHover={{ scale: 1.04, y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider"
                   style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', border: 'none' }}
                 >
-                  Get Free Estimate <ArrowRight size={15} />
+                  {serviceId === 'kitchen' ? 'Claim Kitchen Savings' : 'Get Free Estimate'} <ArrowRight size={15} />
                 </motion.button>
               <a href={BUSINESS.phoneHref}>
                 <motion.span
@@ -206,21 +215,23 @@ export default function ServicePageTemplate({
         <div className="max-w-3xl mx-auto text-center">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
             <motion.h2 variants={fadeUp} custom={0} className="text-3xl md:text-4xl font-black text-white mb-4" style={{ fontFamily: 'Figtree, sans-serif' }}>
-              Ready to Get Started?
+              {serviceId === 'kitchen' ? 'Ready to Save on Your New Kitchen?' : 'Ready to Get Started?'}
             </motion.h2>
             <motion.p variants={fadeUp} custom={1} className="text-white/75 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
-              Schedule a free in-home consultation and let's bring your vision to life.
+              {serviceId === 'kitchen'
+                ? 'Start your kitchen plan now and claim 10% off, up to $2,000.'
+                : "Schedule a free in-home consultation and let's bring your vision to life."}
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap justify-center gap-4">
               <motion.button
                   type="button"
-                  onClick={() => openStepper()}
+                  onClick={() => openServiceStepper(`${serviceId}-service-bottom`)}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer uppercase tracking-wider"
                   style={{ background: '#983631', fontFamily: 'Figtree, sans-serif', border: 'none' }}
                 >
-                  Get Free Estimate <ArrowRight size={15} />
+                  {serviceId === 'kitchen' ? 'Claim Kitchen Savings' : 'Get Free Estimate'} <ArrowRight size={15} />
                 </motion.button>
               <a href={BUSINESS.phoneHref}>
                 <motion.span
