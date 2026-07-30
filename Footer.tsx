@@ -6,6 +6,7 @@ import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, ArrowRight } from 'l
 import { Link } from 'wouter';
 import { LOGO_URL, BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
+import KitchenPromotionSection from '@/components/KitchenPromotionSection';
 
 const SERVICE_LINKS = [
   { label: 'Kitchen Remodeling', href: '/services/kitchen' },
@@ -33,6 +34,14 @@ export default function Footer() {
   return (
     <footer className="border-t border-slate-200 bg-white text-slate-600" style={{ fontFamily: 'Figtree, sans-serif' }}>
       <div className="h-px bg-gradient-to-r from-transparent via-[#394696]/40 to-transparent" />
+
+      <div className="mx-auto max-w-7xl px-4 pt-10 min-[400px]:px-5 lg:px-8">
+        <KitchenPromotionSection
+          source="footer-kitchen-promotion"
+          compact
+          showImage={false}
+        />
+      </div>
 
       <div className="mx-auto max-w-7xl px-4 py-14 pb-[max(4rem,calc(3rem+env(safe-area-inset-bottom,0px)))] pt-14 min-[400px]:px-5 lg:px-8 lg:pb-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">

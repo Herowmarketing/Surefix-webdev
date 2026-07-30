@@ -1,8 +1,8 @@
 /**
  * PROMOTIONS DATA — Sure-Fix Remodeling 2026 Promotions
  *
- * Edit this file to update savings bundles, gift-card terms, financing copy,
- * and seasonal positioning. The Promotions page reads everything from here.
+ * Edit this file to update standing offers and secondary seasonal positioning.
+ * The active kitchen campaign lives in `lib/kitchen-promotion.ts`.
  */
 
 export type PromoCadence = 'year-round' | 'monthly' | 'seasonal' | 'financing';
@@ -50,19 +50,6 @@ export const YEAR_ROUND_PROMOS: readonly PromoBundle[] = [
     icon: '\u2197',
   },
   {
-    id: 'gift-card',
-    cadence: 'year-round',
-    tag: 'Friends & Family',
-    title: '$500 Friends & Family Gift Card',
-    headline: 'Toward any future project',
-    savings:
-      'Present at your first appointment \u2014 apply toward a future Sure-Fix transformation.',
-    positioning:
-      'A keepsake card that turns goodwill into design budget. Pass it along, frame it, gift it \u2014 and when your loved one is ready to remodel, the savings are waiting.',
-    accent: 'blue',
-    icon: '\u25c7',
-  },
-  {
     id: 'zero-financing',
     cadence: 'year-round',
     tag: '0% Financing',
@@ -75,25 +62,8 @@ export const YEAR_ROUND_PROMOS: readonly PromoBundle[] = [
     icon: '\u221e',
   },
 ] as const;
-
 /** Seasonal limited-window bundles — four offers aligned to the calendar. */
 export const SEASONAL_BUNDLES: readonly PromoBundle[] = [
-  {
-    id: 'kitchen-spring',
-    cadence: 'seasonal',
-    tag: 'Spring Kitchen Special',
-    title: 'Kitchen Remodel + Designer Look Guide',
-    headline: '10% off your kitchen remodel',
-    savings: 'Plus a Free Digital 3D Preview and our Designer Look Kitchens guide \u2014 showing you how to make a $50K kitchen look like a $100K kitchen.',
-    bonus: '3D Preview + Designer Look Kitchens Guide',
-    bonusValue: '$600 value',
-    spotlight: 'March \u2013 May',
-    window: 'Spring kitchen refresh season',
-    positioning:
-      'See your vision in stunning detail before you commit \u2014 exclusive spring savings for decisive homeowners ready to elevate their space.',
-    accent: 'blue',
-    icon: '\u25cd',
-  },
   {
     id: 'basement-winter',
     cadence: 'seasonal',
@@ -145,6 +115,3 @@ export const SEASONAL_BUNDLES: readonly PromoBundle[] = [
     icon: '\u2756',
   },
 ] as const;
-
-/** Gift card legal copy — kept verbatim from the marketing brief. */
-export const GIFT_CARD_TERMS = `Savings based on 10% off up to $500. Cannot be combined with any other offers. No cash value. Not applicable on previous or existing contracts. Gift card must be presented at time of first appointment. Other restrictions may apply.`;

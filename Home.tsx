@@ -10,6 +10,7 @@ import { BUSINESS, SERVICES, REVIEWS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { INTERIOR_DESIGN_HOME_IMAGE } from '@/lib/site-images';
 import ShowroomHomeVideo from '@/components/ShowroomHomeVideo';
+import KitchenPromotionSection from '@/components/KitchenPromotionSection';
 import CinematicHero from './CinematicHero';
 import { useSeo, breadcrumbList, faqSchema } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
@@ -80,6 +81,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <KitchenPromotionSection source="homepage-primary-promotion" className="bg-slate-50" />
 
       {/* ─── FOREVER HOME PILLARS (2026 positioning) ─── */}
       <section className="relative overflow-hidden border-b border-slate-200">

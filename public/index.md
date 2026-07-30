@@ -8,6 +8,10 @@ The Sure-Fix difference is the "Trusted Professional" sweet spot: the reliabilit
 
 Sure-Fix partners with Audra Frank Associates (notable clients include Meryl Streep, Sting, Paul Simon, Lorne Michaels) for in-house interior design, and works with brand allies Moen (plumbing fixtures), Gerber (faucets and toilets), and Henry (roofing systems).
 
+## Current Kitchen Promotion — August through October 2026
+
+Save 10% on a qualifying Sure-Fix kitchen remodel, up to a maximum savings of $2,000. Prices will never be lower. The offer is presented as a monthly sale ending August 31, September 30, or October 31, depending on the current campaign month. [Claim the kitchen promotion](https://surefixremodelinglv.com/promotions) or call (610) 392-0990.
+
 ## Contact
 
 - Business name: Sure-Fix Remodeling LLC
@@ -49,7 +53,7 @@ Sure-Fix partners with Audra Frank Associates (notable clients include Meryl Str
 - [In-House Showroom](https://surefixremodelinglv.com/showroom): Material showroom in Easton with countertops, flooring, tile, faucets, showers, siding, roofing, LVP — brand allies Moen, Gerber, Henry.
 - [About / Our Story](https://surefixremodelinglv.com/about): Family-run since 2008, founder Henry Rouhana, 25+ years experience, 500+ projects, licensed and insured.
 - [Reviews](https://surefixremodelinglv.com/reviews): Customer reviews across Google, Angi, Houzz, and Facebook.
-- [Promotions & Financing](https://surefixremodelinglv.com/promotions): Year-round and seasonal promotions, financing options, gift cards.
+- [Kitchen Sale & Promotions](https://surefixremodelinglv.com/promotions): 10% off kitchen remodeling up to $2,000 through October 2026, plus current standing offers.
 - [Resources](https://surefixremodelinglv.com/resources): Sure-Fix remodeling articles, print guides, homeowner education, and editorial resources.
 - [Contact / Free Estimate](https://surefixremodelinglv.com/contact): Free, no-obligation in-home estimate. Call (610) 392-0990 or email info@surefixremodeling.net.
 

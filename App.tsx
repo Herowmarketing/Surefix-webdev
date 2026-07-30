@@ -214,18 +214,18 @@ function DeferredOverlays() {
     window.addEventListener('keydown', onInteract, { once: true });
 
     let idleId: number | undefined;
-    let timer: number | undefined;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     if ('requestIdleCallback' in window) {
       idleId = window.requestIdleCallback(enable, { timeout: 2500 });
     } else {
-      timer = window.setTimeout(enable, 1500);
+      timer = globalThis.setTimeout(enable, 1500);
     }
 
     return () => {
       window.removeEventListener('pointerdown', onInteract);
       window.removeEventListener('keydown', onInteract);
       if (idleId !== undefined) window.cancelIdleCallback(idleId);
-      if (timer !== undefined) window.clearTimeout(timer);
+      if (timer !== undefined) globalThis.clearTimeout(timer);
     };
   }, []);
 

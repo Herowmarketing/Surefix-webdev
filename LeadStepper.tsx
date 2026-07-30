@@ -15,6 +15,11 @@ import { X, ArrowRight, ArrowLeft, CheckCircle2, Phone, Mail, MapPin, User, Home
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
 import { buildEnhancedConversionUserData, getAttributionPayload, trackLeadSubmission } from '@/lib/analytics'
 import { BUSINESS } from '@/lib/constants'
+import {
+  KITCHEN_PROMOTION,
+  getKitchenPromotion,
+  kitchenPromotionDetails,
+} from '@/lib/kitchen-promotion'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -40,6 +45,25 @@ const CONTACT_METHODS = [
   { id: 'call',  label: 'Call' },
   { id: 'text',  label: 'Text' },
   { id: 'email', label: 'Email' },
+]
+
+const KITCHEN_SCOPES = [
+  { id: 'full-remodel', label: 'Full Kitchen Remodel', desc: 'Layout, cabinets, counters, fixtures & finishes' },
+  { id: 'cabinets-counters', label: 'Cabinets & Countertops', desc: 'Upgrade the biggest visual and functional elements' },
+  { id: 'layout-island', label: 'Layout or Island', desc: 'Improve flow, storage, seating, and prep space' },
+  { id: 'accessible-kitchen', label: 'Accessible Kitchen', desc: 'Comfortable, barrier-free, aging-in-place design' },
+  { id: 'not-sure', label: 'Help Me Plan', desc: 'I have ideas and want expert recommendations' },
+]
+
+const KITCHEN_PRIORITIES = [
+  'Custom cabinetry',
+  'Countertops',
+  'Storage',
+  'New layout',
+  'Kitchen island',
+  'Lighting',
+  'Flooring',
+  'Accessibility',
 ]
 
 
@@ -127,6 +151,38 @@ function Step1({
   )
 }
 
+function KitchenStep1({
+  value,
+  onChange,
+}: {
+  value: string
+  onChange: (v: string) => void
+}) {
+  return (
+    <div>
+      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+        What kind of kitchen transformation are you planning?
+      </h2>
+      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+        Choose the closest fit. Your 10% savings (up to $2,000) will be noted with your request.
+      </p>
+      <div className="flex flex-col gap-3">
+        {KITCHEN_SCOPES.map(scope => (
+          <OptionCard key={scope.id} selected={value === scope.id} onClick={() => onChange(scope.id)}>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <div className="text-sm font-bold text-slate-900">{scope.label}</div>
+                <div className="text-xs text-slate-500">{scope.desc}</div>
+              </div>
+              {value === scope.id ? <CheckCircle2 size={18} className="shrink-0 text-[#394696]" /> : null}
+            </div>
+          </OptionCard>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function Step2({
   timeline,
   onTimeline,
@@ -171,27 +227,65 @@ function Step2({
 function Step3({
   details, contactMethod,
   onDetails, onContactMethod,
+  kitchenMode = false,
+  priorities = [],
+  onPriorities = () => {},
 }: {
   details: string; contactMethod: string
   onDetails: (v: string) => void
   onContactMethod: (v: string) => void
+  kitchenMode?: boolean
+  priorities?: string[]
+  onPriorities?: (v: string[]) => void
 }) {
+  const togglePriority = (priority: string) => {
+    onPriorities(
+      priorities.includes(priority)
+        ? priorities.filter(item => item !== priority)
+        : [...priorities, priority],
+    )
+  }
+
   return (
     <div>
       <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
-        Tell us about your project
+        {kitchenMode ? 'What matters most in your new kitchen?' : 'Tell us about your project'}
       </h2>
       <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
-        A few details help us prepare an accurate estimate before we reach out.
+        {kitchenMode
+          ? 'Choose your priorities, then tell us what you want to change.'
+          : 'A few details help us prepare an accurate estimate before we reach out.'}
       </p>
       <div className="flex flex-col gap-5">
+        {kitchenMode ? (
+          <div>
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-2">
+              Kitchen priorities
+            </label>
+            <div className="grid grid-cols-2 gap-2">
+              {KITCHEN_PRIORITIES.map(priority => (
+                <OptionCard
+                  key={priority}
+                  selected={priorities.includes(priority)}
+                  onClick={() => togglePriority(priority)}
+                >
+                  <div className="text-center text-xs font-bold text-slate-900">{priority}</div>
+                </OptionCard>
+              ))}
+            </div>
+          </div>
+        ) : null}
         <div>
           <label className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-2">
             Project details *
           </label>
           <textarea
             className="w-full px-4 py-3 rounded-xl text-sm text-slate-900 placeholder-slate-400 bg-white border border-slate-200 focus:outline-none focus:border-[#394696] transition-all duration-200 resize-none"
-            placeholder="What are you hoping to accomplish? Include the room(s), approximate size, must-haves, and anything else that helps us understand the scope."
+            placeholder={
+              kitchenMode
+                ? 'Tell us about your current kitchen, must-haves, layout challenges, and the look you want.'
+                : 'What are you hoping to accomplish? Include the room(s), approximate size, must-haves, and anything else that helps us understand the scope.'
+            }
             rows={5}
             value={details}
             onChange={e => onDetails(e.target.value)}
@@ -220,10 +314,11 @@ function Step3({
 
 function Step4({
   name, phone, email, address, zip,
-  onChange,
+  onChange, kitchenMode = false,
 }: {
   name: string; phone: string; email: string; address: string; zip: string
   onChange: (field: string, value: string) => void
+  kitchenMode?: boolean
 }) {
   const inputClass = `
     w-full px-4 py-3 rounded-xl text-sm text-slate-900 placeholder-slate-400 bg-white border border-slate-200
@@ -239,6 +334,15 @@ function Step4({
       <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
         We'll reach out within 24 hours to schedule your free, no-obligation estimate.
       </p>
+      {kitchenMode ? (
+        <div className="mb-5 rounded-xl border border-[#983631]/25 bg-[#983631]/5 px-4 py-3">
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-[#983631]">
+            Kitchen sale attached
+          </p>
+          <p className="mt-1 text-sm font-black text-slate-900">{KITCHEN_PROMOTION.headline}</p>
+          <p className="text-xs text-slate-600">{KITCHEN_PROMOTION.promise}</p>
+        </div>
+      ) : null}
       <div className="flex flex-col gap-4">
         <div className="relative">
           <User size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -369,7 +473,8 @@ const slideVariants = {
 }
 
 export default function LeadStepper() {
-  const { isOpen, closeStepper, preselectedService } = useLeadStepper()
+  const { isOpen, closeStepper, preselectedService, flow, source } = useLeadStepper()
+  const kitchenMode = flow === 'kitchen-promo'
 
   const [step, setStep] = useState(1)
   const [direction, setDirection] = useState(1)
@@ -379,11 +484,13 @@ export default function LeadStepper() {
 
   // Step 1
   const [service, setService] = useState('')
+  const [kitchenScope, setKitchenScope] = useState('')
   // Step 2
   const [timeline, setTimeline] = useState('')
   // Step 3
   const [details, setDetails] = useState('')
   const [contactMethod, setContactMethod] = useState('')
+  const [kitchenPriorities, setKitchenPriorities] = useState<string[]>([])
   // Step 4
   const [contact, setContact] = useState({ name: '', phone: '', email: '', address: '', zip: '' })
   // Spam honeypot — hidden from real users; only bots fill it.
@@ -400,12 +507,14 @@ export default function LeadStepper() {
       setHoneypot('')
       if (preselectedService) setService(preselectedService)
       else setService('')
+      setKitchenScope('')
       setTimeline('')
       setDetails('')
       setContactMethod('')
+      setKitchenPriorities([])
       setContact({ name: '', phone: '', email: '', address: '', zip: '' })
     }
-  }, [isOpen, preselectedService])
+  }, [isOpen, preselectedService, flow])
 
   // Lock body scroll when open
   useEffect(() => {
@@ -417,8 +526,17 @@ export default function LeadStepper() {
     return () => { document.body.style.overflow = '' }
   }, [isOpen])
 
+  useEffect(() => {
+    if (!isOpen) return
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeStepper()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [isOpen, closeStepper])
+
   const canAdvance = () => {
-    if (step === 1) return !!service
+    if (step === 1) return kitchenMode ? !!kitchenScope : !!service
     if (step === 2) return !!timeline
     if (step === 3) return details.trim().length > 0
     if (step === 4)
@@ -470,6 +588,17 @@ export default function LeadStepper() {
       .filter(Boolean)
       .join(', ')
     const attribution = getAttributionPayload()
+    const promotion = getKitchenPromotion()
+    const kitchenScopeLabel =
+      KITCHEN_SCOPES.find(scope => scope.id === kitchenScope)?.label || kitchenScope
+    const submittedDetails = kitchenMode
+      ? [
+          `Promotion: ${kitchenPromotionDetails(promotion)}`,
+          `Kitchen scope: ${kitchenScopeLabel}`,
+          `Priorities: ${kitchenPriorities.length ? kitchenPriorities.join(', ') : 'Not specified'}`,
+          `Project notes: ${details}`,
+        ].join('\n')
+      : details
 
     try {
       const res = await fetch('/api/project-inquiry', {
@@ -480,14 +609,20 @@ export default function LeadStepper() {
           email: contact.email,
           phone: contact.phone,
           projectAddress,
-          projectType: serviceLabel,
+          projectType: kitchenMode ? 'Kitchen Promotion — 10% Off' : serviceLabel,
           timeline: timelineLabel,
-          projectDetails: details,
+          projectDetails: submittedDetails,
           preferredContactMethod: contactMethodLabel,
-          sourcePage: 'purchase-inquiry-stepper',
+          sourcePage: kitchenMode ? 'kitchen-promo-stepper' : 'purchase-inquiry-stepper',
           company: honeypot,
           rawServiceId: service,
           rawTimelineId: timeline,
+          kitchenScope: kitchenMode ? kitchenScope : undefined,
+          kitchenPriorities: kitchenMode ? kitchenPriorities : undefined,
+          promotionId: kitchenMode ? KITCHEN_PROMOTION.id : undefined,
+          promotionMonth: kitchenMode ? promotion.month : undefined,
+          promotionDeadline: kitchenMode ? promotion.validThrough : undefined,
+          ctaSource: kitchenMode ? source : undefined,
           attribution,
         }),
       })
@@ -496,7 +631,7 @@ export default function LeadStepper() {
         throw new Error(data?.error || 'Something went wrong. Please try again.')
       }
       trackLeadSubmission({
-        projectType: serviceLabel,
+        projectType: kitchenMode ? 'Kitchen Promotion — 10% Off' : serviceLabel,
         timeline: timelineLabel,
         userData: buildEnhancedConversionUserData({
           name: contact.name,
@@ -505,7 +640,11 @@ export default function LeadStepper() {
           zip,
         }),
       })
-      window.location.assign('/thank-you?source=lead-stepper')
+      window.location.assign(
+        kitchenMode
+          ? '/thank-you?source=kitchen-promo-stepper'
+          : '/thank-you?source=lead-stepper',
+      )
     } catch (err) {
       setError(
         err instanceof Error
@@ -517,7 +656,11 @@ export default function LeadStepper() {
     }
   }
 
-  const stepLabel = ['Project Type', 'Timeline', 'Project Details', 'Your Info'][step - 1]
+  const stepLabel = (
+    kitchenMode
+      ? ['Kitchen Scope', 'Timeline', 'Kitchen Priorities', 'Claim Savings']
+      : ['Project Type', 'Timeline', 'Project Details', 'Your Info']
+  )[step - 1]
 
   return (
     <AnimatePresence>
@@ -563,7 +706,7 @@ export default function LeadStepper() {
               <div className="flex items-center justify-between px-6 pt-6 pb-2">
                 <div>
                   <div className="text-xs font-bold tracking-widest uppercase text-[#394696] mb-0.5">
-                    Free Estimate
+                    {kitchenMode ? 'Kitchen Sale Consultation' : 'Free Estimate'}
                   </div>
                   {!submitted && (
                     <div className="text-xs text-slate-400 font-medium">
@@ -572,7 +715,9 @@ export default function LeadStepper() {
                   )}
                 </div>
                 <button
+                  type="button"
                   onClick={closeStepper}
+                  aria-label="Close estimate form"
                   className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-all"
                 >
                   <X size={16} />
@@ -601,7 +746,9 @@ export default function LeadStepper() {
                       exit="exit"
                     >
                       {step === 1 && (
-                        <Step1 value={service} onChange={setService} />
+                        kitchenMode
+                          ? <KitchenStep1 value={kitchenScope} onChange={setKitchenScope} />
+                          : <Step1 value={service} onChange={setService} />
                       )}
                       {step === 2 && (
                         <Step2 timeline={timeline} onTimeline={setTimeline} />
@@ -612,6 +759,9 @@ export default function LeadStepper() {
                           contactMethod={contactMethod}
                           onDetails={setDetails}
                           onContactMethod={setContactMethod}
+                          kitchenMode={kitchenMode}
+                          priorities={kitchenPriorities}
+                          onPriorities={setKitchenPriorities}
                         />
                       )}
                       {step === 4 && (
@@ -621,6 +771,7 @@ export default function LeadStepper() {
                           email={contact.email}
                           address={contact.address}
                           zip={contact.zip}
+                          kitchenMode={kitchenMode}
                           onChange={(field, value) =>
                             setContact(prev => ({ ...prev, [field]: value }))
                           }
@@ -685,7 +836,9 @@ export default function LeadStepper() {
                     {step === TOTAL_STEPS
                       ? submitting
                         ? 'Submitting…'
-                        : 'Submit Request'
+                        : kitchenMode
+                          ? 'Claim My Kitchen Savings'
+                          : 'Submit Request'
                       : 'Continue'}
                     <ArrowRight size={15} />
                   </motion.button>

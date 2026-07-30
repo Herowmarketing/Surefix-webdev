@@ -201,8 +201,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const firstName = name.split(' ')[0] || '';
     const isGiftCard = sourcePage === 'promo-popup-500-gift-card';
+    const isKitchenPromo = sourcePage === 'kitchen-promo-stepper';
 
-    const paragraphs = isGiftCard
+    const paragraphs = isKitchenPromo
+      ? [
+          `Your request for the <strong>Sure-Fix Kitchen Sale</strong> is in. We've noted your <strong>10% savings, up to $2,000</strong>, with your kitchen consultation.`,
+          `One of our team members will reach out within <strong>24 hours</strong> to learn about your space, priorities, and timeline.`,
+          `<strong>Prices will never be lower.</strong> We look forward to helping you plan the heart of your home.`,
+        ]
+      : isGiftCard
       ? [
           `Welcome to the Sure-Fix family, ${firstName || 'friend'}! Your <strong>$500 gift card</strong> is officially earned and reserved under your name — see it above.`,
           `One of our team members will reach out within <strong>24 hours</strong> to learn about your project and walk you through how to redeem it toward your free estimate.`,
@@ -214,6 +221,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         ];
 
     const highlightRows: DetailRow[] = [
+      ...(isKitchenPromo ? [{ label: 'Kitchen offer', value: '10% off — up to $2,000' }] : []),
       { label: 'Project', value: projectType },
       { label: 'Timeline', value: timeline },
       { label: 'Preferred contact', value: preferredContactMethod },
@@ -221,23 +229,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     ];
 
     const emailOpts = {
-      preheader: isGiftCard
+      preheader: isKitchenPromo
+        ? `Your kitchen sale request is confirmed — 10% off up to $2,000.`
+        : isGiftCard
         ? `Welcome, ${firstName || 'friend'}! Your $500 Sure-Fix gift card is earned and ready.`
         : 'We received your request — here\u2019s what happens next.',
-      heading: isGiftCard
+      heading: isKitchenPromo
+        ? `Your kitchen savings are noted${firstName ? `, ${firstName}` : ''}!`
+        : isGiftCard
         ? `You earned it, ${firstName || 'friend'}!`
         : firstName ? `Thanks, ${firstName}!` : 'Thank you!',
       paragraphs,
       giftCardRecipient: isGiftCard ? name : undefined,
-      highlightTitle: isGiftCard ? undefined : 'Your request',
+      highlightTitle: isGiftCard ? undefined : isKitchenPromo ? 'Your kitchen sale request' : 'Your request',
       highlightRows: isGiftCard ? [] : highlightRows,
-      ctaLabel: isGiftCard ? 'See Our Work' : 'See Our Recent Work',
-      ctaHref: 'https://surefixremodelinglv.com/showroom',
+      ctaLabel: isKitchenPromo ? 'Explore Kitchen Remodeling' : isGiftCard ? 'See Our Work' : 'See Our Recent Work',
+      ctaHref: isKitchenPromo
+        ? 'https://surefixremodelinglv.com/services/kitchen'
+        : 'https://surefixremodelinglv.com/showroom',
     };
 
     await sendEmail({
       to: email,
-      subject: isGiftCard
+      subject: isKitchenPromo
+        ? `Your Sure-Fix kitchen sale request is confirmed`
+        : isGiftCard
         ? `You earned your $500 Sure-Fix gift card, ${firstName || 'friend'}!`
         : 'Thanks for contacting Sure-Fix Remodeling',
       text: renderBrandedText(emailOpts),
