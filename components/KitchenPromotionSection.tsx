@@ -9,6 +9,7 @@ import {
   useKitchenPromotion,
 } from '@/lib/kitchen-promotion';
 import { SITE_IMAGES } from '@/lib/site-images';
+import PhoneLink from '@/components/PhoneLink';
 
 type KitchenPromotionSectionProps = {
   source: string;
@@ -102,12 +103,11 @@ export default function KitchenPromotionSection({
             >
               Claim My Kitchen Savings <ArrowRight size={15} />
             </motion.button>
-            <a
-              href={BUSINESS.phoneHref}
+            <PhoneLink
               className="inline-flex min-h-[50px] items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-6 py-3.5 text-xs font-black uppercase tracking-[0.14em] text-slate-800 transition-colors hover:border-[#394696] hover:text-[#394696]"
             >
               <Phone size={14} /> {BUSINESS.phone}
-            </a>
+            </PhoneLink>
             <Link
               href="/services/kitchen"
               className="inline-flex min-h-[50px] items-center justify-center px-3 py-3 text-xs font-black uppercase tracking-[0.14em] text-[#394696] hover:text-[#2a3578]"

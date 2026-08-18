@@ -23,6 +23,7 @@ import { BUSINESS } from '@/lib/constants';
 import { useSeo, breadcrumbList } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
 import CareerApplicationModal, { GENERAL_APPLICATION } from './CareerApplicationModal';
+import PhoneLink from '@/components/PhoneLink';
 
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS  = '"Figtree", system-ui, sans-serif';
@@ -326,9 +327,9 @@ function RoleCard({
               </button>
               <p className="mt-2 text-[10px] text-slate-400" style={{ fontFamily: SANS }}>
                 Opens our quick application form — or call us at{' '}
-                <a href={BUSINESS.phoneHref} className="font-bold text-[#394696] hover:underline">
+                <PhoneLink className="font-bold text-[#394696] hover:underline">
                   {BUSINESS.phone}
-                </a>
+                </PhoneLink>
               </p>
             </div>
           </motion.div>
@@ -456,13 +457,12 @@ export default function Careers() {
               >
                 View Open Roles <ArrowRight size={14} />
               </a>
-              <a
-                href={BUSINESS.phoneHref}
+              <PhoneLink
                 className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={14} /> {BUSINESS.phone}
-              </a>
+              </PhoneLink>
             </motion.div>
 
           </motion.div>
@@ -743,13 +743,12 @@ export default function Careers() {
               >
                 <Send size={15} /> Submit a General Application
               </button>
-              <a
-                href={BUSINESS.phoneHref}
+              <PhoneLink
                 className="inline-flex min-h-[52px] items-center gap-2 rounded-2xl border border-slate-300 bg-white px-8 py-4 text-sm font-black uppercase tracking-wider text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={15} /> {BUSINESS.phone}
-              </a>
+              </PhoneLink>
             </div>
 
             <p

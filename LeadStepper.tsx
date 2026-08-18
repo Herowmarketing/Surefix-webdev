@@ -20,6 +20,7 @@ import {
   getKitchenPromotion,
   kitchenPromotionDetails,
 } from '@/lib/kitchen-promotion'
+import PhoneLink from '@/components/PhoneLink'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -440,9 +441,9 @@ function StepSuccess({ name }: { name: string }) {
         style={{ background: '#f8fafc', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         📞{' '}
-        <a href={BUSINESS.phoneHref} className="font-bold text-[#394696] hover:underline">
+        <PhoneLink className="font-bold text-[#394696] hover:underline">
           {BUSINESS.phone}
-        </a>{' '}
+        </PhoneLink>{' '}
         · Mon–Fri 8AM–7PM · Sat 8AM–4PM · Sun Closed
       </div>
     </motion.div>

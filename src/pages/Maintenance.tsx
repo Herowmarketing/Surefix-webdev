@@ -1,5 +1,6 @@
 import { ArrowUpRight, Clock, Phone } from 'lucide-react';
 import { BUSINESS, LOGO_URL } from '@/lib/constants';
+import PhoneLink from '@/components/PhoneLink';
 
 export default function Maintenance() {
   return (
@@ -68,14 +69,13 @@ export default function Maintenance() {
         </p>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-6">
-          <a
-            href={BUSINESS.phoneHref}
+          <PhoneLink
             className="inline-flex min-h-[48px] items-center justify-center gap-2.5 rounded-full px-8 py-3 text-sm font-bold uppercase tracking-wider text-white transition-[filter] hover:brightness-110"
             style={{ fontFamily: 'Figtree, sans-serif', background: '#983631' }}
           >
             <Phone size={16} strokeWidth={2} />
             {BUSINESS.phone}
-          </a>
+          </PhoneLink>
           <span
             className="inline-flex items-center gap-2 text-sm text-white/45"
             style={{ fontFamily: 'Figtree, sans-serif', fontWeight: 600 }}

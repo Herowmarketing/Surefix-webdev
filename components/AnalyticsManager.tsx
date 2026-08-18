@@ -1,6 +1,12 @@
 import { useEffect } from 'react';
 import { useLocation } from 'wouter';
-import { captureAttribution, trackPageView, trackPhoneClick, initGoogleAds } from '@/lib/analytics';
+import {
+  captureAttribution,
+  trackPageView,
+  trackPhoneClick,
+  initGoogleAds,
+  initWebsiteCallTracking,
+} from '@/lib/analytics';
 
 export default function AnalyticsManager() {
   const [location] = useLocation();
@@ -8,11 +14,15 @@ export default function AnalyticsManager() {
   useEffect(() => {
     captureAttribution();
     initGoogleAds();
+    initWebsiteCallTracking();
   }, []);
 
   useEffect(() => {
     captureAttribution();
     trackPageView(location);
+    // SPA route changes remount phone CTAs; re-run number swap after paint.
+    const id = window.setTimeout(() => initWebsiteCallTracking(), 50);
+    return () => window.clearTimeout(id);
   }, [location]);
 
   useEffect(() => {

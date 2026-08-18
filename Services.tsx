@@ -8,6 +8,7 @@ import { SERVICES, BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList, SITE_URL } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
+import PhoneLink from '@/components/PhoneLink';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -129,12 +130,12 @@ export default function Services() {
               >
                 Get Free Estimate <ArrowRight size={15} />
               </motion.button>
-              <a href={BUSINESS.phoneHref}>
+              <PhoneLink>
                 <motion.span whileHover={{ scale: 1.05 }} className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer border-2 border-slate-300"
                   style={{ fontFamily: 'Figtree, sans-serif', background: 'rgba(255,255,255,0.1)' }}>
                   <Phone size={14} /> {BUSINESS.phone}
                 </motion.span>
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
         </div>

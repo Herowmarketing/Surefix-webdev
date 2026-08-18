@@ -10,6 +10,7 @@ import {
   trackGoogleAdsConversion,
   trackThankYouConversion,
 } from '@/lib/analytics';
+import PhoneLink from '@/components/PhoneLink';
 
 export default function ThankYou() {
   const isKitchenPromo =
@@ -73,14 +74,13 @@ export default function ThankYou() {
         </p>
 
         <div className="flex flex-col items-center gap-3 sm:flex-row">
-          <a
-            href={BUSINESS.phoneHref}
+          <PhoneLink
             className="inline-flex items-center gap-2 rounded-xl px-6 py-4 text-sm font-black uppercase tracking-wider text-white transition-opacity hover:opacity-90"
             style={{ background: '#983631', fontFamily: 'Figtree, sans-serif' }}
           >
             <Phone size={15} />
             Call Now: {BUSINESS.phone}
-          </a>
+          </PhoneLink>
           <Link href={isKitchenPromo ? '/services/kitchen' : '/services'}>
             <span
               className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-slate-200 px-6 py-4 text-sm font-black uppercase tracking-wider text-slate-900 transition-colors hover:bg-slate-50"

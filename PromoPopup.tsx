@@ -9,6 +9,7 @@ import {
   KITCHEN_PROMOTION_TERMS,
   useKitchenPromotion,
 } from '@/lib/kitchen-promotion';
+import PhoneLink from '@/components/PhoneLink';
 
 const STORAGE_KEY = 'sf_kitchen_sale_popup_2026_v1';
 const SUPPRESS_DAYS = 7;
@@ -178,12 +179,11 @@ export default function PromoPopup() {
                 >
                   Claim My Kitchen Savings <ArrowRight size={16} />
                 </button>
-                <a
-                  href={BUSINESS.phoneHref}
+                <PhoneLink
                   className="mt-3 inline-flex min-h-[44px] items-center justify-center gap-2 px-4 text-xs font-black uppercase tracking-[0.12em] text-[#394696]"
                 >
                   <Phone size={14} /> Call {BUSINESS.phone}
-                </a>
+                </PhoneLink>
                 <p className="mt-3 text-[9px] leading-relaxed text-slate-400">{KITCHEN_PROMOTION_TERMS}</p>
               </div>
             </div>

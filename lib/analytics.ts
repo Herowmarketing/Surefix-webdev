@@ -9,9 +9,19 @@ export const GOOGLE_ADS_FORM_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_FORM_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
 export const GOOGLE_ADS_PHONE_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || 'GItgCMrltsQcEJCDy_RD';
+/**
+ * Website call conversion (Calls from website / Qualified Call 60s+).
+ * Distinct from GOOGLE_ADS_PHONE_CONVERSION (tap/click-to-call).
+ * Label only, or full AW-xxx/label. Empty until the Ads conversion action is live.
+ */
+export const GOOGLE_ADS_CALL_CONVERSION =
+  import.meta.env.VITE_GOOGLE_ADS_CALL_CONVERSION?.trim() || '';
 /** Thank-you page conversion — fires once on the /thank-you page load. */
 export const GOOGLE_ADS_THANKYOU_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_THANKYOU_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
+
+/** Display number Google replaces with a forwarding number for call tracking. */
+export const WEBSITE_CALL_TRACKING_NUMBER = '(610) 392-0990';
 
 const ATTRIBUTION_STORAGE_KEY = 'sf_attribution';
 const ENHANCED_CONVERSION_STORAGE_KEY = 'sf_enhanced_conversion_user_data';
@@ -257,6 +267,18 @@ export function initGoogleAds() {
   if (GOOGLE_ADS_ID) {
     gtag('config', GOOGLE_ADS_ID);
   }
+}
+
+/**
+ * Enable Google Ads website call conversion tracking (number swap + duration).
+ * Safe to call after hydration and again when new phone links mount (SPA routes / menus).
+ */
+export function initWebsiteCallTracking() {
+  const sendTo = resolveSendTo(GOOGLE_ADS_CALL_CONVERSION);
+  if (!sendTo) return;
+  gtag('config', sendTo, {
+    phone_conversion_number: WEBSITE_CALL_TRACKING_NUMBER,
+  });
 }
 
 export function trackGoogleAdsConversion(
