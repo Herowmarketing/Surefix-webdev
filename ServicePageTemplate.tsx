@@ -11,6 +11,7 @@ import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList, serviceSchema, SITE_URL } from '@/lib/seo';
 import { SERVICE_SEO } from '@/lib/seo-config';
 import KitchenPromotionSection from '@/components/KitchenPromotionSection';
+import PhoneLink from '@/components/PhoneLink';
 
 interface ServicePageProps {
   title: string;
@@ -139,14 +140,14 @@ export default function ServicePageTemplate({
                 >
                   {serviceId === 'kitchen' ? 'Claim Kitchen Savings' : 'Get Free Estimate'} <ArrowRight size={15} />
                 </motion.button>
-              <a href={BUSINESS.phoneHref}>
+              <PhoneLink>
                 <motion.span
                   whileHover={{ scale: 1.04, y: -2 }}
                   className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-black text-slate-700 cursor-pointer border border-slate-300 bg-white"
                 >
                   <Phone size={14} /> {BUSINESS.phone}
                 </motion.span>
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
 
@@ -233,7 +234,7 @@ export default function ServicePageTemplate({
                 >
                   {serviceId === 'kitchen' ? 'Claim Kitchen Savings' : 'Get Free Estimate'} <ArrowRight size={15} />
                 </motion.button>
-              <a href={BUSINESS.phoneHref}>
+              <PhoneLink>
                 <motion.span
                   whileHover={{ scale: 1.05 }}
                   className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-white cursor-pointer border-2 border-white/30"
@@ -241,7 +242,7 @@ export default function ServicePageTemplate({
                 >
                   <Phone size={14} /> {BUSINESS.phone}
                 </motion.span>
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
         </div>

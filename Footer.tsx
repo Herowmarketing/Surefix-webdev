@@ -7,6 +7,7 @@ import { Link } from 'wouter';
 import { LOGO_URL, BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import KitchenPromotionSection from '@/components/KitchenPromotionSection';
+import PhoneLink from '@/components/PhoneLink';
 
 const SERVICE_LINKS = [
   { label: 'Kitchen Remodeling', href: '/services/kitchen' },
@@ -130,9 +131,9 @@ export default function Footer() {
           <div>
             <h4 className="text-slate-900 font-black text-xs uppercase tracking-widest mb-5">Contact</h4>
             <div className="space-y-3 mb-6">
-              <a href={BUSINESS.phoneHref} className="flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors">
+              <PhoneLink className="flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors">
                 <Phone size={13} className="text-[#983631]" /> {BUSINESS.phone}
-              </a>
+              </PhoneLink>
               <a href={`mailto:${BUSINESS.email}`} className="flex items-center gap-2 text-sm text-slate-600 hover:text-slate-900 transition-colors">
                 <Mail size={13} className="text-[#983631]" /> {BUSINESS.email}
               </a>

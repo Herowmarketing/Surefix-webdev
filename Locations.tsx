@@ -12,6 +12,7 @@ import { BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList, SITE_URL } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
+import PhoneLink from '@/components/PhoneLink';
 
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS = '"Figtree", system-ui, sans-serif';
@@ -126,14 +127,13 @@ export default function Locations() {
                 Book a local visit
                 <ArrowRight size={14} />
               </motion.button>
-              <a
-                href={BUSINESS.phoneHref}
+              <PhoneLink
                 className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={14} />
                 {BUSINESS.phone}
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
         </div>
@@ -307,14 +307,13 @@ export default function Locations() {
                 Confirm coverage
                 <ArrowRight size={14} />
               </motion.button>
-              <a
-                href={BUSINESS.phoneHref}
+              <PhoneLink
                 className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={14} />
                 {BUSINESS.phone}
-              </a>
+              </PhoneLink>
             </div>
           </motion.div>
         </div>

@@ -20,6 +20,7 @@ import {
   getKitchenPromotion,
   kitchenPromotionDetails,
 } from '@/lib/kitchen-promotion'
+import PhoneLink from '@/components/PhoneLink'
 
 // ─── Data ────────────────────────────────────────────────────────────────────
 
@@ -64,6 +65,15 @@ const KITCHEN_PRIORITIES = [
   'Lighting',
   'Flooring',
   'Accessibility',
+]
+
+const DECISION_REASONS = [
+  { id: 'stunning-website', label: 'Stunning Website' },
+  { id: 'social-media', label: 'Social Media' },
+  { id: 'advertisement', label: 'Advertisement' },
+  { id: 'billboard', label: 'Billboard' },
+  { id: 'referral', label: 'Referral' },
+  { id: 'other', label: 'Other' },
 ]
 
 
@@ -313,6 +323,65 @@ function Step3({
 }
 
 function Step4({
+  value,
+  otherValue,
+  onChange,
+  onOtherChange,
+}: {
+  value: string
+  otherValue: string
+  onChange: (value: string) => void
+  onOtherChange: (value: string) => void
+}) {
+  return (
+    <div>
+      <h2 className="text-2xl font-black text-slate-900 mb-1" style={{ fontFamily: 'Figtree, sans-serif' }}>
+        What stood out about Sure-Fix?
+      </h2>
+      <p className="text-sm text-slate-500 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
+        What made you choose Sure-Fix for your project? Choose the answer that influenced you most.
+      </p>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {DECISION_REASONS.map(reason => (
+          <OptionCard
+            key={reason.id}
+            selected={value === reason.id}
+            onClick={() => onChange(reason.id)}
+          >
+            <div className="flex items-center justify-between gap-3">
+              <span className="text-sm font-bold text-slate-900">{reason.label}</span>
+              {value === reason.id ? (
+                <CheckCircle2 size={18} className="shrink-0 text-[#394696]" />
+              ) : null}
+            </div>
+          </OptionCard>
+        ))}
+      </div>
+      {value === 'other' ? (
+        <div className="mt-4">
+          <label
+            htmlFor="decision-reason-other"
+            className="block text-xs font-bold text-slate-600 uppercase tracking-wide mb-2"
+          >
+            Tell us what stood out *
+          </label>
+          <textarea
+            id="decision-reason-other"
+            value={otherValue}
+            onChange={event => onOtherChange(event.target.value)}
+            rows={3}
+            maxLength={500}
+            autoFocus
+            placeholder="What made Sure-Fix the right choice for you?"
+            className="w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder-slate-400 transition-colors focus:border-[#394696] focus:outline-none"
+          />
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
+function Step5({
   name, phone, email, address, zip,
   onChange, kitchenMode = false,
 }: {
@@ -440,9 +509,9 @@ function StepSuccess({ name }: { name: string }) {
         style={{ background: '#f8fafc', border: '1px solid rgba(255,255,255,0.08)' }}
       >
         📞{' '}
-        <a href={BUSINESS.phoneHref} className="font-bold text-[#394696] hover:underline">
+        <PhoneLink className="font-bold text-[#394696] hover:underline">
           {BUSINESS.phone}
-        </a>{' '}
+        </PhoneLink>{' '}
         · Mon–Fri 8AM–7PM · Sat 8AM–4PM · Sun Closed
       </div>
     </motion.div>
@@ -451,7 +520,7 @@ function StepSuccess({ name }: { name: string }) {
 
 // ─── Main Modal ───────────────────────────────────────────────────────────────
 
-const TOTAL_STEPS = 4
+const TOTAL_STEPS = 5
 
 const ZIP_RE = /^\d{5}$/
 
@@ -492,6 +561,9 @@ export default function LeadStepper() {
   const [contactMethod, setContactMethod] = useState('')
   const [kitchenPriorities, setKitchenPriorities] = useState<string[]>([])
   // Step 4
+  const [decisionReason, setDecisionReason] = useState('')
+  const [decisionReasonOther, setDecisionReasonOther] = useState('')
+  // Step 5
   const [contact, setContact] = useState({ name: '', phone: '', email: '', address: '', zip: '' })
   // Spam honeypot — hidden from real users; only bots fill it.
   const [honeypot, setHoneypot] = useState('')
@@ -512,6 +584,8 @@ export default function LeadStepper() {
       setDetails('')
       setContactMethod('')
       setKitchenPriorities([])
+      setDecisionReason('')
+      setDecisionReasonOther('')
       setContact({ name: '', phone: '', email: '', address: '', zip: '' })
     }
   }, [isOpen, preselectedService, flow])
@@ -540,6 +614,8 @@ export default function LeadStepper() {
     if (step === 2) return !!timeline
     if (step === 3) return details.trim().length > 0
     if (step === 4)
+      return !!decisionReason && (decisionReason !== 'other' || decisionReasonOther.trim().length > 0)
+    if (step === 5)
       return !!(
         contact.name &&
         contact.phone &&
@@ -550,8 +626,8 @@ export default function LeadStepper() {
     return false
   }
 
-  const stepFourMissingRequired =
-    step === 4 &&
+  const contactMissingRequired =
+    step === 5 &&
     (!contact.name.trim() ||
       !contact.phone.trim() ||
       !contact.email.trim() ||
@@ -591,6 +667,10 @@ export default function LeadStepper() {
     const promotion = getKitchenPromotion()
     const kitchenScopeLabel =
       KITCHEN_SCOPES.find(scope => scope.id === kitchenScope)?.label || kitchenScope
+    const decisionReasonLabel =
+      decisionReason === 'other'
+        ? decisionReasonOther.trim()
+        : DECISION_REASONS.find(reason => reason.id === decisionReason)?.label || decisionReason
     const submittedDetails = kitchenMode
       ? [
           `Promotion: ${kitchenPromotionDetails(promotion)}`,
@@ -613,6 +693,7 @@ export default function LeadStepper() {
           timeline: timelineLabel,
           projectDetails: submittedDetails,
           preferredContactMethod: contactMethodLabel,
+          decisionReason: decisionReasonLabel,
           sourcePage: kitchenMode ? 'kitchen-promo-stepper' : 'purchase-inquiry-stepper',
           company: honeypot,
           rawServiceId: service,
@@ -658,8 +739,8 @@ export default function LeadStepper() {
 
   const stepLabel = (
     kitchenMode
-      ? ['Kitchen Scope', 'Timeline', 'Kitchen Priorities', 'Claim Savings']
-      : ['Project Type', 'Timeline', 'Project Details', 'Your Info']
+      ? ['Kitchen Scope', 'Timeline', 'Kitchen Priorities', 'Why Sure-Fix', 'Claim Savings']
+      : ['Project Type', 'Timeline', 'Project Details', 'Why Sure-Fix', 'Your Info']
   )[step - 1]
 
   return (
@@ -766,6 +847,17 @@ export default function LeadStepper() {
                       )}
                       {step === 4 && (
                         <Step4
+                          value={decisionReason}
+                          otherValue={decisionReasonOther}
+                          onChange={value => {
+                            setDecisionReason(value)
+                            if (value !== 'other') setDecisionReasonOther('')
+                          }}
+                          onOtherChange={setDecisionReasonOther}
+                        />
+                      )}
+                      {step === 5 && (
+                        <Step5
                           name={contact.name}
                           phone={contact.phone}
                           email={contact.email}
@@ -845,7 +937,7 @@ export default function LeadStepper() {
                 </div>
               )}
 
-              {stepFourMissingRequired && !submitting ? (
+              {contactMissingRequired && !submitting ? (
                 <p className="px-6 pb-4 text-right text-xs font-semibold text-slate-500">
                   Fill out all required fields, including a 5-digit ZIP code, to submit.
                 </p>

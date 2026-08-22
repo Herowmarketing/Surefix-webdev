@@ -8,6 +8,7 @@ import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { BUSINESS, MASCOT_URL } from '@/lib/constants';
 import { buildEnhancedConversionUserData, getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
+import PhoneLink from '@/components/PhoneLink';
 
 const services = [
   'Kitchen Remodeling',
@@ -229,30 +230,48 @@ export default function ContactSection() {
             </div>
 
             {/* Contact cards */}
-            {contactItems.map(({ icon: Icon, label, value, href, color }) => (
-              <motion.a
-                key={label}
-                href={href}
-                whileHover={{ x: 4 }}
-                transition={{ duration: 0.2 }}
-                className="flex items-start gap-4 rounded-xl p-4 group transition-all duration-200"
-                style={{
-                  background: '#f1f5f9',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                }}
-              >
-                <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200"
-                  style={{ background: `${color}18`, border: `1px solid ${color}35` }}>
-                  <Icon size={18} style={{ color }} />
-                </div>
-                <div>
-                  <p className="text-xs font-bold uppercase tracking-widest mb-0.5"
-                    style={{ color, fontFamily: 'Figtree, sans-serif' }}>{label}</p>
-                  <p className="text-slate-700 font-semibold text-sm"
-                    style={{ fontFamily: 'Figtree, sans-serif' }}>{value}</p>
-                </div>
-              </motion.a>
-            ))}
+            {contactItems.map(({ icon: Icon, label, value, href, color }) => {
+              const cardClassName = 'flex items-start gap-4 rounded-xl p-4 group transition-all duration-200';
+              const cardStyle = {
+                background: '#f1f5f9',
+                border: '1px solid rgba(255,255,255,0.08)',
+              } as const;
+              const cardBody = (
+                <>
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 transition-all duration-200"
+                    style={{ background: `${color}18`, border: `1px solid ${color}35` }}>
+                    <Icon size={18} style={{ color }} />
+                  </div>
+                  <div>
+                    <p className="text-xs font-bold uppercase tracking-widest mb-0.5"
+                      style={{ color, fontFamily: 'Figtree, sans-serif' }}>{label}</p>
+                    <p className="text-slate-700 font-semibold text-sm"
+                      style={{ fontFamily: 'Figtree, sans-serif' }}>{value}</p>
+                  </div>
+                </>
+              );
+
+              if (href === BUSINESS.phoneHref) {
+                return (
+                  <PhoneLink key={label} className={cardClassName} style={cardStyle}>
+                    {cardBody}
+                  </PhoneLink>
+                );
+              }
+
+              return (
+                <motion.a
+                  key={label}
+                  href={href}
+                  whileHover={{ x: 4 }}
+                  transition={{ duration: 0.2 }}
+                  className={cardClassName}
+                  style={cardStyle}
+                >
+                  {cardBody}
+                </motion.a>
+              );
+            })}
           </motion.div>
         </div>
       </div>

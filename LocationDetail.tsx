@@ -22,6 +22,7 @@ import { BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID, SITE_URL } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
+import PhoneLink from '@/components/PhoneLink';
 
 const SERIF = '"Cormorant Garamond", Georgia, serif';
 const SANS = '"Figtree", system-ui, sans-serif';
@@ -78,13 +79,12 @@ function NotFoundPanel() {
               <ArrowLeft size={14} /> All locations
             </span>
           </Link>
-          <a
-            href={BUSINESS.phoneHref}
+          <PhoneLink
             className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
             style={{ fontFamily: SANS }}
           >
             <Phone size={14} /> {BUSINESS.phone}
-          </a>
+          </PhoneLink>
         </div>
       </section>
     </div>
@@ -199,13 +199,12 @@ function LocationView({ loc }: { loc: LocationKey }) {
                 Free estimate in {loc.city}
                 <ArrowRight size={14} />
               </motion.button>
-              <a
-                href={BUSINESS.phoneHref}
+              <PhoneLink
                 className="inline-flex min-h-[48px] items-center gap-2 rounded-full border border-slate-300 px-7 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] text-slate-800 transition-colors hover:bg-slate-50"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={14} /> {BUSINESS.phone}
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
         </div>

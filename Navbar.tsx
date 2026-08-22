@@ -13,6 +13,7 @@ import { buildPrimaryNav, hasNavChildren } from '@/lib/navigation';
 import type { PrimaryNavEntry } from '@/lib/navigation';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { KITCHEN_PROMOTION, useKitchenPromotion } from '@/lib/kitchen-promotion';
+import PhoneLink from '@/components/PhoneLink';
 
 type LeafNavEntry = Extract<PrimaryNavEntry, { href: string }>;
 
@@ -138,13 +139,12 @@ export default function Navbar() {
           <span className="text-xs font-bold text-[#394696]" style={{ fontFamily: 'Figtree, sans-serif' }}>
             ✓ Financing Available
           </span>
-          <a
-            href={BUSINESS.phoneHref}
+          <PhoneLink
             className={`flex items-center gap-1.5 text-xs font-bold transition-colors ${onHero && !solid ? 'text-white/90 hover:text-white' : 'text-slate-800 hover:text-slate-900'}`}
             style={{ fontFamily: 'Figtree, sans-serif' }}
           >
             <Phone size={11} /> {BUSINESS.phone}
-          </a>
+          </PhoneLink>
         </div>
       </div>
 
@@ -242,14 +242,13 @@ export default function Navbar() {
 
           {/* Right cluster: desktop */}
           <div className="hidden shrink-0 items-center gap-2 lg:flex xl:gap-3">
-            <a
-              href={BUSINESS.phoneHref}
+            <PhoneLink
               className={`inline-flex shrink-0 items-center gap-1.5 text-xs font-bold transition-colors xl:gap-2 xl:text-sm ${phoneText}`}
               style={{ fontFamily: 'Figtree, sans-serif' }}
             >
               <Phone size={14} className="shrink-0 text-[#394696]" />
               <span className="whitespace-nowrap">{BUSINESS.phone}</span>
-            </a>
+            </PhoneLink>
             <motion.button
               layout
               type="button"

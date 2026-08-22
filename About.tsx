@@ -9,6 +9,7 @@ import { BUSINESS, TEAM, MASCOT_URL } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList, ORGANIZATION_ID, SITE_URL } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
+import PhoneLink from '@/components/PhoneLink';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -227,9 +228,9 @@ export default function About() {
             </motion.h2>
             <motion.p variants={fadeUp} custom={1} className="text-white/85 mb-8" style={{ fontFamily: 'Georgia, serif' }}>
               Contact us today at{' '}
-              <a href={BUSINESS.phoneHref} className="font-bold text-white underline underline-offset-2 hover:text-white/80">
+              <PhoneLink className="font-bold text-white underline underline-offset-2 hover:text-white/80">
                 {BUSINESS.phone}
-              </a>{' '}
+              </PhoneLink>{' '}
               to request a free consultation for your next project.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap justify-center gap-4">

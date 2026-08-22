@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, CalendarDays, CheckCircle2, Phone, Sparkles } from 'lucide-react';
 import KitchenPromotionSection from '@/components/KitchenPromotionSection';
+import PhoneLink from '@/components/PhoneLink';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { BUSINESS } from '@/lib/constants';
 import {
@@ -146,12 +147,9 @@ export default function Promotions() {
                 {promotion.active ? 'Claim My Kitchen Savings' : 'Request an Estimate'}
                 <ArrowRight size={15} />
               </button>
-              <a
-                href={BUSINESS.phoneHref}
-                className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-7 py-4 text-xs font-black uppercase tracking-[0.15em] text-white backdrop-blur-sm"
-              >
+              <PhoneLink className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-7 py-4 text-xs font-black uppercase tracking-[0.15em] text-white backdrop-blur-sm">
                 <Phone size={14} /> {BUSINESS.phone}
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
         </div>
