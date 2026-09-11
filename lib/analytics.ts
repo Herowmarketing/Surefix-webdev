@@ -8,7 +8,7 @@ export const GOOGLE_ADS_ID =
 export const GOOGLE_ADS_FORM_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_FORM_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
 export const GOOGLE_ADS_PHONE_CONVERSION =
-  import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || 'GItgCMrltsQcEJCDy_RD';
+  import.meta.env.VITE_GOOGLE_ADS_PHONE_CONVERSION?.trim() || 'PBQ2COjam_QcEJCDy_RD';
 /**
  * Website call conversion (Calls from website / Qualified Call 60s+).
  * Distinct from GOOGLE_ADS_PHONE_CONVERSION (tap/click-to-call).
@@ -369,5 +369,26 @@ export function trackPhoneClick(phoneHref: string, pagePath: string) {
     link_url: phoneHref,
     page_path: pagePath,
   });
-  trackGoogleAdsConversion(GOOGLE_ADS_PHONE_CONVERSION, { value: 1.0, currency: 'USD' });
+
+  const sendTo = resolveSendTo(GOOGLE_ADS_PHONE_CONVERSION);
+  if (typeof window === 'undefined') return;
+  if (!sendTo || typeof window.gtag !== 'function') {
+    window.location.assign(phoneHref);
+    return;
+  }
+
+  let navigationStarted = false;
+  const continueToCall = () => {
+    if (navigationStarted) return;
+    navigationStarted = true;
+    window.location.assign(phoneHref);
+  };
+
+  gtag('event', 'conversion', {
+    send_to: sendTo,
+    event_callback: continueToCall,
+  });
+
+  // Ad blockers or network failures must never prevent the phone call.
+  window.setTimeout(continueToCall, 1000);
 }

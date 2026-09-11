@@ -33,6 +33,7 @@ export default function AnalyticsManager() {
       const link = target.closest('a[href^="tel:"]');
       if (!link || !(link instanceof HTMLAnchorElement)) return;
 
+      event.preventDefault();
       trackPhoneClick(link.href, window.location.pathname);
     };
 
