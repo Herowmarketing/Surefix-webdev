@@ -11,6 +11,7 @@ import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { INTERIOR_DESIGN_HOME_IMAGE } from '@/lib/site-images';
 import ShowroomHomeVideo from '@/components/ShowroomHomeVideo';
 import KitchenPromotionSection from '@/components/KitchenPromotionSection';
+import PhoneLink from '@/components/PhoneLink';
 import CinematicHero from './CinematicHero';
 import { useSeo, breadcrumbList, faqSchema } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
@@ -459,7 +460,7 @@ export default function Home() {
                 >
                   Get Free Estimate <ArrowRight size={16} />
                 </motion.button>
-              <a href={BUSINESS.phoneHref}>
+              <PhoneLink>
                 <motion.span
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.97 }}
@@ -468,7 +469,7 @@ export default function Home() {
                 >
                   <Phone size={15} /> Call {BUSINESS.phone}
                 </motion.span>
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
         </div>

@@ -12,6 +12,7 @@ import { Link } from 'wouter';
 import { BUSINESS } from '@/lib/constants';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { useSeo, breadcrumbList, SITE_URL } from '@/lib/seo';
+import PhoneLink from '@/components/PhoneLink';
 
 type FaqItem = { question: string; answer: string };
 
@@ -190,12 +191,11 @@ export default function FAQ() {
             >
               Free Estimate <ArrowRight size={13} />
             </button>
-            <a
-              href={BUSINESS.phoneHref}
+            <PhoneLink
               className="inline-flex min-h-[48px] w-full cursor-pointer items-center justify-center gap-2 rounded-xl border border-slate-300 px-6 py-3.5 text-xs font-black uppercase tracking-wider text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-200 min-[480px]:w-auto"
             >
               <Phone size={13} /> {BUSINESS.phone}
-            </a>
+            </PhoneLink>
           </div>
         </motion.div>
       </section>

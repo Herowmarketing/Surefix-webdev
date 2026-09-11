@@ -77,6 +77,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const budgetRange = optionalString(body.budgetRange, 120);
   const projectDetails = optionalString(body.projectDetails, 4000);
   const preferredContactMethod = optionalString(body.preferredContactMethod, 60);
+  const decisionReason = optionalString(body.decisionReason, 500);
   const sourcePage = optionalString(body.sourcePage, 120) || 'purchase-inquiry-stepper';
   const attribution = cleanAttribution(body);
 
@@ -122,6 +123,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       budgetRange,
       projectDetails,
       preferredContactMethod,
+      decisionReason,
       status: 'new',
       priority: 'medium',
       submittedAt,
@@ -149,6 +151,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     line('Timeline', timeline) +
     line('Service Area / Address', projectAddress) +
     line('Preferred Contact', preferredContactMethod) +
+    line('Why They Chose Sure-Fix', decisionReason) +
     line('Project Details', projectDetails) +
     line('Landing Page', attribution.landingPage) +
     line('Conversion Page', attribution.conversionPage) +
@@ -225,6 +228,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       { label: 'Project', value: projectType },
       { label: 'Timeline', value: timeline },
       { label: 'Preferred contact', value: preferredContactMethod },
+      { label: 'Why Sure-Fix', value: decisionReason },
       { label: 'Service area', value: projectAddress },
     ];
 

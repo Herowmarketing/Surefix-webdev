@@ -10,6 +10,7 @@ import { toast } from 'sonner';
 import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo';
 import { PAGE_SEO } from '@/lib/seo-config';
 import { buildEnhancedConversionUserData, getAttributionPayload, trackLeadSubmission } from '@/lib/analytics';
+import PhoneLink from '@/components/PhoneLink';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -142,10 +143,10 @@ export default function Contact() {
                 <p className="text-slate-600 mb-6" style={{ fontFamily: 'Georgia, serif' }}>
                   A member of our team will reach out within 24 hours to schedule your free in-home consultation.
                 </p>
-                <a href={BUSINESS.phoneHref} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white"
+                <PhoneLink className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-black text-white"
                   style={{ background: '#983631', fontFamily: 'Figtree, sans-serif' }}>
                   <Phone size={14} /> Call Us Now: {BUSINESS.phone}
-                </a>
+                </PhoneLink>
               </motion.div>
             ) : (
               <motion.form onSubmit={handleSubmit} variants={stagger}
@@ -281,7 +282,7 @@ export default function Contact() {
               style={{ background: '#f8fafc' }}>
               <h3 className="text-lg font-black text-slate-900 mb-5" style={{ fontFamily: 'Figtree, sans-serif' }}>Contact Info</h3>
               <div className="flex flex-col gap-4">
-                <a href={BUSINESS.phoneHref} className="flex items-start gap-3 group">
+                <PhoneLink className="flex items-start gap-3 group">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(57,70,150,0.2)' }}>
                     <Phone size={15} className="text-[#394696]" />
                   </div>
@@ -289,7 +290,7 @@ export default function Contact() {
                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-0.5" style={{ fontFamily: 'Figtree, sans-serif' }}>Phone</p>
                     <p className="text-slate-900 font-bold group-hover:text-[#394696] transition-colors" style={{ fontFamily: 'Figtree, sans-serif' }}>{BUSINESS.phone}</p>
                   </div>
-                </a>
+                </PhoneLink>
                 <div className="flex items-start gap-3">
                   <div className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(57,70,150,0.2)' }}>
                     <MapPin size={15} className="text-[#394696]" />

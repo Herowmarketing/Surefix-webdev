@@ -14,6 +14,7 @@ import { SHOWROOM_MATERIAL_IMAGES, SHOWROOM_HOME_VIDEO_SRC } from '@/lib/site-im
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
 import { useSeo, breadcrumbList, LOCAL_BUSINESS_ID } from '@/lib/seo'
 import { PAGE_SEO } from '@/lib/seo-config'
+import PhoneLink from '@/components/PhoneLink'
 
 const FEATURED_MATERIALS = [
   {
@@ -289,13 +290,13 @@ export default function Showroom() {
               >
                 Visit the Showroom <ArrowRight size={16} />
               </motion.button>
-              <a href={BUSINESS.phoneHref}>
+              <PhoneLink>
                 <motion.span whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 px-7 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider border border-slate-300"
                   style={{ background: '#f8fafc', fontFamily: 'Figtree, sans-serif', backdropFilter: 'blur(8px)' }}>
                   {BUSINESS.phone}
                 </motion.span>
-              </a>
+              </PhoneLink>
             </motion.div>
           </motion.div>
         </div>
@@ -693,13 +694,13 @@ export default function Showroom() {
               >
                 Schedule a Showroom Visit <ArrowRight size={16} />
               </motion.button>
-              <a href={BUSINESS.phoneHref}>
+              <PhoneLink>
                 <motion.span whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-sm font-black text-slate-900 cursor-pointer uppercase tracking-wider border border-slate-300"
                   style={{ background: '#f8fafc', fontFamily: 'Figtree, sans-serif', backdropFilter: 'blur(8px)' }}>
                   {BUSINESS.phone}
                 </motion.span>
-              </a>
+              </PhoneLink>
             </div>
           </div>
         </motion.div>

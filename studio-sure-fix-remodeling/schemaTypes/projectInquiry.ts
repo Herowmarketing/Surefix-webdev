@@ -93,6 +93,13 @@ export default defineType({
       type: 'string',
       group: 'lead',
     }),
+    defineField({
+      name: 'decisionReason',
+      title: 'Why They Chose Sure-Fix',
+      description: 'What stood out and influenced this homeowner to choose Sure-Fix.',
+      type: 'string',
+      group: 'lead',
+    }),
 
     // ── CRM / Tracking ────────────────────────────────────────────────────────
     defineField({

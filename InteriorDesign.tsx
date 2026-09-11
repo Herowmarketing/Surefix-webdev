@@ -11,6 +11,7 @@ import { useRef, useState } from 'react'
 import { Link } from 'wouter'
 import { ArrowRight, Award, BookOpen, Phone, Quote, Star } from 'lucide-react'
 import { useLeadStepper } from '@/contexts/LeadStepperContext'
+import PhoneLink from '@/components/PhoneLink'
 import { useSeo, breadcrumbList, serviceSchema, SITE_URL } from '@/lib/seo'
 import { PAGE_SEO } from '@/lib/seo-config'
 
@@ -489,7 +490,7 @@ export default function InteriorDesign() {
               >
                 Book Free Consultation <ArrowRight className="w-5 h-5" />
               </motion.button>
-              <a href="tel:6103920990">
+              <PhoneLink>
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
@@ -497,7 +498,7 @@ export default function InteriorDesign() {
                 >
                   <Phone className="w-5 h-5" /> (610) 392-0990
                 </motion.button>
-              </a>
+              </PhoneLink>
             </div>
           </motion.div>
         </div>

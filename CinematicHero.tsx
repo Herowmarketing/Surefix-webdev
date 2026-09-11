@@ -21,6 +21,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ChevronDown, Phone } from 'lucide-react';
 import { useLeadStepper } from '@/contexts/LeadStepperContext';
 import { BUSINESS } from '@/lib/constants';
+import PhoneLink from '@/components/PhoneLink';
 
 // ── Config ─────────────────────────────────────────────────────────
 const VIDEO_SRC          = '/videos/hero-scroll.mp4';
@@ -572,8 +573,7 @@ export default function CinematicHero() {
                 >
                   Free estimate
                 </button>
-                <a
-                  href={BUSINESS.phoneHref}
+                <PhoneLink
                   className="flex min-h-[48px] min-w-[44px] items-center justify-center text-[11px] uppercase tracking-[0.14em] text-white/38 transition-colors hover:text-white/55 min-[400px]:inline-flex"
                   style={{ fontFamily: SANS, fontWeight: 500 }}
                 >
@@ -581,7 +581,7 @@ export default function CinematicHero() {
                     <Phone size={13} strokeWidth={1.5} />
                     {BUSINESS.phone}
                   </span>
-                </a>
+                </PhoneLink>
               </div>
             </div>
           </div>
@@ -614,13 +614,12 @@ export default function CinematicHero() {
               >
                 Free estimate <ArrowRight size={16} />
               </button>
-              <a
-                href={BUSINESS.phoneHref}
+              <PhoneLink
                 className="inline-flex items-center justify-center gap-2 rounded-xl px-6 py-4 text-sm font-black uppercase tracking-wider text-white border border-white/22"
                 style={{ fontFamily: SANS }}
               >
                 <Phone size={16} /> {BUSINESS.phone}
-              </a>
+              </PhoneLink>
             </div>
           </div>
         )}

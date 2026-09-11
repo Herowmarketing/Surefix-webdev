@@ -7,7 +7,8 @@ import { SITE_IMAGES } from './lib/site-images';
 export const BUSINESS = {
   name: 'Sure-Fix Remodeling',
   phone: '(610) 392-0990',
-  phoneHref: 'tel:6103920990',
+  /** E.164 tel: link — required format for Google Ads website call tracking */
+  phoneHref: 'tel:+16103920990',
   email: 'info@surefixremodeling.net',
   address: '2015 Freemansburg Ave, Easton, PA 18042',
   addressShort: 'Easton, PA 18042',

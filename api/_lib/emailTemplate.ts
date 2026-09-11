@@ -19,7 +19,7 @@ const BRAND = {
   site: 'https://surefixremodelinglv.com',
   logo: 'https://surefixremodelinglv.com/manus-storage/sf-logo-email.png',
   phone: '(610) 392-0990',
-  phoneHref: 'tel:6103920990',
+  phoneHref: 'tel:+16103920990',
   email: 'info@surefixremodeling.net',
   address: '2015 Freemansburg Ave, Easton, PA 18042',
   hours: 'Mon–Fri 8AM–7PM · Sat 8AM–4PM · Sun Closed',
