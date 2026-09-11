@@ -15,7 +15,7 @@ export const GOOGLE_ADS_PHONE_CONVERSION =
  * Label only, or full AW-xxx/label. Empty until the Ads conversion action is live.
  */
 export const GOOGLE_ADS_CALL_CONVERSION =
-  import.meta.env.VITE_GOOGLE_ADS_CALL_CONVERSION?.trim() || '';
+  import.meta.env.VITE_GOOGLE_ADS_CALL_CONVERSION?.trim() || 'PBQ2COjam_QcEJCDy_RD';
 /** Thank-you page conversion — fires once on the /thank-you page load. */
 export const GOOGLE_ADS_THANKYOU_CONVERSION =
   import.meta.env.VITE_GOOGLE_ADS_THANKYOU_CONVERSION?.trim() || 'VyfvCPaZxMQcEJCDy_RD';
